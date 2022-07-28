@@ -4,12 +4,16 @@ Hi. This is the place where I write how the fuck everything inside of SenCar 5 w
 ## Contents
 1. [How does it work?](#how-does-sencar-5-work)
 2. [Main dash](#main-dash)
+
 2.1 [Themes](#themes)
 3. [Widget Display](#widget-display)
+
 3.1 [WidgetAPI](#widgetapi)
 4. [Music Display](#music-display)
 5. [Center Display](#center-display)
+
 5.1 [AppAPI](#appapi)
+
 5.2 [InterationAPI](#interactionapi)
 
 ## How does SenCar 5 work?
