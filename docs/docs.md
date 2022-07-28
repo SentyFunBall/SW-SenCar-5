@@ -7,7 +7,7 @@ Hi. This is the place where I write how the fuck everything inside of SenCar 5 w
     1. [Themes](#themes)
 3. [Widget Display](#widget-display)
     1. [WidgetAPI](#widgetapi)
-4. [Music Display](#music-display)
+4. [Radio Display](#radio-display)
 5. [Center Display](#center-display)
     1. [AppAPI](#appapi)
     2. [InterationAPI](#interactionapi)
@@ -25,7 +25,7 @@ In short, SenCar 5 works just like every other microcontroller in Stormworks: lo
 __Quick Rundown__
 it does stuff
 
-## Music Display
+## Radio Display
 
 ## Center Display
 ### AppAPI
