@@ -105,8 +105,10 @@ function onTick()
 end
 
 function onDraw()
+    local dl, dr = screen.drawLine, screen.drawRect
     if acc then --TODO: add startup animation
         local _ = _colors[info.properties.theme]
+        local _1, _2, _3 = _[1], _[2], _[3]
 
         screenX, screenY = map.screenToMap(info.gpsX, info.gpsY, 2, 96, 32, 58, 25)
         screen.drawMap(screenX, screenY,2)
@@ -128,14 +130,21 @@ function onDraw()
         drawCircle(80, 16, 10, 8, 60, -remdeg/2*math.pi/180, (360-remdeg)*math.pi/180) --rps
         drawCircle(16, 16, 15, 13, 60, remdeg/5*math.pi/180, (250-remdeg)*math.pi/180) --fuel
         drawCircle(80, 16, 15, 13, 60, remdeg/5*math.pi/180, (250-remdeg)*math.pi/180, -1) --temp
-        -- battery dial
-        screen.drawRect(47,21,0,0)
-        screen.drawRect(49,21,0,0)
-        screen.drawRect(46,22,4,2)
-        screen.drawLine(44,27,53,27)
-        screen.drawLine(44,26,44,29)
-        screen.drawLine(4,0,4,2)
-        screen.drawLine(8,0,8,2)
+
+        --[[ battery meter (hiding this for later use in widgetAPI)
+        c(_[1][1], _[1][2], _[1][3])
+        dr(4,0,0,1)
+        dr(6,0,0,1)
+        dr(3,1,4,2)
+        dl(2,5,9,5)
+
+        c(_[1][1], _[1][2], _[1][3])
+        dl(1,4,1,7)
+        dl(5,4,5,6)
+        dl(9,4,9,7)
+
+        c(_[3][1], _[3][2], _[3][3])
+        dl(0,5,info.battery*9,5)]]
 
         -- dial that fills up
         c(_[2][1], _[2][2], _[2][3])
