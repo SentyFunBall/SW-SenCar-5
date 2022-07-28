@@ -205,14 +205,14 @@ function onDraw()
         if info.gear == 0 then
             dst(78,9,"P",2)
         elseif info.gear == 1 then
-            dst(77,9,"R",2)
+            dst(78,9,"R",2)
         elseif info.gear == 2 then
-            dst(77,9,"N",2)
+            dst(78,9,"N",2)
         elseif info.gear >= 3 then
-            if info.properties.trans then
-                dst(77,9,"D",2)
+            if info.properties.trans then --auto
+                dst(78,9,"D",2)
             else
-                dst(77,9,tostring(info.gear),2)
+                dst(78,9,tostring(info.gear),2)
             end
         end
 
