@@ -10,6 +10,7 @@ Yeah, who else thought it was a terrible idea to write an API, let alone several
 
 ## Code Examples
 Code to draw a simple widget with WidgetAPI and LifeBoatAPI.
+	
 	require("STLuaLibs.SenCar.5.WidgetAPI") --Will most definetly change
 
 	myWidget = {drawn = false, content = {{content = "Batt", x = 0, y = 0, h = false}, {content = 0, x = 0, y = 6, h = false}}
