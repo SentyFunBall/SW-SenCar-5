@@ -4,13 +4,13 @@ Hi. This is the place where I write how the fuck everything inside of SenCar 5 w
 ## Contents
 1. [How does it work?](#how-does-sencar-5-work)
 2. [Main dash](#main-dash)
-  1. [Themes](#themes)
+    1. [Themes](#themes)
 3. [Widget Display](#widget-display)
-  1. [WidgetAPI](#widgetapi)
+    1. [WidgetAPI](#widgetapi)
 4. [Music Display](#music-display)
 5. [Center Display](#center-display)
-  1. [AppAPI](#appapi)
-  2. [InterationAPI](#interactionapi)
+    1. [AppAPI](#appapi)
+    2. [InterationAPI](#interactionapi)
 
 ## How does SenCar 5 work?
 In short, SenCar 5 works just like every other microcontroller in Stormworks: logic. The numbers feed into the ever-growing microcontroller (mc), and feed into the LUA blocks (or somewhere else), and then runs through the code seen in this repository. 
