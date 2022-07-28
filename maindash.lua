@@ -212,7 +212,7 @@ function onDraw()
             if info.properties.trans then --auto
                 dst(78,9,"D",2)
             else
-                dst(78,9,tostring(info.gear),2)
+                dst(78,9,string.format("%.0f", info.gear-2),2)
             end
         end
 
