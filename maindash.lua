@@ -47,7 +47,7 @@ do
         simulator:setInputNumber(1, simulator:getSlider(1)*100)
         simulator:setInputNumber(2, math.floor(simulator:getSlider(2) * 8))
         simulator:setInputNumber(3, simulator:getSlider(3)*25)
-        simulator:setInputNumber(4, 181)
+        simulator:setInputNumber(4, simulator:getSlider(4)*181)
         simulator:setInputNumber(5, simulator:getSlider(5)*200)
         simulator:setInputNumber(8, simulator:getSlider(8))
         simulator:setInputNumber(9, simulator:getSlider(9))
@@ -74,8 +74,12 @@ _colors = {
 info = {properties = {collected = false}}
 remdeg = 130
 animationFinished = false
+ticks = 0
+fuelCollected = false
 
 function onTick()
+    acc = input.getBool(1)
+
     --kill me
     info.speed = input.getNumber(1)
     info.gear = input.getNumber(2) -- p, r, n, (1, 2, 3, 4, 5)
@@ -97,11 +101,18 @@ function onTick()
         info.properties.trans = property.getBool("Transmission Default")
         info.properties.unit = property.getBool("Units")
         info.properties.carname = property.getText("Car name")
+        info.properties.maxfuel = 180
     end
     info.properties.collected = true
 
-    --wait theres more!!
-    acc = input.getBool(1)
+    if not fuelCollected then
+        ticks = ticks + 1
+    end
+    if ticks == 20 then
+        info.properties.maxfuel = input.getNumber(4) or 180
+        fuelCollected = true
+        ticks = 0
+    end
 end
 
 function onDraw()
@@ -124,14 +135,14 @@ function onDraw()
         drawCircle(16, 16, 12, 0, 21, 0, math.pi*2)
         drawCircle(80, 16, 12, 0, 21, 0, math.pi*2)
 
-        -- empter dials
+        -- empter dials TODO: icons for fuel and temp
         c(_[1][1]-15, _[1][2]-15, _[1][3]-15)
         drawCircle(16, 16, 10, 8, 60, -remdeg/2*math.pi/180, (360-remdeg)*math.pi/180) --speed
         drawCircle(80, 16, 10, 8, 60, -remdeg/2*math.pi/180, (360-remdeg)*math.pi/180) --rps
         drawCircle(16, 16, 15, 13, 60, remdeg/5*math.pi/180, (250-remdeg)*math.pi/180) --fuel
         drawCircle(80, 16, 15, 13, 60, remdeg/5*math.pi/180, (250-remdeg)*math.pi/180, -1) --temp
 
-        --[[ battery meter (hiding this for later use in widgetAPI)
+        --[[ battery meter (hiding this for later use in WidgetAPI)
         c(_[1][1], _[1][2], _[1][3])
         dr(4,0,0,1)
         dr(6,0,0,1)
@@ -150,6 +161,10 @@ function onDraw()
         c(_[2][1], _[2][2], _[2][3])
         drawCircle(16, 16, 10, 8, 60, -remdeg/2*math.pi/180, info.speed/100*(360-remdeg)*math.pi/180) --speed
         drawCircle(80, 16, 10, 8, 60, -remdeg/2*math.pi/180, info.rps/25*(360-remdeg)*math.pi/180) --rps
+
+        c(_[3][1], _[3][2], _[3][3])
+        drawCircle(16, 16, 15, 13, 60, remdeg/5*math.pi/180, math.min(info.fuel/info.properties.maxfuel, 1)*(250-remdeg)*math.pi/180) --fuel, should clamp within fuel we got in 20th tick as max fuel
+        drawCircle(80, 16, 15, 13, 60, remdeg/5*math.pi/180, math.min(info.temp/110, 1)*(250-remdeg)*math.pi/180, -1) --temp, clamps within -inf and 120
 
         --text
         -- speed
