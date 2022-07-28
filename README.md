@@ -47,9 +47,8 @@ We have included a full documentation of the entire system [here](/docs/docs.md)
 Below are the included APIs, the ones we used, and our inspiration
 
 ### Included APIs
-WidgetAPI
-AppAPI
-InterationAPI
+[WidgetAPI](/docs/apis/widgetapi.md)
+[AppAPI](/docs/apis/appapi.md)
 
 ### Libraries and APIs used
  - [LifeBoatAPI](https://marketplace.visualstudio.com/items?itemName=NameousChangey.lifeboatapi)
@@ -57,6 +56,7 @@ InterationAPI
 
 ### Inspiration
 UI is heavily inspired off of next generation [Apple Carplay](https://www.wired.com/story/apple-carplay-dashboard-touchscreen-distracted-driving/).
+
 UI is partially inspired off of Phil's car dashboard and map they posted one time in the Stormworks Discord server.
 
 ### Credits

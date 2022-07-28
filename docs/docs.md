@@ -10,7 +10,6 @@ Hi. This is the place where I write how the fuck everything inside of SenCar 5 w
 4. [Radio Display](#radio-display)
 5. [Center Display](#center-display)
     1. [AppAPI](#appapi)
-    2. [InterationAPI](#interactionapi)
 
 ## How does SenCar 5 work?
 In short, SenCar 5 works just like every other microcontroller in Stormworks: logic. The numbers feed into the ever-growing microcontroller (mc), and feed into the LUA blocks (or somewhere else), and then runs through the code seen in this repository. 
@@ -20,13 +19,11 @@ In short, SenCar 5 works just like every other microcontroller in Stormworks: lo
 
 ## Widget Display
 ### WidgetAPI
-[WidgetAPI Full Documentation](/docs/widgets.md)
-
-__Quick Rundown__
-it does stuff
+[WidgetAPI Full Documentation](/docs/apis/widgetapi.md)
 
 ## Radio Display
 
 ## Center Display
+
 ### AppAPI
-### InteractionAPI
+[AppAPI Full Documentation](/docs/apis/appapi.md)
