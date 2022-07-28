@@ -21,7 +21,8 @@ In short, SenCar 5 works just like every other microcontroller in Stormworks: lo
 ## Widget Display
 ### WidgetAPI
 [WidgetAPI Full Documentation](/docs/widgets.md)
-**Quick Rundown**
+
+__Quick Rundown__
 it does stuff
 
 ## Music Display
