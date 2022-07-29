@@ -72,10 +72,10 @@ _colors = {
 }
 
 info = {properties = {collected = false}}
-remdeg = 130
 animationFinished = false
-ticks = 0
 fuelCollected = false
+remdeg = 130
+ticks = 0
 
 function onTick()
     acc = input.getBool(1)
@@ -116,13 +116,16 @@ function onTick()
 end
 
 function onDraw()
-    local dl, dr = screen.drawLine, screen.drawRect
     if acc then --TODO: add startup animation
         local _ = _colors[info.properties.theme]
-        local _1, _2, _3 = _[1], _[2], _[3]
 
-        screenX, screenY = map.screenToMap(info.gpsX, info.gpsY, 2, 96, 32, 58, 25)
-        screen.drawMap(screenX, screenY,2)
+        if info.gear ~= 1 then --dont draw map if were in reverse
+            screenX, screenY = map.screenToMap(info.gpsX, info.gpsY, 2, 96, 32, 58, 25)
+            screen.drawMap(screenX, screenY,2)
+            --map icon
+            c(9,113,244)
+            drawPointer(49,16,8,info.compass)
+        end
 
         for i=0, 47 do
             c(_[1][1], _[1][2], _[1][3], lerp(255, 50, i/47))
@@ -224,10 +227,8 @@ function onDraw()
             dst(75,20,"man",1)
         end
         --dst(76, 1, "rps", 0.8)
-
-        --map icon
-        c(9,113,244)
-        drawPointer(49,16,8,info.compass)
+    else
+        animationFinished = false
     end
 end
 
@@ -308,4 +309,8 @@ end
 
 function lerp(v0,v1,t)
     return v1*t+v0*(1-t)
+end
+
+function clamp(value,min,max) 
+    return math.min(math.max(value,min),max) 
 end
