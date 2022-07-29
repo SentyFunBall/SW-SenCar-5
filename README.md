@@ -1,8 +1,9 @@
 # SenCar 5
 [Developer Documentation](docs/docs.md)
 
-SenCar 5 is the greatest new evolution of the SenTOS Car OS line of operating systems. SenTOS Car was built for the original 2nd gen Echolodia (Echolodia 2021), and has been continually evolving ever since. However, the looks of the operating system has stayed mostly the same, with no major overhaul in the last 2 years. This is where it changes.
-SenTOS Car 4 was our largest update to date, adding tons of quality of life features that let us focus on UI overhauls. Now called SenCar, This latest evolution changes everything you were used too. Not sorry.
+Personal. Powerful. Expandable.
+
+SenCar 5 is the successor to the powerful car operating system, SenTOS Car 4. SenCar 5 enhances your car with all new personalization features, seemless communication menthods, a brand new UI, and more.
 
 ## Contents
 1. [All new UI](#all-new-ui)
@@ -40,18 +41,31 @@ The central display is where all the fun stuff happens. Climate, Weather, Settin
 ## Everything New
 
 ### Drive Modes
+4 drive modes customizes how the car behaves to allow for better control and performance during specific situations. Eco mode saves fuel and quiets down your car. Sport mode tightens the steering, and makes your car feel sportier. Tow mode turns on Advanced Traction Control, and prevents wheelslip while towing heavy loads. DAC mode keeps steering tight, lowers speed, and keeps torque high.
 
 ### Back up camera
+After the removal of a backup camera in SenTOS Car 3, we have added it back, front and center on the dashboard. The back up camera also features guide markers, to tell you when you're getting close to a wall.
 
 ### SenConnect
+SenConnect is our revolutionary way to easily communicate wirelessly in stormworks, in groups of up to 5 people. SenConnect lets you see where other people on your network are. With SenConnect, these locations are shown right up on the dashboard, with their name and car type shown too. You can disable sharing your location in the 
 
 ### Automatic this and that
+New automatic lights, enhanced automatic transmission with a better shift warning, more realistic gear transition, and locking doors. SenCar 5 will automatically turn on and off the headlights and running lights if it's night, or if you're near a car. 
 
 ### Tow Mode
-
-### Enhanced Transmission
+Tow mode, and the complimentary Towed mode, allows you to control something, or be controlled, though the SIBTaT standard. If your car has a baseplate, or a tow connector, then it'll show up on the main display. If you are towing a SentyTek vehicle, it'll show its status on the Widget Display, via WidgetAPI.
 
 ### So much more
+- Horn
+- Downshift protection
+- Shows open doors on dashboard
+- Enhanced trip stats
+- Low fuel/battery alarms
+- Enhanced clutch
+- Developer support
+- Open source
+- More settings
+- More "on-the-fly" settings
 
 ## For Developers
 We have included a full documentation of the entire system [here](/docs/docs.md). Enjoy!
