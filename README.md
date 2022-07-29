@@ -5,6 +5,9 @@ Personal. Powerful. Expandable.
 
 SenCar 5 is the successor to the powerful car operating system, SenTOS Car 4. SenCar 5 enhances your car with all new personalization features, seemless communication menthods, a brand new UI, drive modes, and more.
 
+![20220522211148_1](https://user-images.githubusercontent.com/57205125/181718992-56bb02df-386e-4b3f-a906-776c45267e50.jpg)
+*SenTOS Car 4's trip stats in Echolodia X*
+
 ## Contents
 1. [All new UI](#all-new-ui)
     1. [Themes](#themes)
