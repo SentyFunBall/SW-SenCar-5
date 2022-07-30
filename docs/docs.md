@@ -16,9 +16,9 @@ Hi. This is the place where I write how the fuck everything inside of SenCar 5 w
 In short, SenCar 5 works just like every other microcontroller in Stormworks: logic. The numbers feed into the ever-growing microcontroller (mc), and feed into the LUA blocks (or somewhere else), and then runs through the code seen in this repository. 
 
 ## More Links
-- [Code Examples](docs/examples.md)
-- [Custom Functions](docs/functions.md)
-- [API Downloads](docs/apis/downloads.md)
+- [Code Examples](examples.md)
+- [Custom Functions](functions.md)
+- [API Downloads](apis/downloads.md)
 
 ## Main Dash
 The dashboard is inspired off of Apple CarPlay. The map is rendered first, assuming that the car is not in reverse. The side gradients (`for` loop), large cirles, empty dials and dials are then rendered on top. All the circles are rendered using a custom circle function, which allows me to draw arcs, and rings. Stormworks pixels are not entirely square on some screens, such as the 3x1, because of the extra width compared to height. This causes the perfect circles from the function to be slighly oblong in game. We combated this by dealing with it.
