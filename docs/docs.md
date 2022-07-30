@@ -44,6 +44,7 @@ The 7 different themes for SenCar 5 are stored in a table, shared across the 4 L
         
 
 ## Widget Display
+The widget display is just a gradient, based on the theme, with the widgets on top. The widgets are drawn by WidgetAPI (I was going to call it WidgetKit because thats what it is but that was taken by Apple).
 
 ### WidgetAPI
 [WidgetAPI Full Documentation](/docs/apis/widgetapi.md)
