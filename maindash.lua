@@ -76,6 +76,7 @@ animationFinished = false
 fuelCollected = false
 remdeg = 130
 ticks = 0
+warning = false;
 
 function onTick()
     acc = input.getBool(1)
@@ -92,8 +93,8 @@ function onTick()
     info.battery = input.getNumber(9)
     info.drivemode = input.getNumber(10)
     if not info.properties.collected then
-        info.properties.fuelwarn = property.getNumber("Fuel Warn %")
-        info.properties.batwarn = property.getNumber("Bat Warn %")
+        info.properties.fuelwarn = property.getNumber("Fuel Warn %")/100
+        info.properties.batwarn = property.getNumber("Bat Warn %")/100
         info.properties.tempwarn = property.getNumber("Temp Warn")
         info.properties.upshift = property.getNumber("Upshift RPS")
         info.properties.downshift = property.getNumber("Downshift RPS")
@@ -112,6 +113,12 @@ function onTick()
         info.properties.maxfuel = input.getNumber(4) or 180
         fuelCollected = true
         ticks = 0
+    end
+
+    if info.battery < info.properties.batwarn or info.fuel/info.properties.maxfuel < info.properties.fuelwarn or info.temp > info.properties.tempwarn or info.rps < 3 then 
+        warning = true
+    else 
+        warning = false
     end
 end
 
@@ -144,6 +151,39 @@ function onDraw()
         drawCircle(80, 16, 10, 8, 60, -remdeg/2*math.pi/180, (360-remdeg)*math.pi/180) --rps
         drawCircle(16, 16, 15, 13, 60, remdeg/5*math.pi/180, (250-remdeg)*math.pi/180) --fuel
         drawCircle(80, 16, 15, 13, 60, remdeg/5*math.pi/180, (250-remdeg)*math.pi/180, -1) --temp
+
+        -- labels (credit to mrlennyn for the ui builder (fuck off copilot i thought i uninstalled you))
+        --- temp
+        if info.temp > info.properties.tempwarn then
+            c(150,50,50)
+        else
+            c(150,150,150)
+        end
+        screen.drawLine(90,30,95,30)
+        screen.drawLine(90,28,95,28)
+        screen.drawLine(92,24,92,28)
+        screen.drawRectF(93,24,1,1)
+        screen.drawRectF(93,26,1,1)
+
+        --- fuel
+        if info.fuel/info.properties.maxfuel< info.properties.fuelwarn then
+            c(150,50,50)
+        else
+            c(150,150,150)
+        end
+        screen.drawRectF(1,29,3,2)
+        screen.drawRect(1,26,2,2)
+        screen.drawLine(5,27,5,31)
+        screen.drawRectF(4,29,1,1)
+        screen.drawRectF(4,26,1,1)
+
+        --- warning symbol
+        if warning then
+            c(200,50,50)
+            screen.drawTriangle(44,29,52,29,48,22)
+            screen.drawLine(48,25,48,27)
+            screen.drawRectF(48,28,1,1)
+        end
 
         --[[ battery meter (hiding this for later use in WidgetAPI)
         c(_[1][1], _[1][2], _[1][3])
