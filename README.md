@@ -1,7 +1,7 @@
 # SenCar 5
 [Developer Documentation](docs/docs.md)
 
-Personal. Powerful. Expandable.
+## Personal. Powerful. Expandable.
 
 SenCar 5 is the successor to the powerful car operating system, SenTOS Car 4. SenCar 5 enhances your car with all new personalization features, seemless communication menthods, a brand new UI, drive modes, and more.
 
