@@ -185,12 +185,17 @@ function onDraw()
             screen.drawRectF(48,28,1,1)
         end
 
+        --- battery warning
+        if info.battery < info.properties.batwarn then
+            c(200,50,50)
+            screen.drawRect(46,2,4,2)
+            screen.drawRectF(47,1,1,1)
+            screen.drawRectF(49,1,1,1)
+        end
+
         --[[ battery meter (hiding this for later use in WidgetAPI)
         c(_[1][1], _[1][2], _[1][3])
-        dr(4,0,0,1)
-        dr(6,0,0,1)
-        dr(3,1,4,2)
-        dl(2,5,9,5)
+
 
         c(_[1][1], _[1][2], _[1][3])
         dl(1,4,1,7)
