@@ -30,11 +30,10 @@ do
 
         -- touchscreen defaults
         local screenConnection = simulator:getTouchScreen(1)
-        simulator:setInputBool(1, screenConnection.isTouched)
-        simulator:setInputNumber(1, screenConnection.width)
-        simulator:setInputNumber(2, screenConnection.height)
-        simulator:setInputNumber(3, screenConnection.touchX)
-        simulator:setInputNumber(4, screenConnection.touchY)
+        simulator:setInputNumber(1, 1)
+        simulator:setInputNumber(2, 0.9423432)
+        simulator:setInputNumber(31, screenConnection.touchX)
+        simulator:setInputNumber(32, screenConnection.touchY)
 
         -- NEW! button/slider options from the UI
         simulator:setInputBool(1, true)
@@ -60,9 +59,9 @@ function onTick()
     acc = input.getBool(1)
     theme = property.getNumber("Theme")
 
-    channel = input.getNumber(1)
-    signalStrength = input.getNumber(2)
-    data = input.getNumber(3) --from radio
+    channel = math.ceil(input.getNumber(1))
+    signalStrength = string.format("%.0f", input.getNumber(2)*100)
+    data = input.getNumber(3) --from radio, not used
     isPlayingMusic = input.getBool(2)
 end
 
@@ -74,6 +73,7 @@ function onDraw()
             screen.drawLine(i-1, 0, i-1, 32)
         end
 
+        --background
         if not isPlayingMusic then
             c(_[1][1], _[1][2], _[1][3],250) --i love tables
             screen.drawRectF(3,3,26,26)
@@ -102,6 +102,7 @@ function onDraw()
             end
         end
 
+        -- stupid button outlines
         c(_[1][1]+55, _[1][2]+55, _[1][3]+55, 250)
         screen.drawLine(3,20,29,20)
         screen.drawRectF(15,21,2,8)
@@ -116,6 +117,24 @@ function onDraw()
         screen.drawLine(4,26,5,26)
         screen.drawLine(3,21,3,26)
         
+        --- text
+        c(_[2][1], _[2][2], _[2][3])
+        screen.drawText(4,4, "Ch:" .. channel)
+        screen.drawText(4,11, "SS:" .. signalStrength)
+
+        --- up arrow
+        screen.drawLine(9,22,9,27)
+        screen.drawLine(10,23,10,25)
+        screen.drawLine(8,23,8,25)
+        screen.drawRectF(11,24,1,1)
+        screen.drawRectF(7,24,1,1)
+
+        --- down arrow
+        screen.drawLine(22,22,22,27)
+        screen.drawLine(23,24,23,26)
+        screen.drawLine(21,24,21,26)
+        screen.drawRectF(24,24,1,1)
+        screen.drawRectF(20,24,1,1)
     end
 end
 
