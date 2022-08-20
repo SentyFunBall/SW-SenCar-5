@@ -31,13 +31,14 @@ do
         -- touchscreen defaults
         local screenConnection = simulator:getTouchScreen(1)
         simulator:setInputNumber(1, 1)
-        simulator:setInputNumber(2, 0.9423432)
-        simulator:setInputNumber(31, screenConnection.touchX)
-        simulator:setInputNumber(32, screenConnection.touchY)
+        simulator:setInputNumber(2, simulator:getSlider(1))
+        simulator:setInputNumber(3, screenConnection.touchX)
+        simulator:setInputNumber(4, screenConnection.touchY)
 
         -- NEW! button/slider options from the UI
         simulator:setInputBool(1, true)
         simulator:setInputBool(2, simulator:getIsToggled(2))
+        simulator:setInputBool(3, screenConnection.isTouched)
     end;
 end
 ---@endsection
@@ -54,15 +55,32 @@ _colors = {
 }
 ticks = 0
 godown = false
+chup = false
+chdown = false
 
 function onTick()
     acc = input.getBool(1)
     theme = property.getNumber("Theme")
 
     channel = math.ceil(input.getNumber(1))
-    signalStrength = string.format("%.0f", input.getNumber(2)*100)
-    data = input.getNumber(3) --from radio, not used
+    signalStrength = input.getNumber(2)
     isPlayingMusic = input.getBool(2)
+
+    isPressed = input.getBool(3)
+    -- channel buttons
+    if isPressed and isPointInRectangle(input.getNumber(3), input.getNumber(4), 2, 19, 14, 10) then
+       chup = true
+    else
+        chup = false
+    end
+    if isPressed and isPointInRectangle(input.getNumber(3), input.getNumber(4), 16 ,19, 14, 19) then
+       chdown = true
+    else
+        chdown = false
+    end
+
+    output.setBool(1, chup)
+    output.setBool(2, chdown)
 end
 
 function onDraw()
@@ -83,7 +101,7 @@ function onDraw()
             screen.drawLine(2,4,2,28)
             ticks = 0
         else
-            c(lerp(_[1][1], (_[1][1] + _[3][1])/2, ticks/300), lerp(_[1][2], (_[1][2] + _[3][2])/2, ticks/300), lerp(_[1][3], (_[1][3] + _[3][3])/2, ticks/300), 250)
+            c(_[1][1], _[1][2], lerp(_[1][3], _[1][3]+25, ticks/300), 250)
             screen.drawRectF(3,3,26,26)
             screen.drawLine(4,2,28,2)
             screen.drawLine(29,4,29,28)
@@ -102,7 +120,7 @@ function onDraw()
             end
         end
 
-        -- stupid button outlines
+        --- stupid button outlines
         c(_[1][1]+55, _[1][2]+55, _[1][3]+55, 250)
         screen.drawLine(3,20,29,20)
         screen.drawRectF(15,21,2,8)
@@ -120,21 +138,75 @@ function onDraw()
         --- text
         c(_[2][1], _[2][2], _[2][3])
         screen.drawText(4,4, "Ch:" .. channel)
-        screen.drawText(4,11, "SS:" .. signalStrength)
+
+        --- signal strength bars
+        if signalStrength > 0.9 then
+            screen.drawRectF(4, 15, 4, 4)
+            screen.drawRectF(11, 13, 4, 6)
+            screen.drawRectF(18, 11, 4, 8)
+            screen.drawRectF(25, 9, 4, 10)
+        elseif signalStrength > 0.7 then
+            screen.drawRectF(4, 15, 4, 4)
+            screen.drawRectF(11, 13, 4, 6)
+            screen.drawRectF(18, 11, 4, 8)
+            screen.drawRect(25, 9, 3, 9)
+        elseif signalStrength > 0.5 then
+            screen.drawRectF(4, 15, 4, 4)
+            screen.drawRectF(11, 13, 4, 6)
+            screen.drawRect(18, 11, 3, 7)
+            screen.drawRect(25, 9, 3, 9)
+        elseif signalStrength > 0.3 then
+            screen.drawRectF(4, 15, 4, 4)
+            screen.drawRect(11, 13, 3, 5)
+            screen.drawRect(18, 11, 3, 7)
+            screen.drawRect(25, 9, 3, 9)
+        elseif signalStrength > 0 then
+            c(150, 50, 50)
+            screen.drawRectF(4, 15, 4, 4)
+            screen.drawRect(11, 13, 3, 5)
+            screen.drawRect(18, 11, 3, 7)
+            screen.drawRect(25, 9, 3, 9)
+            c(_[2][1], _[2][2], _[2][3])
+        else
+            screen.drawLine(4, 18, 8, 18)
+            screen.drawLine(11, 18, 15, 18)
+            screen.drawLine(18, 18, 22, 18)
+            screen.drawLine(25, 18, 29, 18)
+        end
 
         --- up arrow
-        screen.drawLine(9,22,9,27)
-        screen.drawLine(10,23,10,25)
-        screen.drawLine(8,23,8,25)
-        screen.drawRectF(11,24,1,1)
-        screen.drawRectF(7,24,1,1)
+        if chup then
+            c(_[3][1], _[3][2], _[3][3])
+            screen.drawLine(9,22,9,27)
+            screen.drawLine(10,23,10,25)
+            screen.drawLine(8,23,8,25)
+            screen.drawRectF(11,24,1,1)
+            screen.drawRectF(7,24,1,1)
+        else
+            c(_[2][1], _[2][2], _[2][3])
+            screen.drawLine(9,22,9,27)
+            screen.drawLine(10,23,10,25)
+            screen.drawLine(8,23,8,25)
+            screen.drawRectF(11,24,1,1)
+            screen.drawRectF(7,24,1,1)
+        end
 
         --- down arrow
-        screen.drawLine(22,22,22,27)
-        screen.drawLine(23,24,23,26)
-        screen.drawLine(21,24,21,26)
-        screen.drawRectF(24,24,1,1)
-        screen.drawRectF(20,24,1,1)
+        if chdown then
+            c(_[3][1], _[3][2], _[3][3])
+            screen.drawLine(22,22,22,27)
+            screen.drawLine(23,24,23,26)
+            screen.drawLine(21,24,21,26)
+            screen.drawRectF(24,24,1,1)
+            screen.drawRectF(20,24,1,1)
+        else
+            c(_[2][1], _[2][2], _[2][3])
+            screen.drawLine(22,22,22,27)
+            screen.drawLine(23,24,23,26)
+            screen.drawLine(21,24,21,26)
+            screen.drawRectF(24,24,1,1)
+            screen.drawRectF(20,24,1,1)
+        end
     end
 end
 
@@ -147,4 +219,8 @@ end
 
 function lerp(v0,v1,t)
     return v1*t+v0*(1-t)
+end
+
+function isPointInRectangle(x, y, rectX, rectY, rectW, rectH)
+	return x > rectX and y > rectY and x < rectX+rectW and y < rectY+rectH
 end
