@@ -38,6 +38,7 @@ do
 
         -- NEW! button/slider options from the UI
         simulator:setInputBool(1, true)
+        simulator:setInputBool(2, simulator:getIsToggled(2))
     end;
 end
 ---@endsection
@@ -52,6 +53,8 @@ _colors = {
     {{47,51,78}, {86,67,143}, {128,95,164}}, --sencar 5 in the micro
     {{17, 15, 107}, {22, 121, 196}, {48, 208, 217}} --blue
 }
+ticks = 0
+godown = false
 
 function onTick()
     acc = input.getBool(1)
@@ -60,6 +63,7 @@ function onTick()
     channel = input.getNumber(1)
     signalStrength = input.getNumber(2)
     data = input.getNumber(3) --from radio
+    isPlayingMusic = input.getBool(2)
 end
 
 function onDraw()
@@ -69,6 +73,49 @@ function onDraw()
             c(lerp(_[2][1], _[3][1], i/32), lerp(_[2][2], _[3][2], i/32), lerp(_[2][3], _[3][3], i/32))
             screen.drawLine(i-1, 0, i-1, 32)
         end
+
+        if not isPlayingMusic then
+            c(_[1][1], _[1][2], _[1][3],250) --i love tables
+            screen.drawRectF(3,3,26,26)
+            screen.drawLine(4,2,28,2)
+            screen.drawLine(29,4,29,28)
+            screen.drawLine(4,29,28,29)
+            screen.drawLine(2,4,2,28)
+            ticks = 0
+        else
+            c(lerp(_[1][1], (_[1][1] + _[3][1])/2, ticks/300), lerp(_[1][2], (_[1][2] + _[3][2])/2, ticks/300), lerp(_[1][3], (_[1][3] + _[3][3])/2, ticks/300), 250)
+            screen.drawRectF(3,3,26,26)
+            screen.drawLine(4,2,28,2)
+            screen.drawLine(29,4,29,28)
+            screen.drawLine(4,29,28,29)
+            screen.drawLine(2,4,2,28)
+            if ticks == 300 then
+                godown = true
+            end
+            if ticks == 0 then
+                godown = false
+            end
+            if not godown then
+                ticks = ticks + 1
+            else
+                ticks = ticks - 1
+            end
+        end
+
+        c(_[1][1]+55, _[1][2]+55, _[1][3]+55, 250)
+        screen.drawLine(3,20,29,20)
+        screen.drawRectF(15,21,2,8)
+
+        screen.drawLine(16,28,26,28)
+        screen.drawLine(26,27,27,27)
+        screen.drawLine(27,26,28,26)
+        screen.drawLine(28,21,28,26)
+
+        screen.drawLine(6,28,15,28)
+        screen.drawLine(5,27,6,27)
+        screen.drawLine(4,26,5,26)
+        screen.drawLine(3,21,3,26)
+        
     end
 end
 
