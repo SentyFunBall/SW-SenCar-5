@@ -258,7 +258,8 @@ function onDraw()
             dst(78,9,"N",2)
         elseif info.gear >= 3 then
             if info.properties.trans then --auto
-                dst(78,9,"D",2)
+                dst(77,9,"D",2)
+                dst(84,13,string.format("%.0f", info.gear-2),1)
             else
                 dst(78,9,string.format("%.0f", info.gear-2),2)
             end
