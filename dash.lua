@@ -1,4 +1,4 @@
---maindash
+--dash
 --- Developed using LifeBoatAPI - Stormworks Lua plugin for VSCode - https://code.visualstudio.com/download (search "Stormworks Lua with LifeboatAPI" extension)
 --- If you have any issues, please report them here: https://github.com/nameouschangey/STORMWORKS_VSCodeExtension/issues - by Nameous Changey
 
@@ -51,7 +51,7 @@ do
         simulator:setInputNumber(5, simulator:getSlider(5)*200)
         simulator:setInputNumber(8, simulator:getSlider(8))
         simulator:setInputNumber(9, simulator:getSlider(9))
-        simulator:setInputNumber(10, 0) --TODO: drive modes
+        simulator:setInputNumber(10, 1) --TODO: drive modes
         simulator:setInputNumber(31, screenConnection.touchX)
         simulator:setInputNumber(32, screenConnection.touchY)
     end;
@@ -72,7 +72,6 @@ _colors = {
 }
 
 info = {properties = {collected = false}}
-animationFinished = false
 fuelCollected = false
 remdeg = 130
 ticks = 0
@@ -101,7 +100,6 @@ function onTick()
         info.properties.theme = property.getNumber("Theme")
         info.properties.trans = property.getBool("Transmission Default")
         info.properties.unit = property.getBool("Units")
-        info.properties.carname = property.getText("Car name")
         info.properties.maxfuel = 180
     end
     info.properties.collected = true
@@ -188,9 +186,24 @@ function onDraw()
         --- battery warning
         if info.battery < info.properties.batwarn then
             c(200,50,50)
-            screen.drawRect(46,2,4,2)
-            screen.drawRectF(47,1,1,1)
-            screen.drawRectF(49,1,1,1)
+            screen.drawRect(54,27,4,2)
+            screen.drawRectF(55,26,1,1)
+            screen.drawRectF(57,26,1,1)
+        end
+
+        --- drive modes
+        if info.drivemode == 1 then --eco
+            c(_[2][1], _[2][2], _[2][3])
+            screen.drawText(41,2,"Eco")
+        elseif info.drivemode == 2 then --sport
+            c(_[2][1], _[2][2], _[2][3])
+            screen.drawText(36,2,"Sport")
+        elseif info.drivemode == 3 then --tow
+            c(_[2][1], _[2][2], _[2][3])
+            screen.drawText(41,2,"Tow")
+        elseif info.drivemode == 4 then --dac
+            c(_[2][1], _[2][2], _[2][3])
+            screen.drawText(41,2,"DAC")
         end
 
         --[[ battery meter (hiding this for later use in WidgetAPI)
@@ -273,8 +286,6 @@ function onDraw()
             dst(75,20,"man",1)
         end
         --dst(76, 1, "rps", 0.8)
-    else
-        animationFinished = false
     end
 end
 
