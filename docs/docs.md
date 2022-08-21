@@ -8,7 +8,7 @@ Hi. This is the place where I write how the fuck everything inside of SenCar 5 w
     1. [Themes](#themes)
 4. [Widget Display](#widget-display)
     1. [WidgetAPI](#widgetapi)
-5. [Radio Display](#radio-display)
+5. [Music Display](#music-display)
 6. [Center Display](#center-display)
     1. [AppAPI](#appapi)
 
