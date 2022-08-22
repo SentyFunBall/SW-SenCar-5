@@ -79,6 +79,7 @@ warning = false;
 
 function onTick()
     acc = input.getBool(1)
+    usingSenconnect = input.getBool(2) --disables map rendering, in favor of SenConnect's map
 
     --kill me
     info.speed = input.getNumber(1)
@@ -124,7 +125,7 @@ function onDraw()
     if acc then --TODO: add startup animation
         local _ = _colors[info.properties.theme]
 
-        if info.gear ~= 1 then --dont draw map if were in reverse
+        if info.gear ~= 1 or usingSenconnect then --dont draw map if were in reverse or if SC is connected
             screenX, screenY = map.screenToMap(info.gpsX, info.gpsY, 2, 96, 32, 58, 25)
             screen.drawMap(screenX, screenY,2)
             --map icon
