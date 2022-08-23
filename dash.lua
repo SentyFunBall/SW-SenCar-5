@@ -42,6 +42,7 @@ do
 
         -- NEW! button/slider options from the UI
         simulator:setInputBool(1, true)
+        simulator:setInputBool(2, false)
 
         local screenConnection = simulator:getTouchScreen(1)
         simulator:setInputNumber(1, simulator:getSlider(1)*100)
@@ -71,7 +72,7 @@ _colors = {
     {{17, 15, 107}, {22, 121, 196}, {48, 208, 217}} --blue
 }
 
-info = {properties = {collected = false}}
+info = {properties = {}}
 fuelCollected = false
 remdeg = 130
 ticks = 0
@@ -79,7 +80,7 @@ warning = false;
 
 function onTick()
     acc = input.getBool(1)
-    usingSenconnect = input.getBool(2) --disables map rendering, in favor of SenConnect's map
+    usingSenconnect = input.getBool(2) --disables map rendering, in favor of SenConnect's map (not is there because of rdsfsd)
 
     --kill me
     info.speed = input.getNumber(1)
@@ -92,18 +93,16 @@ function onTick()
     info.compass = input.getNumber(8)*pi2*-1
     info.battery = input.getNumber(9)
     info.drivemode = input.getNumber(10)
-    if not info.properties.collected then
-        info.properties.fuelwarn = property.getNumber("Fuel Warn %")/100
-        info.properties.batwarn = property.getNumber("Bat Warn %")/100
-        info.properties.tempwarn = property.getNumber("Temp Warn")
-        info.properties.upshift = property.getNumber("Upshift RPS")
-        info.properties.downshift = property.getNumber("Downshift RPS")
-        info.properties.theme = property.getNumber("Theme")
-        info.properties.trans = property.getBool("Transmission Default")
-        info.properties.unit = property.getBool("Units")
-        info.properties.maxfuel = 180
-    end
-    info.properties.collected = true
+
+    info.properties.fuelwarn = property.getNumber("Fuel Warn %")/100
+    info.properties.batwarn = property.getNumber("Bat Warn %")/100
+    info.properties.tempwarn = property.getNumber("Temp Warn")
+    info.properties.upshift = property.getNumber("Upshift RPS")
+    info.properties.downshift = property.getNumber("Downshift RPS")
+    info.properties.theme = property.getNumber("Theme")
+    info.properties.trans = property.getBool("Transmission Default") --peculiar name
+    info.properties.unit = property.getBool("Units")
+    info.properties.maxfuel = 180
 
     if not fuelCollected then
         ticks = ticks + 1
@@ -114,7 +113,7 @@ function onTick()
         ticks = 0
     end
 
-    if info.battery < info.properties.batwarn or info.fuel/info.properties.maxfuel < info.properties.fuelwarn or info.temp > info.properties.tempwarn or info.rps < 3 then 
+    if info.battery < info.properties.batwarn or info.fuel/info.properties.maxfuel < info.properties.fuelwarn or info.temp > info.properties.tempwarn then 
         warning = true
     else 
         warning = false
@@ -125,7 +124,7 @@ function onDraw()
     if acc then --TODO: add startup animation
         local _ = _colors[info.properties.theme]
 
-        if info.gear ~= 1 or usingSenconnect then --dont draw map if were in reverse or if SC is connected
+        if ((not usingSenconnect) and info.gear ~= 1) then --dont draw map if were in reverse or if SC is connected (haha magic boolean)
             screenX, screenY = map.screenToMap(info.gpsX, info.gpsY, 2, 96, 32, 58, 25)
             screen.drawMap(screenX, screenY,2)
             --map icon
