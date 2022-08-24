@@ -52,7 +52,7 @@ do
         simulator:setInputNumber(5, simulator:getSlider(5)*200)
         simulator:setInputNumber(8, simulator:getSlider(8))
         simulator:setInputNumber(9, simulator:getSlider(9))
-        simulator:setInputNumber(10, 1) --TODO: drive modes
+        simulator:setInputNumber(10, 2)
         simulator:setInputNumber(31, screenConnection.touchX)
         simulator:setInputNumber(32, screenConnection.touchY)
     end;
@@ -80,7 +80,8 @@ warning = false;
 
 function onTick()
     acc = input.getBool(1)
-    usingSenconnect = input.getBool(2) --disables map rendering, in favor of SenConnect's map (not is there because of rdsfsd)
+    usingSenconnect = input.getBool(2) --disables map rendering, in favor of SenConnect's map
+    otherWarning = input.getBool(3)
 
     --kill me
     info.speed = input.getNumber(1)
@@ -113,7 +114,7 @@ function onTick()
         ticks = 0
     end
 
-    if info.battery < info.properties.batwarn or info.fuel/info.properties.maxfuel < info.properties.fuelwarn or info.temp > info.properties.tempwarn then 
+    if info.battery < info.properties.batwarn or info.fuel/info.properties.maxfuel < info.properties.fuelwarn or info.temp > info.properties.tempwarn or otherWarning then 
         warning = true
     else 
         warning = false
