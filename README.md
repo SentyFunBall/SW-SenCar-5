@@ -7,7 +7,7 @@ SenCar 5 is the successor to the powerful car operating system, SenTOS Car 4. Se
 
 
 ![20220823223235_1](https://user-images.githubusercontent.com/57205125/186339702-14a2ec47-1907-48b0-b077-fd5ec8233fb3.jpg)
-*SenTOS Car 4's trip stats in Echolodia X*
+*SenCar 5's dashboard with all the icons enabled*
 
 ## Contents
 1. [All new UI](#all-new-ui)
