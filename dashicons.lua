@@ -32,6 +32,9 @@ do
         simulator:setInputBool(2, simulator:getIsToggled(2))
         simulator:setInputBool(3, simulator:getIsToggled(3))
         simulator:setInputBool(4, true)
+        simulator:setInputBool(5, true)
+        simulator:setInputBool(6, true)
+        simulator:setInputBool(7, true)
     end;
 end
 ---@endsection
@@ -84,12 +87,35 @@ function onDraw()
     end
 
     if fl or fr or rl or rr then
-        c(_[2][1], _[2][2], _[2][3])
-        screen.drawRectF(35,3,26,26)
-        screen.drawLine(36,2,60,2)
-        screen.drawLine(61,4,61,28)
-        screen.drawLine(36,29,60,29)
-        screen.drawLine(34,4,34,28)
+        c(_[2][1], _[2][2], _[2][3], 250)
+        screen.drawRectF(39,3,18,26)
+        screen.drawLine(40,2,56,2)
+        screen.drawLine(57,4,57,28)
+        screen.drawLine(40,29,56,29)
+        screen.drawLine(38,4,38,28)
+        
+        c(_[1][1], _[1][2], _[1][3], 250)
+        screen.drawRectF(44,5,8,4)
+        screen.drawRectF(45,14,6,6)
+        screen.drawLine(44,9,44,25)
+        screen.drawLine(51,9,51,25)
+        screen.drawLine(45,25,51,25)
+
+        if fl then
+            screen.drawLine(40,15,44,11)
+        end
+        
+        if fr then
+            screen.drawLine(55,15,51,11)
+        end
+
+        if rl then
+            screen.drawLine(41,21,44,18)
+        end
+
+        if rr then
+            screen.drawLine(54,21,51,18)
+        end
     end
 end
 
