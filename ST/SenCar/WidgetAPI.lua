@@ -8,9 +8,29 @@
 
 require("LifeBoatAPI")
 
+active= {slot1 = {large = false, occupied = false, id = -1}, slot2 = {large = false, occupied = false, id = -1}, slot3 = {large = false, occupied = false, id = -1}}
+
 WidgetAPI = {
-    draw = function(slot, large, widget)
-        screen.drawCircle(5, 5, 5)
+
+    draw = function (slot, large, widget)
+        widget.drawn = false
+        if slot == 1 then
+            if not active.slot1.occupied then
+                screen.drawCircle(5, 5, 5)
+                active.slot1.id = widget.id
+                active.slot1.occupied = true
+                widget.drawn = true
+            else
+                if active.slot1.id == widget.id then
+                    screen.drawCircle(5, 5, 5)
+                    widget.drawn = true
+                end
+            end
+        elseif slot == 2 then
+            
+        elseif slot == 3 then
+        
+        end
         return widget
     end,
 

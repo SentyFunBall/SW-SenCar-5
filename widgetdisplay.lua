@@ -53,7 +53,7 @@ _colors = {
 }
 
 --myWidget = {drawn = false, widget = {{content = "Batt", x = 0, y = 0, [h = false, color = {100, 100, 100}]}, {content = 0, x = 0, y = 6, [h = false, color = {10, 10, 10}], [color = {1 ,1 ,1 }]}}
-batteryWidget = {drawn = false, {content = "Batt", x = 1, y = 1, h = false, color = {100, 100, 100}}, {content = 1, x = 1, y = 9, h = false, color = {100, 100, 100}}, color = {100, 100, 100}}
+batteryWidget = {id = 0, drawn = false, {content = "Batt", x = 1, y = 1, h = false, color = {100, 100, 100}}, {content = 1, x = 1, y = 9, h = false, color = {100, 100, 100}}, color = {100, 100, 100}}
 
 function onTick()
     acc = input.getBool(1)
@@ -73,7 +73,7 @@ function onDraw()
         batteryWidget = WidgetAPI.draw(1, false, batteryWidget)
 
         if batteryWidget.drawn then
-            batteryWidget[3].content = battery
+            batteryWidget[2].content = battery
         end
     end
 end
