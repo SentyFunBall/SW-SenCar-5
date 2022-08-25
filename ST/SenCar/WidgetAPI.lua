@@ -16,13 +16,13 @@ WidgetAPI = {
         widget.drawn = false
         if slot == 1 then
             if not active.slot1.occupied then
-                screen.drawCircle(5, 5, 5)
+                drawRoundedRect(3, 3, 25, 25)
                 active.slot1.id = widget.id
                 active.slot1.occupied = true
                 widget.drawn = true
             else
                 if active.slot1.id == widget.id then
-                    screen.drawCircle(5, 5, 5)
+                    drawRoundedRect(3, 3, 25, 25)
                     widget.drawn = true
                 end
             end
@@ -38,3 +38,11 @@ WidgetAPI = {
         return widget
     end
 }
+
+function drawRoundedRect(x, y, w, h)
+    screen.drawRectF(x+1, y+1, w-1, h-1) --body
+    screen.drawLine(x+1, y, x+w, y) --top
+    screen.drawLine(x, y+1, x, y+h) --left
+    screen.drawLine(x+w, y+1, x+w, y+h) --right
+    screen.drawLine(x+1, y+h, x+w, y+h) --bottom
+end
