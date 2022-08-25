@@ -11,5 +11,10 @@ require("LifeBoatAPI")
 WidgetAPI = {
     draw = function(slot, large, widget)
         screen.drawCircle(5, 5, 5)
+        return widget
+    end,
+
+    getInfo = function (widget)
+        return widget
     end
 }

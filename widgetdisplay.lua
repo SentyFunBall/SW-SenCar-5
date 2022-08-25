@@ -30,10 +30,9 @@ do
         -- touchscreen defaults
         local screenConnection = simulator:getTouchScreen(1)
         simulator:setInputBool(1, screenConnection.isTouched)
-        simulator:setInputNumber(1, screenConnection.width)
-        simulator:setInputNumber(2, screenConnection.height)
-        simulator:setInputNumber(3, screenConnection.touchX)
-        simulator:setInputNumber(4, screenConnection.touchY)
+        simulator:setInputNumber(1, screenConnection.touchX)
+        simulator:setInputNumber(2, screenConnection.touchY)
+        simulator:setInputNumber(3, simulator:getSlider(1))
 
         -- NEW! button/slider options from the UI
         simulator:setInputBool(1, true)
@@ -46,16 +45,21 @@ end
 -- try require("Folder.Filename") to include code from another file in this, so you can store code in libraries
 -- the "LifeBoatAPI" is included by default in /_build/libs/ - you can use require("LifeBoatAPI") to get this, and use all the LifeBoatAPI.<functions>!
 require("LifeBoatAPI")
-require("WidgetAPI.WidgetAPI")
+require("ST.SenCar.WidgetAPI")
 
 _colors = {
     {{47,51,78}, {86,67,143}, {128,95,164}}, --sencar 5 in the micro
     {{17, 15, 107}, {22, 121, 196}, {48, 208, 217}} --blue
 }
 
+--myWidget = {drawn = false, widget = {{content = "Batt", x = 0, y = 0, [h = false, color = {100, 100, 100}]}, {content = 0, x = 0, y = 6, [h = false, color = {10, 10, 10}], [color = {1 ,1 ,1 }]}}
+batteryWidget = {drawn = false, {content = "Batt", x = 1, y = 1, h = false, color = {100, 100, 100}}, {content = 1, x = 1, y = 9, h = false, color = {100, 100, 100}}, color = {100, 100, 100}}
+
 function onTick()
     acc = input.getBool(1)
     theme = property.getNumber("Theme")
+
+    battery = math.floor(input.getNumber(3)*100)
 end
 
 function onDraw()
@@ -66,7 +70,11 @@ function onDraw()
             screen.drawLine(i-1, 0, i-1, 32)
         end
 
-        WidgetAPI.draw(1, true, 1)
+        batteryWidget = WidgetAPI.draw(1, false, batteryWidget)
+
+        if batteryWidget.drawn then
+            batteryWidget[3].content = battery
+        end
     end
 end
 
