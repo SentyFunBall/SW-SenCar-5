@@ -45,7 +45,7 @@ end
 -- try require("Folder.Filename") to include code from another file in this, so you can store code in libraries
 -- the "LifeBoatAPI" is included by default in /_build/libs/ - you can use require("LifeBoatAPI") to get this, and use all the LifeBoatAPI.<functions>!
 require("LifeBoatAPI")
-require("ST.SenCar.WidgetAPI")
+require("SenCar.WidgetAPI")
 
 _colors = {
     {{47,51,78}, {86,67,143}, {128,95,164}}, --sencar 5 in the micro
@@ -53,7 +53,9 @@ _colors = {
 }
 
 --myWidget = {drawn = false, widget = {{content = "Batt", x = 0, y = 0, [h = false, color = {100, 100, 100}]}, {content = 0, x = 0, y = 6, [h = false, color = {10, 10, 10}], [color = {1 ,1 ,1 }]}}
-batteryWidget = {id = 0, drawn = false, {content = "Batt", x = 1, y = 1, h = false, color = {100, 100, 100}}, {content = 1, x = 1, y = 9, h = false, color = {100, 100, 100}}, color = {100, 100, 100}}
+batteryWidget = {id = 0, drawn = false, {content = "Batt", x = 1, y = 1, h = false, color = {100, 100, 100}}, {content = 1, x = 1, y = 9, h = false, color = {100, 100, 100}}}
+batteryWidget2 = {id = 1, drawn = false, {content = "Batt", x = 1, y = 1, h = false, color = {100, 100, 100}}, {content = 1, x = 1, y = 9, h = false, color = {100, 100, 100}}}
+batteryWidget3 = {id = 2, drawn = false, {content = "Batt", x = 1, y = 1, h = false, color = {100, 100, 100}}, {content = 1, x = 1, y = 9, h = false, color = {100, 100, 100}}}
 
 function onTick()
     acc = input.getBool(1)
@@ -70,7 +72,9 @@ function onDraw()
             screen.drawLine(i-1, 0, i-1, 32)
         end
 
-        batteryWidget = WidgetAPI.draw(1, false, batteryWidget)
+        batteryWidget = WidgetAPI.draw(1, false, batteryWidget, {100, 100, 100})
+        batteryWidget2 = WidgetAPI.draw(2, false, batteryWidget2, {120, 120, 240})
+        batteryWidget3 = WidgetAPI.draw(3, true, batteryWidget3, {170, 180, 240})
 
         if batteryWidget.drawn then
             batteryWidget[2].content = battery
