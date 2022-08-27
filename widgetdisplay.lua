@@ -32,7 +32,7 @@ do
         simulator:setInputBool(1, screenConnection.isTouched)
         simulator:setInputNumber(1, screenConnection.touchX)
         simulator:setInputNumber(2, screenConnection.touchY)
-        simulator:setInputNumber(3, simulator:getSlider(1))
+        simulator:setInputNumber(3, 0.94)
 
         -- NEW! button/slider options from the UI
         simulator:setInputBool(1, true)
@@ -52,9 +52,20 @@ _colors = {
     {{17, 15, 107}, {22, 121, 196}, {48, 208, 217}} --blue
 }
 
---myWidget = {id = 0, drawn = false, widget = {{content = "Batt", x = 0, y = 0, [h = false, color = {100, 100, 100}]}, {content = 0, x = 0, y = 6, [h = false, color = {10, 10, 10}]}}
-batteryWidget = {id = 0, drawn = false, {content = "Batt", x = 1, y = 1, h = false, color = {105, 145, 175}}, {content = 1, x = 1, y = 9, h = false, color = {100, 100, 100}}}
-weatherWidget = {id = 1, drawn = false, {content = "Weather", x = 1, y = 1, h = false, color = {200, 200, 200}}, {content = 1, x = 1, y = 9, h = false, color = {100, 100, 100}}}
+--myWidget = {id = 0, drawn = false, {content = "Batt", x = 0, y = 0, [h = false, color = {100, 100, 100}]}, {content = 0, x = 0, y = 6, [h = false, color = {10, 10, 10}]}
+batteryWidget = {id = 0, drawn = false, 
+    {content = "Batt", x = 1, y = 1, h = false, color = {200, 200, 200}}, 
+    {content = 0, x = 1, y = 8, h = false, color = {105, 190, 124}},
+    {content = 0, x = 1, y = 14, h = false, color = {105, 190, 124}},
+    {content = 0, x = 1, y = 20, h = false, color = {105, 190, 124}}
+}
+
+weatherWidget = {id = 1, drawn = false, 
+    {content = "Weather", x = 1, y = 1, h = false, color = {200, 200, 200}},
+    {content = 0, x = 1, y = 8, h = false, color = {105, 190, 104}},
+    {content = 0, x = 1, y = 14, h = false, color = {105, 190, 104}},
+    {content = 0, x = 1, y = 20, color = {105, 190, 104}}
+}
 
 function onTick()
     acc = input.getBool(1)
@@ -63,7 +74,14 @@ function onTick()
     battery = math.floor(input.getNumber(3)*100)
     
     if batteryWidget.drawn then
-        batteryWidget[2].content = battery
+        batteryWidget[2].content = battery.."%"
+        batteryWidget[3].content = ".43/s"
+        batteryWidget[4].content = "12min"
+    end
+    if weatherWidget.drawn then
+        weatherWidget[2].content = "Rain:94%"
+        weatherWidget[3].content = "Vis:900m"
+        weatherWidget[4].content = "Wind:4@140"
     end
 end
 
