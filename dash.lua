@@ -91,7 +91,7 @@ function onTick()
     info.temp = input.getNumber(5)
     info.gpsX = input.getNumber(6)
     info.gpsY = input.getNumber(7)
-    info.compass = input.getNumber(8)*pi2*-1
+    info.compass = input.getNumber(8)*(math.pi*2)
     info.battery = input.getNumber(9)
     info.drivemode = input.getNumber(10)
 
@@ -130,7 +130,7 @@ function onDraw()
             screen.drawMap(screenX, screenY,2)
             --map icon
             c(9,113,244)
-            drawPointer(49,16,8,info.compass)
+            drawPointer(48,16,info.compass, 5)
         end
 
         for i=0, 47 do
@@ -327,18 +327,11 @@ end
 end
 end
 
-si=math.sin
-co=math.cos
-pi=math.pi
-pi2=pi*2
-function drawPointer(x,y,s,r,...)
 
-	a=...
-	a=(a or 30)*pi/360
-	x=x+s/2*si(r)
-	y=y-s/2*co(r)
-
-	screen.drawTriangleF(x,y,x-s*si(r+a),y+s*co(r+a),x-s*si(r-a),y+s*co(r-a))
+function drawPointer(x,y,c,s)
+    local d = 5
+    local sin, pi, cos = math.sin, math.pi, math.cos
+    screen.drawTriangleF(sin(c - pi) * s + x + 1, cos(c - pi) * s + y +1, sin(c - pi/d) * s + x +1, cos(c - pi/d) * s + y +1, sin(c + pi/d) * s + x +1, cos(c + pi/d) * s + y +1)
 end
 
 --- draws an arc around pixel coords [x], [y]
