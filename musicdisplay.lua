@@ -68,12 +68,12 @@ function onTick()
 
     isPressed = input.getBool(3)
     -- channel buttons
-    if isPressed and isPointInRectangle(input.getNumber(3), input.getNumber(4), 2, 19, 14, 10) then
+    if isPressed and isPointInRectangle(input.getNumber(3), input.getNumber(4), 3, 19, 14, 10) then
        chup = true
     else
         chup = false
     end
-    if isPressed and isPointInRectangle(input.getNumber(3), input.getNumber(4), 16 ,19, 14, 19) then
+    if isPressed and isPointInRectangle(input.getNumber(3), input.getNumber(4), 16 ,19, 14, 10) then
        chdown = true
     else
         chdown = false
