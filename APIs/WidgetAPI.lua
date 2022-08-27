@@ -20,6 +20,18 @@ WidgetAPI = {
             if active.slot1.id == widget.id then --if the widget is assigned to this slot
                 if large then --large widget, draw the large style
                     drawRoundedRect((slot-1)*32+2, 2, 58, 27)
+                    for i = 1, #widget do
+                        if widget[i].color then
+                            c(widget[i].color[1], widget[i].color[2], widget[i].color[2])
+                        else
+                            c(color[1]+20, color[2]+20, color[3]+20)
+                        end
+                        if widget[i].h then
+                            screen.drawText((slot-1)*32+3+widget[i].x+30, widget[i].y+3, widget[i].content)
+                        else
+                            screen.drawText((slot-1)*32+3+widget[i].x, widget[i].y+3, widget[i].content)
+                        end
+                    end
                     widget.drawn = true
                 else --dont draw the large style
                     drawRoundedRect((slot-1)*32+2, 2, 27, 27)
@@ -49,11 +61,31 @@ WidgetAPI = {
             end
         elseif slot == 2 then
             if active.slot2.id == widget.id and not active.slot1.large then
-                if large then 
-                    drawRoundedRect((slot-1)*32+2, 2, 59, 27)
+                if large then --large widget, draw the large style
+                    drawRoundedRect((slot-1)*32+2, 2, 58, 27)
+                    for i = 1, #widget do
+                        if widget[i].color then
+                            c(widget[i].color[1], widget[i].color[2], widget[i].color[2])
+                        else
+                            c(color[1]+20, color[2]+20, color[3]+20)
+                        end
+                        if widget[i].h then
+                            screen.drawText((slot-1)*32+3+widget[i].x+30, widget[i].y+3, widget[i].content)
+                        else
+                            screen.drawText((slot-1)*32+3+widget[i].x, widget[i].y+3, widget[i].content)
+                        end
+                    end
                     widget.drawn = true
-                else
+                else --dont draw the large style
                     drawRoundedRect((slot-1)*32+2, 2, 27, 27)
+                    for i = 1, #widget do
+                        if widget[i].color then
+                            c(widget[i].color[1], widget[i].color[2], widget[i].color[2])
+                        else
+                            c(color[1]+20, color[2]+20, color[3]+20)
+                        end
+                        screen.drawText((slot-1)*32+3+widget[i].x, widget[i].y+3, widget[i].content)
+                    end
                     widget.drawn = true
                 end
             else
@@ -74,14 +106,23 @@ WidgetAPI = {
             if active.slot3.id == widget.id and not active.slot2.large then
                 if large then
                     drawRoundedRect((slot-1)*32+2, 2, 27, 27)
-                        screen.setColor(255,255,255)
-                        screen.drawRectF(76,13,1,1)
-                        screen.drawRectF(76,18,1,1)
-                        screen.drawRectF(83,13,1,1)
-                        screen.drawRectF(83,18,1,1)
-                        screen.drawLine(82,14,82.25,17.25)
-                else
-                    drawRoundedRect((slot-1)*32+2, 2, 27, 27) --THERE IS NO LARGE
+                    screen.setColor(255,255,255)
+                    screen.drawRectF(76,13,1,1)
+                    screen.drawRectF(76,18,1,1)
+                    screen.drawRectF(83,13,1,1)
+                    screen.drawRectF(83,18,1,1)
+                    screen.drawLine(82,14,82.25,17.25)
+                    screen.drawText(73, 21, "err")
+                else --THERE IS NO LARGE THERE IS NO LARGE THERE IS NO LARGE
+                    drawRoundedRect((slot-1)*32+2, 2, 27, 27)
+                    for i = 1, #widget do
+                        if widget[i].color then
+                            c(widget[i].color[1], widget[i].color[2], widget[i].color[2])
+                        else
+                            c(color[1]+20, color[2]+20, color[3]+20)
+                        end
+                        screen.drawText((slot-1)*32+3+widget[i].x, widget[i].y+3, widget[i].content)
+                    end
                     widget.drawn = true
                 end
             else
