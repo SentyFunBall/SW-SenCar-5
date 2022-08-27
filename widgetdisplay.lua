@@ -32,7 +32,7 @@ do
         simulator:setInputBool(1, screenConnection.isTouched)
         simulator:setInputNumber(1, screenConnection.touchX)
         simulator:setInputNumber(2, screenConnection.touchY)
-        simulator:setInputNumber(3, simulator:getSlider(1))
+        simulator:setInputNumber(3, 1)
 
         -- NEW! button/slider options from the UI
         simulator:setInputBool(1, true)
@@ -54,8 +54,6 @@ _colors = {
 
 --myWidget = {drawn = false, widget = {{content = "Batt", x = 0, y = 0, [h = false, color = {100, 100, 100}]}, {content = 0, x = 0, y = 6, [h = false, color = {10, 10, 10}], [color = {1 ,1 ,1 }]}}
 batteryWidget = {id = 0, drawn = false, {content = "Batt", x = 1, y = 1, h = false, color = {100, 100, 100}}, {content = 1, x = 1, y = 9, h = false, color = {100, 100, 100}}}
-batteryWidget2 = {id = 1, drawn = false, {content = "Batt", x = 1, y = 1, h = false, color = {100, 100, 100}}, {content = 1, x = 1, y = 9, h = false, color = {100, 100, 100}}}
-batteryWidget3 = {id = 2, drawn = false, {content = "Batt", x = 1, y = 1, h = false, color = {100, 100, 100}}, {content = 1, x = 1, y = 9, h = false, color = {100, 100, 100}}}
 
 function onTick()
     acc = input.getBool(1)
@@ -72,9 +70,7 @@ function onDraw()
             screen.drawLine(i-1, 0, i-1, 32)
         end
 
-        batteryWidget = WidgetAPI.draw(1, false, batteryWidget, {100, 100, 100})
-        batteryWidget2 = WidgetAPI.draw(2, false, batteryWidget2, {120, 120, 240})
-        batteryWidget3 = WidgetAPI.draw(3, true, batteryWidget3, {170, 180, 240})
+        batteryWidget = WidgetAPI.draw(1, false, batteryWidget, {_[2][1]+15, _[2][2]+15, _[2][3]+15})
 
         if batteryWidget.drawn then
             batteryWidget[2].content = battery
