@@ -82,3 +82,7 @@ Not made as of v5.0.dev.65
 [AppAPI Full Documentation](/docs/apis/appapi.md)
 
 ## How its made
+SenCar 5 was made with 3 things: Blood, Sweat, and Tears. Unless?
+SenCar 5 was made with 3 things: LifeBoatAPI/VSCode, Stormworks, and Trapdoor's LuaInject.
+
+The code was written in VSCode for rapid-fire-testing, simulated and minimized using LifeBoatAPI, and injected into the Stormworks test bench automatically via a Python module and Stormworks Addon.
