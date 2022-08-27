@@ -32,7 +32,7 @@ do
         simulator:setInputBool(1, screenConnection.isTouched)
         simulator:setInputNumber(1, screenConnection.touchX)
         simulator:setInputNumber(2, screenConnection.touchY)
-        simulator:setInputNumber(3, 1)
+        simulator:setInputNumber(3, simulator:getSlider(1))
 
         -- NEW! button/slider options from the UI
         simulator:setInputBool(1, true)
@@ -60,6 +60,10 @@ function onTick()
     theme = property.getNumber("Theme")
 
     battery = math.floor(input.getNumber(3)*100)
+    
+    if batteryWidget.drawn then
+        batteryWidget[2].content = battery
+    end
 end
 
 function onDraw()
@@ -70,10 +74,6 @@ function onDraw()
             screen.drawLine(i-1, 0, i-1, 32)
         end
         batteryWidget = WidgetAPI.draw(1, false, batteryWidget, {_[2][1]+15, _[2][2]+15, _[2][3]+15})
-
-        if batteryWidget.drawn then
-            batteryWidget[2].content = battery
-        end
     end
 end
 
