@@ -49,7 +49,8 @@ require("SenCar.WidgetAPI")
 
 _colors = {
     {{47,51,78}, {86,67,143}, {128,95,164}}, --sencar 5 in the micro
-    {{17, 15, 107}, {22, 121, 196}, {48, 208, 217}} --blue
+    {{17, 15, 107}, {22, 121, 196}, {48, 208, 217}}, --blue
+    {{74, 27, 99}, {124, 42, 161}, {182, 29, 224}} --purple
 }
 
 --myWidget = {id = 0, drawn = false, {content = "Batt", x = 0, y = 0, [h = false, color = {100, 100, 100}]}, {content = 0, x = 0, y = 6, [h = false, color = {10, 10, 10}]}

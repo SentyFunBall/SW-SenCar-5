@@ -24,7 +24,7 @@ do
     simulator:setProperty("Downshift RPS", 11)
     simulator:setProperty("Transmission Default", true) --true for automatic
     simulator:setProperty("Units", true) --true for imperial
-    simulator:setProperty("Theme", 1) --we dont have the "Use Drive Modes" property because that is handled by the transmission
+    simulator:setProperty("Theme", 3) --we dont have the "Use Drive Modes" property because that is handled by the transmission
     simulator:setProperty("Car name", "SenCar 5 DEV")
 
     -- Runs every tick just before onTick; allows you to simulate the inputs changing
@@ -64,24 +64,48 @@ end
 
 -- try require("Folder.Filename") to include code from another file in this, so you can store code in libraries
 -- the "LifeBoatAPI" is included by default in /_build/libs/ - you can use require("LifeBoatAPI") to get this, and use all the LifeBoatAPI.<functions>!
-
 require("LifeBoatAPI")
 
 _colors = {
     {{47,51,78}, {86,67,143}, {128,95,164}}, --sencar 5 in the micro
-    {{17, 15, 107}, {22, 121, 196}, {48, 208, 217}} --blue
+    {{17, 15, 107}, {22, 121, 196}, {48, 208, 217}}, --blue
+    {{74, 27, 99}, {124, 42, 161}, {182, 29, 224}} --purple
 }
 
 info = {properties = {}}
 fuelCollected = false
 remdeg = 130
 ticks = 0
-warning = false;
 
 function onTick()
     acc = input.getBool(1)
     usingSenconnect = input.getBool(2) --disables map rendering, in favor of SenConnect's map
-    otherWarning = input.getBool(3)
+    
+    --the following is temp because python bad
+    for i = 0,  100 do
+        if input.getBool(1) then
+            output.setBool(1, true)
+        end
+        i = i
+    end
+    for i = 0,  100 do
+        if input.getBool(1) then
+            output.setBool(1, true)
+        end
+        i = i
+    end
+    for i = 0,  100 do
+        if input.getBool(1) then
+            output.setBool(1, true)
+        end
+        i = i
+    end
+    for i = 0,  100 do
+        if input.getBool(1) then
+            output.setBool(1, true)
+        end
+        i = i
+    end
 
     --kill me
     info.speed = input.getNumber(1)
@@ -92,11 +116,9 @@ function onTick()
     info.gpsX = input.getNumber(6)
     info.gpsY = input.getNumber(7)
     info.compass = input.getNumber(8)*(math.pi*2)
-    info.battery = input.getNumber(9)
-    info.drivemode = input.getNumber(10)
+    info.drivemode = input.getNumber(9)
 
     info.properties.fuelwarn = property.getNumber("Fuel Warn %")/100
-    info.properties.batwarn = property.getNumber("Bat Warn %")/100
     info.properties.tempwarn = property.getNumber("Temp Warn")
     info.properties.upshift = property.getNumber("Upshift RPS")
     info.properties.downshift = property.getNumber("Downshift RPS")
@@ -112,12 +134,6 @@ function onTick()
         info.properties.maxfuel = input.getNumber(4) or 180
         fuelCollected = true
         ticks = 0
-    end
-
-    if info.battery < info.properties.batwarn or info.fuel/info.properties.maxfuel < info.properties.fuelwarn or info.temp > info.properties.tempwarn or otherWarning then 
-        warning = true
-    else 
-        warning = false
     end
 end
 
@@ -144,7 +160,7 @@ function onDraw()
         drawCircle(16, 16, 12, 0, 21, 0, math.pi*2)
         drawCircle(80, 16, 12, 0, 21, 0, math.pi*2)
 
-        -- empter dials TODO: icons for fuel and temp
+        -- empter dials
         c(_[1][1]-15, _[1][2]-15, _[1][3]-15)
         drawCircle(16, 16, 10, 8, 60, -remdeg/2*math.pi/180, (360-remdeg)*math.pi/180) --speed
         drawCircle(80, 16, 10, 8, 60, -remdeg/2*math.pi/180, (360-remdeg)*math.pi/180) --rps
@@ -175,22 +191,6 @@ function onDraw()
         screen.drawLine(5,27,5,31)
         screen.drawRectF(4,29,1,1)
         screen.drawRectF(4,26,1,1)
-
-        --- warning symbol
-        if warning then
-            c(200,50,50)
-            screen.drawTriangle(44,29,52,29,48,22)
-            screen.drawLine(48,25,48,27)
-            screen.drawRectF(48,28,1,1)
-        end
-
-        --- battery warning
-        if info.battery < info.properties.batwarn then
-            c(200,50,50)
-            screen.drawRect(54,27,4,2)
-            screen.drawRectF(55,26,1,1)
-            screen.drawRectF(57,26,1,1)
-        end
 
         --- drive modes
         if info.drivemode == 1 then --eco

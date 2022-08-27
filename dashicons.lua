@@ -49,10 +49,21 @@ require("LifeBoatAPI")
 
 _colors = {
     {{47,51,78}, {86,67,143}, {128,95,164}}, --sencar 5 in the micro
-    {{17, 15, 107}, {22, 121, 196}, {48, 208, 217}} --blue
+    {{17, 15, 107}, {22, 121, 196}, {48, 208, 217}}, --blue
+    {{74, 27, 99}, {124, 42, 161}, {182, 29, 224}} --purple
 }
 
+warning = false
+ticks = 0
+fuelCollected = false
+maxfuel = 180
+
 function onTick()
+    theme = property.getNumber("Theme")
+    fuelwarn = property.getNumber("Fuel Warn %")/100
+    batwarn = property.getNumber("Bat Warn %")/100
+    tempwarn = property.getNumber("Temp Warn")
+
     leftBlinker = input.getBool(1)
     rightBlinker = input.getBool(2)
     cruise = input.getBool(3)
@@ -60,8 +71,25 @@ function onTick()
     fr = input.getBool(5)
     rl = input.getBool(6)
     rr = input.getBool(7)
+    otherWarning = input.getBool(8)
+    fuel = input.getNumber(1)
+    temp = input.getNumber(2)
+    battery = input.getNumber(3)
 
-    theme = property.getNumber("Theme")
+    if not fuelCollected then
+        ticks = ticks + 1
+    end
+    if ticks == 20 then
+       maxfuel = input.getNumber(1) or 180
+        fuelCollected = true
+        ticks = 0
+    end
+
+    if battery < batwarn or fuel/maxfuel < fuelwarn or temp > tempwarn or otherWarning then 
+        warning = true
+    else 
+        warning = false
+    end
 end
 
 function onDraw()
@@ -84,6 +112,22 @@ function onDraw()
         screen.drawLine(38,27,38,30)
         screen.drawRectF(38,25,1,1)
         screen.drawLine(39,27,41,29)
+    end
+
+    --- warning symbol
+    if warning then
+        c(200,50,50)
+        screen.drawTriangle(44,29,52,29,48,22)
+        screen.drawLine(48,25,48,27)
+        screen.drawRectF(48,28,1,1)
+    end
+
+    --- battery warning
+    if battery < batwarn then
+        c(200,50,50)
+        screen.drawRect(54,27,4,2)
+        screen.drawRectF(55,26,1,1)
+        screen.drawRectF(57,26,1,1)
     end
 
     if fl or fr or rl or rr then
