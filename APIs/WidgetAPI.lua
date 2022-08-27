@@ -22,12 +22,12 @@ WidgetAPI = {
                     drawRoundedRect((slot-1)*32+2, 2, 58, 27)
                     for i = 1, #widget do
                         if widget[i].color then
-                            c(widget[i].color[1], widget[i].color[2], widget[i].color[2])
+                            c(widget[i].color[1], widget[i].color[2], widget[i].color[3])
                         else
                             c(color[1]+20, color[2]+20, color[3]+20)
                         end
                         if widget[i].h then
-                            screen.drawText((slot-1)*32+3+widget[i].x+30, widget[i].y+3, widget[i].content)
+                            screen.drawText((slot-1)*32+33+widget[i].x, widget[i].y+3, widget[i].content)
                         else
                             screen.drawText((slot-1)*32+3+widget[i].x, widget[i].y+3, widget[i].content)
                         end
@@ -37,7 +37,7 @@ WidgetAPI = {
                     drawRoundedRect((slot-1)*32+2, 2, 27, 27)
                     for i = 1, #widget do
                         if widget[i].color then
-                            c(widget[i].color[1], widget[i].color[2], widget[i].color[2])
+                            c(widget[i].color[1], widget[i].color[2], widget[i].color[3])
                         else
                             c(color[1]+20, color[2]+20, color[3]+20)
                         end
@@ -65,12 +65,12 @@ WidgetAPI = {
                     drawRoundedRect((slot-1)*32+2, 2, 58, 27)
                     for i = 1, #widget do
                         if widget[i].color then
-                            c(widget[i].color[1], widget[i].color[2], widget[i].color[2])
+                            c(widget[i].color[1], widget[i].color[2], widget[i].color[3])
                         else
                             c(color[1]+20, color[2]+20, color[3]+20)
                         end
                         if widget[i].h then
-                            screen.drawText((slot-1)*32+3+widget[i].x+30, widget[i].y+3, widget[i].content)
+                            screen.drawText((slot-1)*32+33+widget[i].x, widget[i].y+3, widget[i].content)
                         else
                             screen.drawText((slot-1)*32+3+widget[i].x, widget[i].y+3, widget[i].content)
                         end
@@ -80,7 +80,7 @@ WidgetAPI = {
                     drawRoundedRect((slot-1)*32+2, 2, 27, 27)
                     for i = 1, #widget do
                         if widget[i].color then
-                            c(widget[i].color[1], widget[i].color[2], widget[i].color[2])
+                            c(widget[i].color[1], widget[i].color[2], widget[i].color[3])
                         else
                             c(color[1]+20, color[2]+20, color[3]+20)
                         end
@@ -111,13 +111,13 @@ WidgetAPI = {
                     screen.drawRectF(76,18,1,1)
                     screen.drawRectF(83,13,1,1)
                     screen.drawRectF(83,18,1,1)
-                    screen.drawLine(82,14,82.25,17.25)
+                    screen.drawLine(82,14,82,17)
                     screen.drawText(73, 21, "err")
                 else --THERE IS NO LARGE THERE IS NO LARGE THERE IS NO LARGE
                     drawRoundedRect((slot-1)*32+2, 2, 27, 27)
                     for i = 1, #widget do
                         if widget[i].color then
-                            c(widget[i].color[1], widget[i].color[2], widget[i].color[2])
+                            c(widget[i].color[1], widget[i].color[2], widget[i].color[3])
                         else
                             c(color[1]+20, color[2]+20, color[3]+20)
                         end
