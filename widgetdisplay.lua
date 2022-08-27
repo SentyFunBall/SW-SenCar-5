@@ -52,7 +52,7 @@ _colors = {
     {{17, 15, 107}, {22, 121, 196}, {48, 208, 217}} --blue
 }
 
---myWidget = {drawn = false, widget = {{content = "Batt", x = 0, y = 0, [h = false, color = {100, 100, 100}]}, {content = 0, x = 0, y = 6, [h = false, color = {10, 10, 10}], [color = {1 ,1 ,1 }]}}
+--myWidget = {id = 0, drawn = false, widget = {{content = "Batt", x = 0, y = 0, [h = false, color = {100, 100, 100}]}, {content = 0, x = 0, y = 6, [h = false, color = {10, 10, 10}]}}
 batteryWidget = {id = 0, drawn = false, {content = "Batt", x = 1, y = 1, h = false, color = {100, 100, 100}}, {content = 1, x = 1, y = 9, h = false, color = {100, 100, 100}}}
 
 function onTick()
@@ -69,7 +69,6 @@ function onDraw()
             c(lerp(_[1][1], _[2][1], i/96), lerp(_[1][2], _[2][2], i/96), lerp(_[1][3], _[2][3], i/96))
             screen.drawLine(i-1, 0, i-1, 32)
         end
-
         batteryWidget = WidgetAPI.draw(1, false, batteryWidget, {_[2][1]+15, _[2][2]+15, _[2][3]+15})
 
         if batteryWidget.drawn then

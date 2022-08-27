@@ -14,6 +14,7 @@ active= {slot1 = {id = -1, large = false}, slot2 = {id = -1, large = false}, slo
 WidgetAPI = {
     draw = function (slot, large, widget, color)
         widget.drawn = false --by default, we assume it didnt draw
+        color = color or {100, 100, 100}
         c(color[1], color[2], color[3], 240)
         if slot == 1 then
             if active.slot1.id == widget.id then --if the widget is assigned to this slot
@@ -22,6 +23,14 @@ WidgetAPI = {
                     widget.drawn = true
                 else --dont draw the large style
                     drawRoundedRect((slot-1)*32+2, 2, 27, 27)
+                    for i = 1, #widget do
+                        if widget[i].color then
+                            c(widget[i].color[1], widget[i].color[2], widget[i].color[2])
+                        else
+                            c(color[1]+20, color[2]+20, color[3]+20)
+                        end
+                        screen.drawText((slot-1)*32+3+widget[i].x, widget[i].y+3, widget[i].content)
+                    end
                     widget.drawn = true
                 end
             else
