@@ -75,6 +75,9 @@ function onDraw()
                 screen.drawRectF(x*3-3, y*3-0, 3,3)
             end
         end
+
+        c(_[1][1], _[1][2], _[1][3], 250)
+        screen.drawRectF(0, 0, 15, 64)
     end
 end
 
@@ -83,10 +86,6 @@ function c(...) local _={...}
      _[i]=_[i]^2.2/255^2.2*_[i]
     end
     screen.setColor(table.unpack(_))
-end
-
-function lerp(v0,v1,t)
-    return v1*t+v0*(1-t)
 end
 
 function isPointInRectangle(x, y, rectX, rectY, rectW, rectH)
@@ -105,4 +104,12 @@ function getBilinearValue(value00,value10,value01,value11,xProgress,yProgress)
 	local bottom=interpolate(value01,value11,yProgress) --get line B progress
 	local middle=interpolate(top,bottom,yProgress) --get progress of line going
 	return middle                              --between point A and point B
+end
+
+function drawRoundedRect(x, y, w, h)
+    screen.drawRectF(x+1, y+1, w-1, h-1) --body
+    screen.drawLine(x+2, y, x+w-1, y) --top
+    screen.drawLine(x, y+2, x, y+h-1) --left
+    screen.drawLine(x+w, y+2, x+w, y+h-1) --right
+    screen.drawLine(x+2, y+h, x+w-1, y+h) --bottom
 end
