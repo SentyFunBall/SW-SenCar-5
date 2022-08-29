@@ -21,6 +21,7 @@ do
     simulator = simulator
     simulator:setScreen(1, "3x2")
     simulator:setProperty("Theme", 1)
+    simulator:setProperty("Units", true)
     simulator:setProperty("FONT1", "00019209B400AAAA793CA54A555690015244449415500BA0004903800009254956D4592EC54EC51C53A4F31C5354E52455545594104110490A201C7008A04504")
     simulator:setProperty("FONT2", "FFFE57DAD75C7246D6DCF34EF3487256B7DAE92E64D4975A924EBEDAF6DAF6DED74856B2D75A711CE924B6D4B6A4B6FAB55AB524E54ED24C911264965400000E")
 
@@ -63,7 +64,11 @@ function onTick()
     theme = property.getNumber("Theme")
 
     clock = input.getNumber(3)
-    clock = string.format("%02d",math.floor(clock*24))..":"..string.format("%02d",math.floor((clock*1440)%60))
+    if property.getBool("Units") then
+        clock = string.format("%02d",(math.floor(clock*24))%12+1)..":"..string.format("%02d",math.floor((clock*1440)%60))
+    else
+        clock = string.format("%02d",math.floor(clock*24))..":"..string.format("%02d",math.floor((clock*1440)%60))
+    end
 end
 
 function onDraw()
@@ -86,6 +91,17 @@ function onDraw()
         -- draw dock
         c(200, 200, 200)
         dst(1, 1, clock, 1)
+
+        -- apps
+        drawRoundedRect(3, 7, 12, 12)
+        drawRoundedRect(3, 22, 12, 12)
+        drawRoundedRect(3, 37, 12, 12)
+
+        --- control center button
+        c(100, 100, 100)
+        screen.drawLine(4, 51, 15, 51)
+        c(200,200,200)
+        drawRoundedRect(3, 53, 12, 8)
     end
 end
 
