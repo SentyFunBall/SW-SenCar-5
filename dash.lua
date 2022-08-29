@@ -125,6 +125,7 @@ function onTick()
     info.properties.theme = property.getNumber("Theme")
     info.properties.trans = property.getBool("Transmission Default") --peculiar name
     info.properties.unit = property.getBool("Units")
+    info.properties.useDriveModes = property.getBool("Use Drive Modes")
     info.properties.maxfuel = 180
 
     if not fuelCollected then
@@ -192,19 +193,21 @@ function onDraw()
         screen.drawRectF(4,29,1,1)
         screen.drawRectF(4,26,1,1)
 
-        --- drive modes
-        if info.drivemode == 1 then --eco
-            c(_[2][1], _[2][2], _[2][3])
-            screen.drawText(41,2,"Eco")
-        elseif info.drivemode == 2 then --sport
-            c(_[2][1], _[2][2], _[2][3])
-            screen.drawText(36,2,"Sport")
-        elseif info.drivemode == 3 then --tow
-            c(_[2][1], _[2][2], _[2][3])
-            screen.drawText(41,2,"Tow")
-        elseif info.drivemode == 4 then --dac
-            c(_[2][1], _[2][2], _[2][3])
-            screen.drawText(41,2,"DAC")
+        if info.properties.useDriveModes then
+            --- drive modes
+            if info.drivemode == 1 then --eco
+                c(_[2][1], _[2][2], _[2][3])
+                screen.drawText(41,2,"Eco")
+            elseif info.drivemode == 2 then --sport
+                c(_[2][1], _[2][2], _[2][3])
+                screen.drawText(36,2,"Sport")
+            elseif info.drivemode == 3 then --tow
+                c(_[2][1], _[2][2], _[2][3])
+                screen.drawText(41,2,"Tow")
+            elseif info.drivemode == 4 then --dac
+                c(_[2][1], _[2][2], _[2][3])
+                screen.drawText(41,2,"DAC")
+            end
         end
 
         --[[ battery meter (hiding this for later use in WidgetAPI)
