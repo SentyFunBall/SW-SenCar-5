@@ -21,6 +21,8 @@ do
     simulator = simulator
     simulator:setScreen(1, "3x2")
     simulator:setProperty("Theme", 1)
+    simulator:setProperty("FONT1", "00019209B400AAAA793CA54A555690015244449415500BA0004903800009254956D4592EC54EC51C53A4F31C5354E52455545594104110490A201C7008A04504")
+    simulator:setProperty("FONT2", "FFFE57DAD75C7246D6DCF34EF3487256B7DAE92E64D4975A924EBEDAF6DAF6DED74856B2D75A711CE924B6D4B6A4B6FAB55AB524E54ED24C911264965400000E")
 
     -- Runs every tick just before onTick; allows you to simulate the inputs changing
     ---@param simulator Simulator Use simulator:<function>() to set inputs etc.
@@ -29,13 +31,12 @@ do
 
         -- touchscreen defaults
         local screenConnection = simulator:getTouchScreen(1)
-        simulator:setInputBool(1, screenConnection.isTouched)
-        simulator:setInputNumber(1, screenConnection.width)
-        simulator:setInputNumber(2, screenConnection.height)
-        simulator:setInputNumber(3, screenConnection.touchX)
-        simulator:setInputNumber(4, screenConnection.touchY)
+        simulator:setInputBool(2, screenConnection.isTouched)
+        simulator:setInputNumber(1, screenConnection.touchX)
+        simulator:setInputNumber(2, screenConnection.touchY)
 
         simulator:setInputBool(1, true)
+        simulator:setInputNumber(3, simulator:getSlider(1))
     end;
 end
 ---@endsection
@@ -60,6 +61,9 @@ chdown = false
 function onTick()
     acc = input.getBool(1)
     theme = property.getNumber("Theme")
+
+    clock = input.getNumber(3)
+    clock = string.format("%02d",math.floor(clock*24))..":"..string.format("%02d",math.floor((clock*1440)%60))
 end
 
 function onDraw()
@@ -77,7 +81,11 @@ function onDraw()
         end
 
         c(_[1][1], _[1][2], _[1][3], 250)
-        screen.drawRectF(0, 0, 15, 64)
+        screen.drawRectF(0, 0, 19, 64)
+
+        -- draw dock
+        c(200, 200, 200)
+        dst(1, 1, clock, 1)
     end
 end
 
@@ -112,4 +120,34 @@ function drawRoundedRect(x, y, w, h)
     screen.drawLine(x, y+2, x, y+h-1) --left
     screen.drawLine(x+w, y+2, x+w, y+h-1) --right
     screen.drawLine(x+2, y+h, x+w-1, y+h) --bottom
+end
+
+--dst(x,y,text,size=1,rotation=1,is_monospace=false)
+--rotation can be between 1 and 4
+f=screen.drawRectF
+g=property.getText
+--magic willy font
+h=g("FONT1")..g("FONT2")
+i={}j=0
+for k in h:gmatch("....")do i[j+1]=tonumber(k,16)j=j+1 end
+function dst(l,m,n,b,o,p)b=b or 1
+o=o or 1
+if o>2 then n=n:reverse()end
+n=n:upper()for q in n:gmatch(".")do
+r=q:byte()-31 if 0<r and r<=j then
+for s=1,15 do
+if o>2 then t=2^s else t=2^(16-s)end
+if i[r]&t==t then
+u,v=((s-1)%3)*b,((s-1)//3)*b
+if o%2==1 then f(l+u,m+v,b,b)else f(l+5-v,m+u,b,b)end
+end
+end
+if i[r]&1==1 and not p then
+s=2*b
+else
+s=4*b
+end
+if o%2==1 then l=l+s else m=m+s end
+end
+end
 end
