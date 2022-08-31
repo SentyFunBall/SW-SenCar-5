@@ -86,22 +86,29 @@ function onDraw()
         end
 
         c(_[1][1], _[1][2], _[1][3], 250)
-        screen.drawRectF(0, 0, 19, 64)
+        screen.drawRectF(0, 0, 12, 64)
+        screen.drawRectF(12, 0, 96, 15)
 
         -- draw dock
         c(200, 200, 200)
         dst(1, 1, clock, 1)
 
         -- apps
-        drawRoundedRect(3, 7, 12, 12)
-        drawRoundedRect(3, 22, 12, 12)
-        drawRoundedRect(3, 37, 12, 12)
+        drawRoundedRect(21, 1, 12, 12)
+        drawRoundedRect(36, 1, 12, 12)
+        drawRoundedRect(51, 1, 12, 12)
+        drawRoundedRect(66, 1, 12, 12)
 
-        --- control center button
+        --control center button
         c(100, 100, 100)
-        screen.drawLine(4, 51, 15, 51)
+        screen.drawLine(81, 2, 81, 13)
         c(200,200,200)
-        drawRoundedRect(3, 53, 12, 8)
+        drawRoundedRect(84, 1, 10, 12)
+
+        --home button
+        drawRoundedRect(1, 7, 16, 6)
+        c(100, 100, 100)
+        dst(2, 8, "Home", 1)
     end
 end
 
