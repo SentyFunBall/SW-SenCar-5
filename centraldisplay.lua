@@ -102,8 +102,12 @@ function onDraw()
         --control center button
         c(100, 100, 100)
         screen.drawLine(81, 2, 81, 13)
-        c(200,200,200)
+        c(150, 150, 150)
         drawRoundedRect(84, 1, 10, 12)
+        c(200,200,200)
+        drawToggle(85, 3, false)
+        drawToggle(85, 8, true)
+
 
         --home button
         drawRoundedRect(1, 7, 16, 6)
@@ -143,6 +147,26 @@ function drawRoundedRect(x, y, w, h)
     screen.drawLine(x, y+2, x, y+h-1) --left
     screen.drawLine(x+w, y+2, x+w, y+h-1) --right
     screen.drawLine(x+2, y+h, x+w-1, y+h) --bottom
+end
+
+function drawToggle(x,y,state)
+    if state then
+        c(100,200,100)
+        screen.drawLine(x+1, y, x+7, y)
+        screen.drawLine(x, y+1, x+6, y+1)
+        screen.drawLine(x+1, y+2, x+7, y+2)
+        c(200,200,200)
+        screen.drawLine(x+7, y, x+7, y+3)
+        screen.drawLine(x+6, y+1, x+9, y+1)
+    else
+        c(100,100,100)
+        screen.drawLine(x+2, y, x+8, y)
+        screen.drawLine(x+3, y+1, x+9, y+1)
+        screen.drawLine(x+2, y+2, x+8, y+2)
+        c(200,200,200)
+        screen.drawLine(x+1, y, x+1, y+3)
+        screen.drawLine(x, y+1, x+3, y+1)
+    end
 end
 
 --dst(x,y,text,size=1,rotation=1,is_monospace=false)
