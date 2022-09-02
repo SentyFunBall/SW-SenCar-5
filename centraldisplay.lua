@@ -140,8 +140,8 @@ function onDraw()
         screen.setColor(3,55,239)
         screen.drawRectF(43,11,1,1)
         screen.setColor(250,183,15)
-        screen.drawLine(36,7,42.25,12.25)
-        screen.drawLine(44,13,45.25,13.25)
+        screen.drawLine(36,7,42,12)
+        screen.drawLine(44,13,45,13)
 
         -- sencar 5
 
