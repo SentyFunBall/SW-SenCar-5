@@ -115,11 +115,37 @@ function onDraw()
         screen.drawRectF(25,8,1,2)
 
         -- maps
+        screen.setColor(255,255,255)
+        screen.drawRectF(43,1,1,4)
+        screen.drawRectF(44,5,5,1)
+        screen.drawRectF(44,11,5,1)
+        screen.drawRectF(43,12,1,2)
+        screen.setColor(195,181,150)
+        screen.drawRectF(36,6,7,6)
+        screen.drawRectF(38,12,5,2)
+        screen.drawRectF(37,12,1,1)
+        screen.drawRectF(44,12,4,1)
+        screen.drawRectF(44,13,3,1)
+        screen.drawRectF(44,6,5,5)
+        screen.setColor(40,139,20)
+        screen.drawRectF(37,2,6,3)
+        screen.drawRectF(44,2,4,3)
+        screen.drawRectF(48,3,1,2)
+        screen.drawRectF(44,1,3,1)
+        screen.drawRectF(38,1,5,1)
+        screen.drawRectF(36,3,1,2)
+        screen.setColor(3,124,239)
+        screen.drawRectF(36,5,8,1)
+        screen.drawRectF(43,6,1,5)
+        screen.setColor(3,55,239)
+        screen.drawRectF(43,11,1,1)
+        screen.setColor(250,183,15)
+        screen.drawLine(36,7,42.25,12.25)
+        screen.drawLine(44,13,45.25,13.25)
 
         -- sencar 5
 
         -- info
-        drawRoundedRect(36, 1, 12, 12)
         drawRoundedRect(51, 1, 12, 12)
         drawRoundedRect(66, 1, 12, 12)
 
