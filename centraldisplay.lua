@@ -64,8 +64,11 @@ function onTick()
     theme = property.getNumber("Theme")
 
     clock = input.getNumber(3)
-    if property.getBool("Units") then
-        clock = string.format("%02d",(math.floor(clock*24))%12+1)..":"..string.format("%02d",math.floor((clock*1440)%60))
+    if property.getBool("Units") then --
+        clock = string.format("%02d",math.floor(clock*24)%12)..":"..string.format("%02d",math.floor((clock*1440)%60))
+        if string.sub(clock, 1, 2) == "00" then
+            clock = "12"..string.sub(clock, 3,-1)
+        end
     else
         clock = string.format("%02d",math.floor(clock*24))..":"..string.format("%02d",math.floor((clock*1440)%60))
     end
@@ -89,12 +92,32 @@ function onDraw()
         screen.drawRectF(0, 0, 12, 64)
         screen.drawRectF(12, 0, 96, 15)
 
-        -- draw dock
+        --draw dock
         c(200, 200, 200)
         dst(1, 1, clock, 1)
 
-        -- apps
-        drawRoundedRect(21, 1, 12, 12)
+        --apps
+        -- weather app
+        screen.setColor(33,117,255)
+        screen.drawRectF(23,2.5,11,11)
+        screen.drawLine(24,1,32.25,1.25)
+        screen.drawLine(34,3,34.25,11.25)
+        screen.drawLine(24,13,32.25,13.25)
+        screen.drawLine(22,3,22.25,11.25)
+        screen.setColor(226,168,16)
+        screen.drawCircleF(25,5,2)
+        screen.setColor(255,255,255)
+        screen.drawLine(26,9,33.25,9.25)
+        screen.drawLine(26,8,32.25,8.25)
+        screen.drawLine(27,7,31.25,7.25)
+        screen.drawLine(28,6,30.25,6.25)
+        screen.drawLine(29,5,29.25,5.25)
+
+        -- maps
+
+        -- sencar 5
+
+        -- info
         drawRoundedRect(36, 1, 12, 12)
         drawRoundedRect(51, 1, 12, 12)
         drawRoundedRect(66, 1, 12, 12)
