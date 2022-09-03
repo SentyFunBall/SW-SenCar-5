@@ -89,10 +89,14 @@ UI is heavily inspired off of next generation [Apple Carplay](https://www.wired.
 
 UI is partially inspired off of Phil's car dashboard and map they posted one time in the Stormworks Discord server.
 
+UI is partially inspired off of Android Auto.
+
 ### Credits
 Programming and design - SentyFunBall
 
 Programming and design - MerianBerry
+
+UX Designer - SentyFunBall
 
 Documentation writer - SentyFunBall
 
