@@ -102,11 +102,7 @@ end
 function onDraw()
     local _ = _colors[theme]
     if acc then
-        if map then
-            screen.drawMap(x, y, 3.5)
-            c(_[2][1], _[2][2], _[2][3])
-            drawPointer(48, 32, compass, 5)
-        else
+        if not map then
             for x = 1, 32 do
                 for y = 0, 21 do
                     c(
@@ -271,17 +267,6 @@ function onDraw()
         drawRoundedRect(1, 7, 16, 6)
         c(100, 100, 100)
         dst(2, 8, "Home", 1)
-
-        if map then
-            c(170, 170, 170)
-            screen.drawRect(1, 19, 9, 10)
-            screen.drawRect(1, 31, 9, 10)
-            screen.drawRect(1, 43, 9, 10)
-            screen.drawText(4, 46, "R")
-            screen.drawLine(4, 36, 8, 36)
-            screen.drawLine(4, 24, 8, 24)
-            screen.drawLine(5, 22, 5, 27)
-        end
     end
 end
 
