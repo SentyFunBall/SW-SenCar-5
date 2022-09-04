@@ -153,8 +153,8 @@ function onDraw()
         end
 
         c(_[1][1], _[1][2], _[1][3], 250)
-        screen.drawRectF(0, 0, 12, 64)
-        screen.drawRectF(12, 0, 96, 15)
+        --screen.drawRectF(0, 0, 12, 64)
+        screen.drawRectF(0, 0, 96, 15)
 
         --draw dock
         c(200, 200, 200)
