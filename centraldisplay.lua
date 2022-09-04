@@ -38,6 +38,7 @@ do
 
         simulator:setInputBool(1, true)
         simulator:setInputNumber(3, simulator:getSlider(1))
+        simulator:setInputNumber(4, 0)
     end;
 end
 ---@endsection
@@ -54,14 +55,25 @@ _colors = {
     {{17, 15, 107}, {22, 121, 196}, {48, 208, 217}}, --blue
     {{74, 27, 99}, {124, 42, 161}, {182, 29, 224}} --purple
 }
-ticks = 0
-godown = false
-chup = false
-chdown = false
+
+map = false
+info = false
+home = false
+pulse = false
+press = false
 
 function onTick()
     acc = input.getBool(1)
     theme = property.getNumber("Theme")
+
+    press = input.getBool(2)
+
+    touchX = input.getNumber(1)
+    touchY = input.getNumber(2)
+
+    x = input.getNumber(4)
+    y = input.getNumber(5)
+    compass = input.getNumber(6)*(math.pi*2)
 
     clock = input.getNumber(3)
     if property.getBool("Units") then --
@@ -72,54 +84,73 @@ function onTick()
     else
         clock = string.format("%02d",math.floor(clock*24))..":"..string.format("%02d",math.floor((clock*1440)%60))
     end
+
+    home =  isPointInRectangle(touchX, touchY, 0, 7, 15, 7)
+
+    if isPointInRectangle(touchX, touchY, 36, 0, 13, 14) then
+        map = true
+        info = false
+    end
+    if isPointInRectangle(touchX, touchY, 51, 0, 13, 14) then
+        info = true
+        map = false
+    end
+
+    if home then map, info = false, false end
 end
 
 function onDraw()
     local _ = _colors[theme]
     if acc then
-        for x = 1, 32 do
-            for y = 0, 21 do
-                c(
-                    getBilinearValue(_[1][1], _[2][1], _[1][1], _[3][1], x/32, y/21),
-                    getBilinearValue(_[1][2], _[2][2], _[1][2], _[3][2], x/32, y/21),
-                    getBilinearValue(_[1][3], _[2][3], _[1][3], _[3][3], x/32, y/21)
-                )
-                screen.drawRectF(x*3-3, y*3-0, 3,3)
+        if map then
+            screen.drawMap(x, y, 3.5)
+            c(_[2][1], _[2][2], _[2][3])
+            drawPointer(48, 32, compass, 5)
+        else
+            for x = 1, 32 do
+                for y = 0, 21 do
+                    c(
+                        getBilinearValue(_[1][1], _[2][1], _[1][1], _[3][1], x/32, y/21),
+                        getBilinearValue(_[1][2], _[2][2], _[1][2], _[3][2], x/32, y/21),
+                        getBilinearValue(_[1][3], _[2][3], _[1][3], _[3][3], x/32, y/21)
+                    )
+                    screen.drawRectF(x*3-3, y*3-0, 3,3)
+                end
             end
-        end
 
-        --background
-        screen.setColor(15,2,30)
-        screen.drawRectF(27,11,41,41)
-        screen.drawRectF(28,10,39,1)
-        screen.drawRectF(26,12,1,39)
-        screen.drawRectF(28,52,39,1)
-        screen.drawRectF(68,12,1,39)
-        screen.setColor(21,18,107)
-        screen.drawRectF(41,19,12,3)
-        screen.drawRectF(41,22,3,8)
-        screen.drawRectF(44,27,6,3)
-        screen.drawRectF(50,30,3,8)
-        screen.drawRectF(41,38,9,3)
-        screen.setColor(1,0,2)
-        screen.drawRectF(43,41,3,1)
-        screen.drawRectF(40,41,3,2)
-        screen.drawRectF(37,43,3,1)
-        screen.drawRectF(34,44,3,1)
-        screen.drawRectF(31,45,3,1)
-        screen.drawRectF(28,46,3,1)
-        screen.drawRectF(26,47,2,1)
-        screen.drawRectF(38,19,3,1)
-        screen.drawRectF(35,20,3,1)
-        screen.drawRectF(32,21,3,1)
-        screen.drawRectF(29,22,3,1)
-        screen.drawRectF(26,23,3,1)
-        screen.drawRectF(37,20,4,23)
-        screen.drawRectF(32,21,5,23)
-        screen.drawRectF(27,23,5,23)
-        screen.drawRectF(32,44,2,1)
-        screen.drawRectF(26,24,2,23)
-        screen.drawRectF(41,30,9,8)
+            --background
+            screen.setColor(15,2,30)
+            screen.drawRectF(27,11,41,41)
+            screen.drawRectF(28,10,39,1)
+            screen.drawRectF(26,12,1,39)
+            screen.drawRectF(28,52,39,1)
+            screen.drawRectF(68,12,1,39)
+            screen.setColor(21,18,107)
+            screen.drawRectF(41,19,12,3)
+            screen.drawRectF(41,22,3,8)
+            screen.drawRectF(44,27,6,3)
+            screen.drawRectF(50,30,3,8)
+            screen.drawRectF(41,38,9,3)
+            screen.setColor(1,0,2)
+            screen.drawRectF(43,41,3,1)
+            screen.drawRectF(40,41,3,2)
+            screen.drawRectF(37,43,3,1)
+            screen.drawRectF(34,44,3,1)
+            screen.drawRectF(31,45,3,1)
+            screen.drawRectF(28,46,3,1)
+            screen.drawRectF(26,47,2,1)
+            screen.drawRectF(38,19,3,1)
+            screen.drawRectF(35,20,3,1)
+            screen.drawRectF(32,21,3,1)
+            screen.drawRectF(29,22,3,1)
+            screen.drawRectF(26,23,3,1)
+            screen.drawRectF(37,20,4,23)
+            screen.drawRectF(32,21,5,23)
+            screen.drawRectF(27,23,5,23)
+            screen.drawRectF(32,44,2,1)
+            screen.drawRectF(26,24,2,23)
+            screen.drawRectF(41,30,9,8)
+        end
 
         c(_[1][1], _[1][2], _[1][3], 250)
         screen.drawRectF(0, 0, 12, 64)
@@ -240,6 +271,17 @@ function onDraw()
         drawRoundedRect(1, 7, 16, 6)
         c(100, 100, 100)
         dst(2, 8, "Home", 1)
+
+        if map then
+            c(170, 170, 170)
+            screen.drawRect(1, 19, 9, 10)
+            screen.drawRect(1, 31, 9, 10)
+            screen.drawRect(1, 43, 9, 10)
+            screen.drawText(4, 46, "R")
+            screen.drawLine(4, 36, 8, 36)
+            screen.drawLine(4, 24, 8, 24)
+            screen.drawLine(5, 22, 5, 27)
+        end
     end
 end
 
@@ -252,6 +294,12 @@ end
 
 function isPointInRectangle(x, y, rectX, rectY, rectW, rectH)
 	return x > rectX and y > rectY and x < rectX+rectW and y < rectY+rectH
+end
+
+function drawPointer(x,y,c,s)
+    local d = 5
+    local sin, pi, cos = math.sin, math.pi, math.cos
+    screen.drawTriangleF(sin(c - pi) * s + x + 1, cos(c - pi) * s + y +1, sin(c - pi/d) * s + x +1, cos(c - pi/d) * s + y +1, sin(c + pi/d) * s + x +1, cos(c + pi/d) * s + y +1)
 end
 
 function interpolate(x,y,alpha) --simple linear interpolation
