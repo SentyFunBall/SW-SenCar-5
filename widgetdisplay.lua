@@ -57,8 +57,7 @@ _colors = {
 batteryWidget = {id = 0, drawn = false, 
     {content = "Batt", x = 1, y = 1, h = false, color = {200, 200, 200}}, 
     {content = 0, x = 1, y = 8, h = false, color = {105, 190, 124}},
-    {content = 0, x = 1, y = 14, h = false, color = {105, 190, 124}},
-    {content = 0, x = 1, y = 20, h = false, color = {105, 190, 124}}
+    {content = 0, x = 1, y = 14, h = false, color = {105, 190, 124}}
 }
 
 weatherWidget = {id = 1, drawn = false, 
@@ -72,17 +71,17 @@ function onTick()
     acc = input.getBool(1)
     theme = property.getNumber("Theme")
 
-    battery = math.floor(input.getNumber(3)*100)
+    battery = string.format("%.1f", input.getNumber(1)*100)
+    battDelta = string.format("%.3f", input.getNumber(2)*-1000)
     
     if batteryWidget.drawn then
         batteryWidget[2].content = battery.."%"
-        batteryWidget[3].content = ".43/s"
-        batteryWidget[4].content = "12min"
+        batteryWidget[3].content = battDelta
     end
     if weatherWidget.drawn then
-        weatherWidget[2].content = "Rain:94%"
-        weatherWidget[3].content = "Vis:900m"
-        weatherWidget[4].content = "Wind:4@140"
+        weatherWidget[2].content = "Rain:0%"
+        weatherWidget[3].content = "Fog:0%"
+        weatherWidget[4].content = "Wind:0%"
     end
 end
 
