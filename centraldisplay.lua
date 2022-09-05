@@ -59,6 +59,7 @@ _colors = {
 home = false
 pulse = false
 press = false
+app = 0
 
 function onTick()
     acc = input.getBool(1)
@@ -100,7 +101,7 @@ end
 function onDraw()
     local _ = _colors[theme]
     if acc then
-        if app ~= 1 then
+        if app == 0 then
             for x = 1, 32 do
                 for y = 0, 21 do
                     c(
@@ -147,7 +148,6 @@ function onDraw()
         end
 
         c(_[1][1], _[1][2], _[1][3], 250)
-        --screen.drawRectF(0, 0, 12, 64)
         screen.drawRectF(0, 0, 96, 15)
 
         --draw dock

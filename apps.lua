@@ -24,6 +24,7 @@ do
     simulator:setProperty("Units", true)
     simulator:setProperty("FONT1", "00019209B400AAAA793CA54A555690015244449415500BA0004903800009254956D4592EC54EC51C53A4F31C5354E52455545594104110490A201C7008A04504")
     simulator:setProperty("FONT2", "FFFE57DAD75C7246D6DCF34EF3487256B7DAE92E64D4975A924EBEDAF6DAF6DED74856B2D75A711CE924B6D4B6A4B6FAB55AB524E54ED24C911264965400000E")
+    simulator:setProperty("Car name", "Solstice")
 
     -- Runs every tick just before onTick; allows you to simulate the inputs changing
     ---@param simulator Simulator Use simulator:<function>() to set inputs etc.
@@ -51,6 +52,13 @@ end
 -- the "LifeBoatAPI" is included by default in /_build/libs/ - you can use require("LifeBoatAPI") to get this, and use all the LifeBoatAPI.<functions>!
 require("LifeBoatAPI")
 
+SENCAR_VERSION_MAJOR = "5"
+SENCAR_VERSION_MINOR = "0"
+SENCAR_VERSION_PATCH = "dev"
+SENCAR_VERSION = SENCAR_VERSION_MAJOR.."."..SENCAR_VERSION_MINOR
+SENCAR_RELEASE = SENCAR_VERSION.."."..SENCAR_VERSION_PATCH
+SENCAR_VERSION_BUILD = "950143f"
+
 _colors = {
     {{47,51,78}, {86,67,143}, {128,95,164}}, --sencar 5 in the micro
     {{17, 15, 107}, {22, 121, 196}, {48, 208, 217}}, --blue
@@ -58,14 +66,17 @@ _colors = {
 }
 
 zoom = 3
+scrollPixels = 0
+debug = false
 
 function onTick()
     acc = input.getBool(1)
     theme = property.getNumber("Theme")
 
     press = input.getBool(2) and press + 1 or 0
+    pulse = input.getBool(2) and not P
+    P = input.getBool(2)
     app = input.getNumber(3)
-    output.setNumber(1, app)
 
     touchX = input.getNumber(1)
     touchY = input.getNumber(2)
@@ -74,22 +85,57 @@ function onTick()
     y = input.getNumber(5)
     compass = input.getNumber(6)*(math.pi*2)
 
+    carname = property.getText("Car name")
+
     if app == 1 then
         if press > 0 and isPointInRectangle(touchX, touchY, 0, 18, 12, 12) then zoom = clamp(zoom - 0.01 - press/800, 0.3, 10) end
         if press > 0 and isPointInRectangle(touchX, touchY, 0, 30, 12, 12) then zoom = clamp(zoom + 0.01 + press/800, 0.3, 10) end
         if press > 0 and isPointInRectangle(touchX, touchY, 0, 42, 12, 12) then zoom = 3 end
     end
 
-    output.setNumber(1, zoom)
+    if app == 2 then
+        if press > 0 and isPointInRectangle(touchX, touchY, 0, 18, 12, 19) then --up
+            scrollPixels = clamp(scrollPixels-1, 0, 10000) --honestly, the max value is arbitrary
+         end
+        if press > 0 and isPointInRectangle(touchX, touchY, 0, 39, 12, 19) then --down
+            if 90 - scrollPixels > 64 then
+                scrollPixels = scrollPixels + 1
+            end
+        end
+        if pulse and isPointInRectangle(touchX, touchY, 14, 76 - scrollPixels, 42, 10) then debug = not debug end
+    end
+
+    output.setNumber(1, scrollPixels)
+    output.setBool(1, debug)
 end
 
 function onDraw()
     local _ = _colors[theme]
     if acc then
-        if app == 1 then
+        if app == 1 then --map
             screen.drawMap(x, y, zoom)
             c(_[2][1], _[2][2], _[2][3])
             drawPointer(48, 32, compass, 5)
+        end
+
+        if app == 2 then --info, dont question the app order
+            c(70, 70, 70)
+            screen.drawRectF(0, 16, 96, 64)
+            c(200, 200, 200)
+            screen.drawText(15, 18-scrollPixels, "Car Model")
+            screen.drawText(15, 36-scrollPixels, "OS Version")
+            screen.drawText(15, 54-scrollPixels, "OS Build")
+            c(150, 150, 150)
+            drawRoundedRect(15, 24-scrollPixels, carname:len()*5 + 2, 8)
+            drawRoundedRect(15, 42-scrollPixels, SENCAR_RELEASE:len()*5 + 2, 8)
+            drawRoundedRect(15, 61-scrollPixels, SENCAR_VERSION_BUILD:len()*5 + 2, 8)
+            drawRoundedRect(15, 77-scrollPixels, 40, 8)
+            drawToggle(45, 80-scrollPixels, debug)
+            c(50, 50, 50)
+            screen.drawText(17, 26-scrollPixels, carname)
+            screen.drawText(17, 44-scrollPixels, SENCAR_RELEASE)
+            screen.drawText(17, 63-scrollPixels, SENCAR_VERSION_BUILD)
+            screen.drawText(17, 79-scrollPixels, "debug")
         end
 
         c(_[1][1], _[1][2], _[1][3], 250)
@@ -105,6 +151,14 @@ function onDraw()
             screen.drawLine(4, 36, 9, 36)
             screen.drawLine(4, 24, 9, 24)
             screen.drawLine(6, 22, 6, 27)
+        end
+
+        if app == 2 then
+            c(200, 200, 200)
+            screen.drawRect(1, 19, 10, 18)
+            screen.drawRect(1, 40, 10, 18)
+            screen.drawTriangleF(3, 29, 6, 25, 10, 29)
+            screen.drawTriangleF(2, 48, 6, 53, 11, 48)
         end
     end
 end
