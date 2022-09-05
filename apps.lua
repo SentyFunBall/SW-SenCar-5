@@ -1,3 +1,4 @@
+--apps
 -- Author: SentyFunBall
 -- GitHub: https://github.com/SentyFunBall
 -- Workshop: 
@@ -36,8 +37,9 @@ do
         simulator:setInputNumber(2, screenConnection.touchY)
 
         simulator:setInputBool(1, true)
-        simulator:setInputNumber(3, simulator:getSlider(1))
         simulator:setInputNumber(4, 0)
+
+        simulator:setInputNumber(3, math.floor(simulator:getSlider(1)*4))
     end;
 end
 ---@endsection
@@ -55,11 +57,15 @@ _colors = {
     {{74, 27, 99}, {124, 42, 161}, {182, 29, 224}} --purple
 }
 
+zoom = 3
+
 function onTick()
     acc = input.getBool(1)
     theme = property.getNumber("Theme")
 
-    press = input.getBool(2)
+    press = input.getBool(2) and press + 1 or 0
+    app = input.getNumber(3)
+    output.setNumber(1, app)
 
     touchX = input.getNumber(1)
     touchY = input.getNumber(2)
@@ -67,29 +73,38 @@ function onTick()
     x = input.getNumber(4)
     y = input.getNumber(5)
     compass = input.getNumber(6)*(math.pi*2)
+
+    if app == 1 then
+        if press > 0 and isPointInRectangle(touchX, touchY, 0, 18, 12, 12) then zoom = clamp(zoom - 0.01 - press/800, 0.3, 10) end
+        if press > 0 and isPointInRectangle(touchX, touchY, 0, 30, 12, 12) then zoom = clamp(zoom + 0.01 + press/800, 0.3, 10) end
+        if press > 0 and isPointInRectangle(touchX, touchY, 0, 42, 12, 12) then zoom = 3 end
+    end
+
+    output.setNumber(1, zoom)
 end
 
 function onDraw()
     local _ = _colors[theme]
     if acc then
-        if map then
-            screen.drawMap(x, y, 3.5)
+        if app == 1 then
+            screen.drawMap(x, y, zoom)
             c(_[2][1], _[2][2], _[2][3])
             drawPointer(48, 32, compass, 5)
         end
 
         c(_[1][1], _[1][2], _[1][3], 250)
-        screen.drawRectF(0, 0, 12, 64)
+        screen.drawRectF(0, 0, 13, 64)
 
-        if map then
+        if app == 1 then
+            --zoom icons
             c(170, 170, 170)
-            screen.drawRect(1, 19, 9, 10)
-            screen.drawRect(1, 31, 9, 10)
-            screen.drawRect(1, 43, 9, 10)
-            screen.drawText(4, 46, "R")
-            screen.drawLine(4, 36, 8, 36)
-            screen.drawLine(4, 24, 8, 24)
-            screen.drawLine(5, 22, 5, 27)
+            screen.drawRect(1, 19, 10, 10)
+            screen.drawRect(1, 31, 10, 10)
+            screen.drawRect(1, 43, 10, 10)
+            screen.drawText(5, 46, "R")
+            screen.drawLine(4, 36, 9, 36)
+            screen.drawLine(4, 24, 9, 24)
+            screen.drawLine(6, 22, 6, 27)
         end
     end
 end
@@ -109,20 +124,6 @@ function drawPointer(x,y,c,s)
     local d = 5
     local sin, pi, cos = math.sin, math.pi, math.cos
     screen.drawTriangleF(sin(c - pi) * s + x + 1, cos(c - pi) * s + y +1, sin(c - pi/d) * s + x +1, cos(c - pi/d) * s + y +1, sin(c + pi/d) * s + x +1, cos(c + pi/d) * s + y +1)
-end
-
-function interpolate(x,y,alpha) --simple linear interpolation
-	local difference=y-x
-	local progress=alpha*difference
-	local result=progress+x
-	return result
-end
-
-function getBilinearValue(value00,value10,value01,value11,xProgress,yProgress)
-	local top=interpolate(value00,value10,xProgress) --get progress across line A
-	local bottom=interpolate(value01,value11,yProgress) --get line B progress
-	local middle=interpolate(top,bottom,yProgress) --get progress of line going
-	return middle                              --between point A and point B
 end
 
 function drawRoundedRect(x, y, w, h)
@@ -151,6 +152,10 @@ function drawToggle(x,y,state)
         screen.drawLine(x+1, y, x+1, y+3)
         screen.drawLine(x, y+1, x+3, y+1)
     end
+end
+
+function clamp(value, lower, upper)
+    return math.min(math.max(value, lower), upper)
 end
 
 --dst(x,y,text,size=1,rotation=1,is_monospace=false)

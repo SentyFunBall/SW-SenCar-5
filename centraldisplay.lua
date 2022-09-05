@@ -56,8 +56,6 @@ _colors = {
     {{74, 27, 99}, {124, 42, 161}, {182, 29, 224}} --purple
 }
 
-map = false
-info = false
 home = false
 pulse = false
 press = false
@@ -88,21 +86,21 @@ function onTick()
     home =  isPointInRectangle(touchX, touchY, 0, 7, 15, 7)
 
     if isPointInRectangle(touchX, touchY, 36, 0, 13, 14) then
-        map = true
-        info = false
+        app = 1 --map
     end
     if isPointInRectangle(touchX, touchY, 51, 0, 13, 14) then
-        info = true
-        map = false
+        app = 2 --info
     end
 
-    if home then map, info = false, false end
+    if home then app = 0 end
+
+    output.setNumber(3, app)
 end
 
 function onDraw()
     local _ = _colors[theme]
     if acc then
-        if not map then
+        if app ~= 1 then
             for x = 1, 32 do
                 for y = 0, 21 do
                     c(
