@@ -81,8 +81,11 @@ function onTick()
     acc = input.getBool(1)
     usingSenconnect = input.getBool(2) --disables map rendering, in favor of SenConnect's map
 
-    --DO NOT REMOVE THIS, CAUSES #2
-    for i = 0, 100 do
+    --DO NOT REMOVE THIS, CAUSES #1
+    for i = 0, 1 do
+        i = i
+    end
+    for i = 0, 1 do
         i = i
     end
 
@@ -113,8 +116,8 @@ function onTick()
     if ticks == 20 then
         info.properties.maxfuel = input.getNumber(4) or 180
         fuelCollected = true
-        ticks = 0
     end
+    output.setNumber(1, info.properties.maxfuel)
 end
 
 function onDraw()
@@ -122,8 +125,8 @@ function onDraw()
         local _ = _colors[info.properties.theme]
 
         if ((not usingSenconnect) and info.gear ~= 1) then --dont draw map if were in reverse or if SC is connected (haha magic boolean)
-            screenX, screenY = map.screenToMap(info.gpsX, info.gpsY, 2, 96, 32, 58, 25)
-            screen.drawMap(screenX, screenY,2)
+            --screenX, screenY = map.screenToMap(info.gpsX, info.gpsY, 2, 96, 32, 58, 25)
+            screen.drawMap(info.gpsX, info.gpsY, 2)
             --map icon
             c(9,113,244)
             drawPointer(48,16,info.compass, 5)
@@ -161,7 +164,7 @@ function onDraw()
         screen.drawRectF(93,26,1,1)
 
         --- fuel
-        if info.fuel/info.properties.maxfuel< info.properties.fuelwarn then
+        if info.fuel/info.properties.maxfuel < info.properties.fuelwarn then
             c(150,50,50)
         else
             c(150,150,150)
