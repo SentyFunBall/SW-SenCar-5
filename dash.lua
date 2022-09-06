@@ -116,8 +116,8 @@ function onTick()
     if ticks == 20 then
         info.properties.maxfuel = input.getNumber(4) or 180
         fuelCollected = true
+        ticks = 0
     end
-    output.setNumber(1, info.properties.maxfuel)
 end
 
 function onDraw()

@@ -80,12 +80,12 @@ function onTick()
         ticks = ticks + 1
     end
     if ticks == 20 then
-       maxfuel = input.getNumber(1) or 180
+        maxfuel = input.getNumber(1) or 180
         fuelCollected = true
         ticks = 0
     end
 
-    if battery < batwarn or fuel/maxfuel < fuelwarn or temp > tempwarn or otherWarning then 
+    if battery < batwarn or fuel/maxfuel < fuelwarn or temp > tempwarn or otherWarning then
         warning = true
     else 
         warning = false
