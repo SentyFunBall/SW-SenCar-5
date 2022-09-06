@@ -88,6 +88,9 @@ function onTick()
     for i = 0, 1 do
         i = i
     end
+    for i = 0, 1 do
+        i = i
+    end
 
     --kill me
     info.speed = input.getNumber(1)
