@@ -80,37 +80,11 @@ ticks = 0
 function onTick()
     acc = input.getBool(1)
     usingSenconnect = input.getBool(2) --disables map rendering, in favor of SenConnect's map
-    
-    --the following is temp because python bad
-    for i = 0,  100 do
-        if input.getBool(1) then
-            output.setBool(1, true)
-        end
-        i = i
-    end
-    for i = 0,  100 do
-        if input.getBool(1) then
-            output.setBool(1, true)
-        end
-        i = i
-    end
-    for i = 0,  100 do
-        if input.getBool(1) then
-            output.setBool(1, true)
-        end
-        i = i
-    end
-    for i = 0,  100 do
-        if input.getBool(1) then
-            output.setBool(1, true)
-        end
-        i = i
-    end
 
     --kill me
     info.speed = input.getNumber(1)
     info.gear = input.getNumber(2) -- p, r, n, (1, 2, 3, 4, 5)
-    info.rps = input.getNumber(3)
+    info.rps = clamp(input.getNumber(3), 0, 25)
     info.fuel = input.getNumber(4)
     info.temp = input.getNumber(5)
     info.gpsX = input.getNumber(6)
