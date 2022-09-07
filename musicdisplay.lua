@@ -55,12 +55,14 @@ _colors = {
     {{74, 27, 99}, {124, 42, 161}, {182, 29, 224}} --purple
 }
 ticks = 0
+tick = 0
 godown = false
 chup = false
 chdown = false
 
 function onTick()
     acc = input.getBool(1)
+    exist = input.getBool(2)
     theme = property.getNumber("Theme")
 
     channel = math.ceil(input.getNumber(1))
@@ -83,6 +85,13 @@ function onTick()
 
     output.setBool(1, chup)
     output.setBool(2, chdown)
+
+    if exist and tick < 1 then
+        tick = tick + 0.05
+    end
+    if not exist and tick > 0 then
+        tick = tick - 0.05
+    end
 end
 
 function onDraw()
@@ -220,6 +229,9 @@ function onDraw()
             screen.setColor(100, 100, 100)
             screen.drawTextBox(4, 4, 28, 28, "comp not connected")
         end
+
+        c(0,0,0,lerp(255, 1, tick))
+        screen.drawRectF(0,0,32,32)
     end
 end
 

@@ -35,7 +35,8 @@ do
         simulator:setInputNumber(3, 0.94)
 
         -- NEW! button/slider options from the UI
-        simulator:setInputBool(1, true)
+        simulator:setInputBool(1, simulator:getIsToggled(1))
+        simulator:setInputBool(2, simulator:getIsToggled(2))
     end;
 end
 ---@endsection
@@ -67,8 +68,11 @@ weatherWidget = {id = 1, drawn = false,
     {content = 0, x = 1, y = 20, color = {105, 190, 104}}
 }
 
+tick = 0
+
 function onTick()
     acc = input.getBool(1)
+    exist = input.getBool(2)
     theme = property.getNumber("Theme")
 
     battery = string.format("%.1f", input.getNumber(1)*100)
@@ -83,6 +87,12 @@ function onTick()
         weatherWidget[3].content = "Fog:0%"
         weatherWidget[4].content = "Wind:0%"
     end
+    if exist and tick < 1 then
+        tick = tick + 0.05
+    end
+    if not exist and tick > 0 then
+        tick = tick - 0.05
+    end
 end
 
 function onDraw()
@@ -92,8 +102,12 @@ function onDraw()
             c(lerp(_[1][1], _[2][1], i/96), lerp(_[1][2], _[2][2], i/96), lerp(_[1][3], _[2][3], i/96))
             screen.drawLine(i-1, 0, i-1, 32)
         end
+        
         weatherWidget = WidgetAPI.draw(1, true, weatherWidget, {_[2][1]+15, _[2][2]+15, _[2][3]+15})
         batteryWidget = WidgetAPI.draw(3, false, batteryWidget, {_[2][1]+15, _[2][2]+15, _[2][3]+15})
+        
+        c(0,0,0,lerp(255, 1, tick))
+        screen.drawRectF(0,0,96,32)
     end
 end
 

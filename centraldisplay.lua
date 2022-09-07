@@ -37,6 +37,7 @@ do
         simulator:setInputNumber(2, screenConnection.touchY)
 
         simulator:setInputBool(1, true)
+        simulator:setInputBool(2, simulator:getIsToggled(1))
         simulator:setInputNumber(3, simulator:getSlider(1))
         simulator:setInputNumber(4, 0)
     end;
@@ -61,8 +62,10 @@ pulse = false
 press = false
 app = 0
 
+tick = 0
 function onTick()
     acc = input.getBool(1)
+    exist = input.getBool(2)
     theme = property.getNumber("Theme")
 
     press = input.getBool(2)
@@ -96,6 +99,13 @@ function onTick()
     if home then app = 0 end
 
     output.setNumber(3, app)
+
+    if exist and tick < 1 then
+        tick = tick + 0.05
+    end
+    if not exist and tick > 0 then
+        tick = tick - 0.05
+    end
 end
 
 function onDraw()
@@ -265,6 +275,9 @@ function onDraw()
         drawRoundedRect(1, 7, 16, 6)
         c(100, 100, 100)
         dst(2, 8, "Home", 1)
+
+        c(0,0,0,lerp(255, 1, tick))
+        screen.drawRectF(0,0,96,64)
     end
 end
 
@@ -277,6 +290,10 @@ end
 
 function isPointInRectangle(x, y, rectX, rectY, rectW, rectH)
 	return x > rectX and y > rectY and x < rectX+rectW and y < rectY+rectH
+end
+
+function lerp(v0,v1,t)
+    return v1*t+v0*(1-t)
 end
 
 function drawPointer(x,y,c,s)
