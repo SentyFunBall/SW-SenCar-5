@@ -67,10 +67,10 @@ function onTick()
 
     channel = math.ceil(input.getNumber(1))
     signalStrength = input.getNumber(2)
-    isPlayingMusic = input.getBool(2)
-    connected = input.getBool(4)
+    isPlayingMusic = input.getBool(3)
+    connected = input.getBool(5)
 
-    isPressed = input.getBool(3)
+    isPressed = input.getBool(4)
     -- channel buttons
     if isPressed and isPointInRectangle(input.getNumber(3), input.getNumber(4), 3, 19, 14, 10) then
        chup = true

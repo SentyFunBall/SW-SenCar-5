@@ -68,7 +68,7 @@ function onTick()
     exist = input.getBool(2)
     theme = property.getNumber("Theme")
 
-    press = input.getBool(2)
+    press = input.getBool(3)
 
     touchX = input.getNumber(1)
     touchY = input.getNumber(2)

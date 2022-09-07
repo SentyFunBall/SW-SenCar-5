@@ -76,9 +76,11 @@ info = {properties = {}}
 fuelCollected = false
 remdeg = 130
 ticks = 0
+tick = 0
 
 function onTick()
     acc = input.getBool(1)
+    exist = input.getBool(3)
     usingSenconnect = input.getBool(2) --disables map rendering, in favor of SenConnect's map
 
     --DO NOT REMOVE THIS, CAUSES #1
@@ -120,6 +122,13 @@ function onTick()
         info.properties.maxfuel = input.getNumber(4) or 180
         fuelCollected = true
         ticks = 0
+    end
+
+    if exist and tick < 1 then
+        tick = tick + 0.05
+    end
+    if not exist and tick > 0 then
+        tick = tick - 0.05
     end
 end
 
@@ -276,6 +285,9 @@ function onDraw()
         end
         --dst(76, 1, "rps", 0.8)
     end
+
+    c(0,0,0,lerp(255, 1, tick))
+    screen.drawRectF(0,0,32,32)
 end
 
 function c(...) local _={...}
