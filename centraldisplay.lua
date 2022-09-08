@@ -65,7 +65,7 @@ app = 0
 tick = 0
 function onTick()
     acc = input.getBool(1)
-    exist = input.getBool(2)
+    exist = input.getBool(3)
     theme = property.getNumber("Theme")
 
     press = input.getBool(3)

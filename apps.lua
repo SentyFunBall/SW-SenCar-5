@@ -57,7 +57,7 @@ SENCAR_VERSION_MINOR = "0"
 SENCAR_VERSION_PATCH = "dev"
 SENCAR_VERSION = SENCAR_VERSION_MAJOR.."."..SENCAR_VERSION_MINOR
 SENCAR_RELEASE = SENCAR_VERSION.."."..SENCAR_VERSION_PATCH
-SENCAR_VERSION_BUILD = "952357f"
+SENCAR_VERSION_BUILD = "971822f"
 
 _colors = {
     {{47,51,78}, {86,67,143}, {128,95,164}}, --sencar 5 in the micro
@@ -73,13 +73,11 @@ function onTick()
     acc = input.getBool(1)
     theme = property.getNumber("Theme")
 
-    press = input.getBool(2) and press + 1 or 0
-    pulse = input.getBool(2) and not P
-    P = input.getBool(2)
-    app = input.getNumber(3)
-
     touchX = input.getNumber(1)
     touchY = input.getNumber(2)
+
+    press = input.getBool(2) and press + 1 or 0
+    app = input.getNumber(3)
 
     x = input.getNumber(4)
     y = input.getNumber(5)
@@ -96,13 +94,13 @@ function onTick()
     if app == 2 then
         if press > 0 and isPointInRectangle(touchX, touchY, 0, 18, 12, 19) then --up
             scrollPixels = clamp(scrollPixels-1, 0, 10000) --honestly, the max value is arbitrary
-         end
+        end
         if press > 0 and isPointInRectangle(touchX, touchY, 0, 39, 12, 19) then --down
             if 90 - scrollPixels > 64 then
                 scrollPixels = scrollPixels + 1
             end
         end
-        if pulse and isPointInRectangle(touchX, touchY, 14, 76 - scrollPixels, 42, 10) then debug = not debug end
+        if press == 2 and isPointInRectangle(touchX, touchY, 14, 76 - scrollPixels, 42, 10) then debug = not debug end
     end
 
     output.setNumber(1, scrollPixels)
@@ -120,7 +118,7 @@ function onDraw()
 
         if app == 2 then --info, dont question the app order
             c(70, 70, 70)
-            screen.drawRectF(0, 16, 96, 64)
+            screen.drawRectF(0, 15, 96, 64)
             c(200, 200, 200)
             screen.drawText(15, 18-scrollPixels, "Car Model")
             screen.drawText(15, 36-scrollPixels, "OS Version")
