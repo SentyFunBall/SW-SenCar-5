@@ -55,14 +55,14 @@ function onTick()
     theme = property.getNumber("Theme")
     car = property.getText("Car name")
     if acc then
-        if ticks < 180 then
+        if ticks < 150 then
             ticks = ticks + 1
         end
     else
         ticks = 0
         done = false
     end
-    if ticks == 180 then
+    if ticks == 150 then
         done = true
     end
 
@@ -84,22 +84,22 @@ function onDraw()
         screen.drawRectF(0,0,96,32)
 
         if acc then
-            if ticks > 30 then
+            if ticks > 20 then
                 screen.setColor(200,200,200, alpha)
                 screen.drawCircle(16,15,8)
                 c(_[2][1], _[2][2], _[2][3], alpha)
                 screen.drawRectF(4,11,32,32)
-                if ticks > 60 then
+                if ticks > 40 then
                     screen.setColor(200,200,200, alpha)
                     screen.drawCircle(16,11,3)
                     c(_[2][1], _[2][2], _[2][3], alpha)
                     screen.drawRectF(16,9,4,6)
-                    if ticks > 90 then
+                    if ticks > 60 then
                         screen.setColor(200,200,200, alpha)
                         screen.drawCircle(16,17,3)
                         c(_[2][1], _[2][2], _[2][3], alpha)
                         screen.drawRectF(12,15,4,6)
-                        if ticks > 120 then
+                        if ticks > 80 then
                             screen.setColor(200,200,200, alpha)
                             screen.drawText(12,22,"ST")
                             screen.drawText(30,14,car)
