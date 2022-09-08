@@ -48,6 +48,7 @@ _colors = {
 }
 
 ticks = 0
+tick = 0 --tick is lerp
 done = false
 function onTick()
     acc = input.getBool(1)
@@ -64,34 +65,42 @@ function onTick()
     if ticks == 180 then
         done = true
     end
+
+    if done and tick < 1 then
+        tick = tick + 0.05
+    end
+    if not done and tick > 0 then
+        tick = tick - 0.05
+    end
     output.setBool(1, done)
     output.setNumber(1, ticks)
 end
 
 function onDraw()
     local _ = _colors[theme]
-    if not done then
-        c(_[2][1], _[2][2], _[2][3])
-        screen.drawClear()
+    --if not done then
+        alpha = lerp(255, 1, tick)
+        c(_[2][1], _[2][2], _[2][3], alpha)
+        screen.drawRectF(0,0,96,32)
 
         if acc then
             if ticks > 30 then
-                screen.setColor(200,200,200)
+                screen.setColor(200,200,200, alpha)
                 screen.drawCircle(16,15,8)
-                c(_[2][1], _[2][2], _[2][3])
+                c(_[2][1], _[2][2], _[2][3], alpha)
                 screen.drawRectF(4,11,32,32)
                 if ticks > 60 then
-                    screen.setColor(200,200,200)
+                    screen.setColor(200,200,200, alpha)
                     screen.drawCircle(16,11,3)
-                    c(_[2][1], _[2][2], _[2][3])
+                    c(_[2][1], _[2][2], _[2][3], alpha)
                     screen.drawRectF(16,9,4,6)
                     if ticks > 90 then
-                        screen.setColor(200,200,200)
+                        screen.setColor(200,200,200, alpha)
                         screen.drawCircle(16,17,3)
-                        c(_[2][1], _[2][2], _[2][3])
+                        c(_[2][1], _[2][2], _[2][3], alpha)
                         screen.drawRectF(12,15,4,6)
                         if ticks > 120 then
-                            screen.setColor(200,200,200)
+                            screen.setColor(200,200,200, alpha)
                             screen.drawText(12,22,"ST")
                             screen.drawText(30,14,car)
                         end
@@ -99,7 +108,7 @@ function onDraw()
                 end
             end
         end
-    end
+    --end
 end
 
 function c(...) local _={...}
