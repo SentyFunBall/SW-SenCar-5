@@ -12,7 +12,6 @@ Updated for commit 65, or SenCar v5.0.dev.65
     1. [WidgetAPI](#widgetapi)
 5. [Music Display](#music-display)
 6. [Center Display](#center-display)
-    1. [AppAPI](#appapi)
 7. [How it's made](#how-its-made)
 
 ## How does SenCar 5 work?
@@ -77,9 +76,6 @@ It also subtly changes color while "music" (input from the radio) is detected. I
 
 ## Center Display
 Not made as of v5.0.dev.65
-
-### AppAPI
-[AppAPI Full Documentation](/docs/apis/appapi.md)
 
 ## How its made
 SenCar 5 was made with 3 things: Blood, Sweat, and Tears. Unless?

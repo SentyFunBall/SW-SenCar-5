@@ -6,7 +6,6 @@ hello yes i give code examples
 ## Contents
 1. [Custom Functions](#custom-functions)
 2. [WidgetAPI](#widgetapi)
-3. [AppAPI](#appapi)
 
 ## Custom Functions
 ### drawCircle()
