@@ -78,12 +78,12 @@ end
 
 function onDraw()
     local _ = _colors[theme]
+    if acc then
     --if not done then
         alpha = lerp(255, 1, tick)
         c(_[2][1], _[2][2], _[2][3], alpha)
         screen.drawRectF(0,0,96,32)
 
-        if acc then
             if ticks > 20 then
                 screen.setColor(200,200,200, alpha)
                 screen.drawCircle(16,15,8)
