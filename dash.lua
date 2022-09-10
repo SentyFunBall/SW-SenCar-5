@@ -125,7 +125,7 @@ function onTick()
 end
 
 function onDraw()
-    if acc then --TODO: add startup animation
+    if acc then
         local _ = _colors[info.properties.theme]
 
         if ((not usingSenconnect) and info.gear ~= 1) then --dont draw map if were in reverse or if SC is connected (haha magic boolean)
