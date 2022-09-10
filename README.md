@@ -6,7 +6,7 @@
 SenCar 5 is the successor to the powerful car operating system, SenTOS Car 4. SenCar 5 enhances your car with all new personalization features, seemless communication menthods, a brand new UI, drive modes, and more.
 
 
-![20220823223235_1](https://user-images.githubusercontent.com/57205125/186339702-14a2ec47-1907-48b0-b077-fd5ec8233fb3.jpg)
+![image](https://user-images.githubusercontent.com/57205125/189500625-71f081b0-4ebf-4e78-ba87-26da43e05022.png)
 *SenCar 5's dashboard with all the icons enabled*
 
 ## Contents
