@@ -67,6 +67,7 @@ function onTick()
     leftBlinker = input.getBool(1)
     rightBlinker = input.getBool(2)
     cruise = input.getBool(3)
+    exist = input.getBool(9)
     fl = input.getBool(4)
     fr = input.getBool(5)
     rl = input.getBool(6)
@@ -95,39 +96,41 @@ end
 function onDraw()
     local _ = _colors[theme]
     
-    if leftBlinker then
-        c(45,201,55)
-        screen.drawTriangleF(60,24,60,30,69,27)
-    end
+    if exist then
+        if leftBlinker then
+            c(45,201,55)
+            screen.drawTriangleF(60,24,60,30,69,27)
+        end
+        
+        if rightBlinker then
+            c(45,201,55)
+            screen.drawTriangleF(36,24,36,30,27,27)
+        end
+        
+        if cruise then
+            c(142, 230, 0)
+            screen.drawLine(42,27,42,30)
+            screen.drawLine(39,26,42,26)
+            screen.drawLine(38,27,38,30)
+            screen.drawRectF(38,25,1,1)
+            screen.drawLine(39,27,41,29)
+        end
 
-    if rightBlinker then
-        c(45,201,55)
-        screen.drawTriangleF(36,24,36,30,27,27)
-    end
-
-    if cruise then
-        c(142, 230, 0)
-        screen.drawLine(42,27,42,30)
-        screen.drawLine(39,26,42,26)
-        screen.drawLine(38,27,38,30)
-        screen.drawRectF(38,25,1,1)
-        screen.drawLine(39,27,41,29)
-    end
-
-    --- warning symbol
-    if warning then
-        c(200,50,50)
-        screen.drawTriangle(44,29,52,29,48,22)
-        screen.drawLine(48,25,48,27)
-        screen.drawRectF(48,28,1,1)
-    end
-
-    --- battery warning
-    if battery < batwarn then
-        c(200,50,50)
-        screen.drawRect(54,27,4,2)
-        screen.drawRectF(55,26,1,1)
-        screen.drawRectF(57,26,1,1)
+        --- warning symbol
+        if warning then
+            c(200,50,50)
+            screen.drawTriangle(44,29,52,29,48,22)
+            screen.drawLine(48,25,48,27)
+            screen.drawRectF(48,28,1,1)
+        end
+        
+        --- battery warning
+        if battery < batwarn then
+            c(200,50,50)
+            screen.drawRect(54,27,4,2)
+            screen.drawRectF(55,26,1,1)
+            screen.drawRectF(57,26,1,1)
+        end
     end
 
     if fl or fr or rl or rr then
@@ -144,7 +147,7 @@ function onDraw()
         screen.drawLine(44,9,44,25)
         screen.drawLine(51,9,51,25)
         screen.drawLine(45,25,51,25)
-
+        
         if fl then
             screen.drawLine(40,15,44,11)
         end
