@@ -31,10 +31,9 @@ do
         simulator:setInputBool(1, simulator:getIsToggled(1))
         simulator:setInputBool(2, simulator:getIsToggled(2))
         simulator:setInputBool(3, simulator:getIsToggled(3))
-        simulator:setInputBool(4, true)
-        simulator:setInputBool(5, true)
-        simulator:setInputBool(6, true)
-        simulator:setInputBool(7, true)
+        simulator:setInputBool(9, true)
+        simulator:setInputBool(10, simulator:getIsToggled(1))
+        simulator:setInputBool(11, simulator:getIsToggled(2))
     end;
 end
 ---@endsection
@@ -72,6 +71,8 @@ function onTick()
     fr = input.getBool(5)
     rl = input.getBool(6)
     rr = input.getBool(7)
+    lights = input.getBool(10)
+    brights = input.getBool(11)
     otherWarning = input.getBool(8)
     fuel = input.getNumber(1)
     temp = input.getNumber(2)
@@ -97,7 +98,7 @@ function onDraw()
     local _ = _colors[theme]
     
     if exist then
-        if leftBlinker then
+        if leftBlinker then --oh my god, they're named the wrong way
             c(45,201,55)
             screen.drawTriangleF(60,24,60,30,69,27)
         end
@@ -130,6 +131,30 @@ function onDraw()
             screen.drawRect(54,27,4,2)
             screen.drawRectF(55,26,1,1)
             screen.drawRectF(57,26,1,1)
+        end
+
+        if lights then
+            c(96,190,112)
+            screen.drawRectF(31, 3, 3, 3)
+            screen.drawLine(31, 2, 34, 2)
+            screen.drawLine(34, 3, 34, 6)
+            screen.drawLine(31, 6, 34, 6)
+
+            screen.drawLine(29, 2, 26, 3)
+            screen.drawLine(29, 4, 26, 5)
+            screen.drawLine(29, 6, 26, 7)
+        end
+
+        if brights then
+            c(8,154,186)
+            screen.drawRectF(65, 3, 3, 3)
+            screen.drawLine(65, 2, 68, 2)
+            screen.drawLine(68, 3, 68, 6)
+            screen.drawLine(65, 6, 68, 6)
+
+            screen.drawLine(63, 2, 60, 2)
+            screen.drawLine(63, 4, 60, 4)
+            screen.drawLine(63, 6, 60, 6)
         end
     end
 
