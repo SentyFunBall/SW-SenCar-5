@@ -78,7 +78,6 @@ Below are the included APIs, the ones we used, and our inspiration
 ### Included APIs
 [WidgetAPI](/docs/apis/widgetapi.md)
 
-[AppAPI](/docs/apis/appapi.md)
 
 ### Libraries and APIs used
  - [LifeBoatAPI](https://marketplace.visualstudio.com/items?itemName=NameousChangey.lifeboatapi)
