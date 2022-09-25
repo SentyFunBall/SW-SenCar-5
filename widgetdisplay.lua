@@ -77,15 +77,18 @@ function onTick()
 
     battery = string.format("%.1f", input.getNumber(1)*100)
     battDelta = string.format("%.3f", input.getNumber(2)*-1000)
-    
+    wind = string.format("%.0fmph", input.getNumber(3)*2.237)
+    rain = input.getNumber(4)
+    if rain < 0.05 then rain = "None" elseif rain < 0.3 then rain = "Light" elseif rain < 0.7 then rain = "Medium" else rain = "Heavy" end
+    fog = string.format("%.1f%%",input.getNumber(5)*100)
     if batteryWidget.drawn then
         batteryWidget[2].content = battery.."%"
         batteryWidget[3].content = battDelta
     end
     if weatherWidget.drawn then
-        weatherWidget[2].content = "Rain:0%"
-        weatherWidget[3].content = "Fog:0%"
-        weatherWidget[4].content = "Wind:0%"
+        weatherWidget[2].content = "Rain:"..rain
+        weatherWidget[3].content = "Fog:"..fog
+        weatherWidget[4].content = "Wind:"..wind
     end
     if exist and tick < 1 then
         tick = tick + 0.05
