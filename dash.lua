@@ -26,6 +26,7 @@ do
     simulator:setProperty("Units", true) --true for imperial
     simulator:setProperty("Theme", 3) --we dont have the "Use Drive Modes" property because that is handled by the transmission
     simulator:setProperty("Car name", "SenCar 5 DEV")
+    simulator:setProperty("Top Speed (m/s)", 66)
 
     -- Runs every tick just before onTick; allows you to simulate the inputs changing
     ---@param simulator Simulator Use simulator:<function>() to set inputs etc.
@@ -113,6 +114,7 @@ function onTick()
     info.properties.unit = property.getBool("Units")
     info.properties.useDriveModes = property.getBool("Use Drive Modes")
     info.properties.maxfuel = 180
+    info.properties.topspeed = property.getNumber("Top Speed (m/s)")/100
 
     if not fuelCollected then
         ticks = ticks + 1
@@ -210,7 +212,7 @@ function onDraw()
 
         -- dial that fills up
         c(_[2][1], _[2][2], _[2][3])
-        drawCircle(16, 16, 10, 8, 60, -remdeg/2*math.pi/180, info.speed/100*(360-remdeg)*math.pi/180) --speed
+        drawCircle(16, 16, 10, 8, 60, -remdeg/2*math.pi/180, (info.speed/100)/(info.properties.topspeed)*(360-remdeg)*math.pi/180) --speed
         drawCircle(80, 16, 10, 8, 60, -remdeg/2*math.pi/180, info.rps/25*(360-remdeg)*math.pi/180) --rps
 
         c(_[3][1], _[3][2], _[3][3])
