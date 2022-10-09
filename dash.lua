@@ -47,7 +47,7 @@ do
 
         local screenConnection = simulator:getTouchScreen(1)
         simulator:setInputNumber(1, simulator:getSlider(1)*100)
-        simulator:setInputNumber(2, math.floor(simulator:getSlider(2) * 8))
+        simulator:setInputNumber(2, math.floor(simulator:getSlider(2) * 7))
         simulator:setInputNumber(3, simulator:getSlider(3)*25)
         simulator:setInputNumber(4, simulator:getSlider(4)*181)
         simulator:setInputNumber(5, simulator:getSlider(5)*200)
@@ -124,7 +124,6 @@ function onTick()
         fuelCollected = true
         ticks = 0
     end
-    output.setBool()
 end
 
 function onDraw()
@@ -213,8 +212,9 @@ function onDraw()
 
         -- dial that fills up
         c(_[2][1], _[2][2], _[2][3])
-        drawCircle(16, 16, 10, 8, 60, -remdeg/2*math.pi/180, clamp(info.speed/100, 0, info.properties.topspeed*info.speed/2)*(360-remdeg)*math.pi/180) --speed
-        drawCircle(80, 16, 10, 8, 60, -remdeg/2*math.pi/180, info.rps/25*(360-remdeg)*math.pi/180) --rps
+        drawCircle(16, 16, 10, 8, 60, -remdeg/2*math.pi/180, math.min((info.speed/100)/info.properties.topspeed, 1)*(360-remdeg)*math.pi/180) --speed
+        if info.rps>info.properties.upshift then c(180, 53, 35) else c(_[2][1], _[2][2], _[2][3]) end
+        drawCircle(80, 16, 10, 8, 60, -remdeg/2*math.pi/180, math.min(info.rps/(info.properties.upshift+5), 1)*(360-remdeg)*math.pi/180) --rps
 
         c(_[3][1], _[3][2], _[3][3])
         drawCircle(16, 16, 15, 13, 60, remdeg/5*math.pi/180, math.min(info.fuel/info.properties.maxfuel, 1)*(250-remdeg)*math.pi/180) --fuel, should clamp within fuel we got in 20th tick as max fuel
