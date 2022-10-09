@@ -78,6 +78,17 @@ fuelCollected = false
 remdeg = 130
 ticks = 0
 
+info.properties.fuelwarn = property.getNumber("Fuel Warn %")/100
+info.properties.tempwarn = property.getNumber("Temp Warn")
+info.properties.upshift = property.getNumber("Upshift RPS")
+info.properties.downshift = property.getNumber("Downshift RPS")
+info.properties.theme = property.getNumber("Theme")
+info.properties.trans = property.getBool("Transmission Default") --peculiar name
+info.properties.unit = property.getBool("Units")
+info.properties.useDriveModes = property.getBool("Use Drive Modes")
+info.properties.maxfuel = 180
+info.properties.topspeed = property.getNumber("Top Speed (m/s)")/100
+
 function onTick()
     acc = input.getBool(1)
     exist = input.getBool(3)
@@ -105,17 +116,6 @@ function onTick()
     info.compass = input.getNumber(8)*(math.pi*2)
     info.drivemode = input.getNumber(9)
 
-    info.properties.fuelwarn = property.getNumber("Fuel Warn %")/100
-    info.properties.tempwarn = property.getNumber("Temp Warn")
-    info.properties.upshift = property.getNumber("Upshift RPS")
-    info.properties.downshift = property.getNumber("Downshift RPS")
-    info.properties.theme = property.getNumber("Theme")
-    info.properties.trans = property.getBool("Transmission Default") --peculiar name
-    info.properties.unit = property.getBool("Units")
-    info.properties.useDriveModes = property.getBool("Use Drive Modes")
-    info.properties.maxfuel = 180
-    info.properties.topspeed = property.getNumber("Top Speed (m/s)")/100
-
     if not fuelCollected then
         ticks = ticks + 1
     end
@@ -124,6 +124,7 @@ function onTick()
         fuelCollected = true
         ticks = 0
     end
+    output.setBool()
 end
 
 function onDraw()
@@ -212,7 +213,7 @@ function onDraw()
 
         -- dial that fills up
         c(_[2][1], _[2][2], _[2][3])
-        drawCircle(16, 16, 10, 8, 60, -remdeg/2*math.pi/180, (info.speed/100)/(info.properties.topspeed)*(360-remdeg)*math.pi/180) --speed
+        drawCircle(16, 16, 10, 8, 60, -remdeg/2*math.pi/180, clamp(info.speed/100, 0, info.properties.topspeed*info.speed/2)*(360-remdeg)*math.pi/180) --speed
         drawCircle(80, 16, 10, 8, 60, -remdeg/2*math.pi/180, info.rps/25*(360-remdeg)*math.pi/180) --rps
 
         c(_[3][1], _[3][2], _[3][3])
