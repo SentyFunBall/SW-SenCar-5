@@ -85,13 +85,13 @@ function onTick()
 
     carname = property.getText("Car name")
 
-    if app == 1 then
-        if press > 0 and isPointInRectangle(touchX, touchY, 0, 18, 12, 12) then zoom = clamp(zoom - 0.01 - press/800, 0.3, 10) end
-        if press > 0 and isPointInRectangle(touchX, touchY, 0, 30, 12, 12) then zoom = clamp(zoom + 0.01 + press/800, 0.3, 10) end
+    if app == 1 then --maps
+        if press > 0 and isPointInRectangle(touchX, touchY, 0, 18, 12, 12) then zoom = clamp(zoom - 0.01 - press/800, 0.3, 25) end
+        if press > 0 and isPointInRectangle(touchX, touchY, 0, 30, 12, 12) then zoom = clamp(zoom + 0.01 + press/800, 0.3, 25) end
         if press > 0 and isPointInRectangle(touchX, touchY, 0, 42, 12, 12) then zoom = 3 end
     end
 
-    if app == 2 then
+    if app == 2 then --info
         if press > 0 and isPointInRectangle(touchX, touchY, 0, 18, 12, 19) then --up
             scrollPixels = clamp(scrollPixels-1, 0, 10000) --honestly, the max value is arbitrary
         end
@@ -103,6 +103,10 @@ function onTick()
         if press == 2 and isPointInRectangle(touchX, touchY, 14, 76 - scrollPixels, 42, 10) then debug = not debug end
     end
 
+    if app == 3 then --weather
+
+    end
+
     output.setNumber(1, scrollPixels)
     output.setBool(1, debug)
 end
@@ -110,10 +114,22 @@ end
 function onDraw()
     local _ = _colors[theme]
     if acc then
+
+----------[[* MAIN OVERLAY *]]--
         if app == 1 then --map
             screen.drawMap(x, y, zoom)
             c(_[2][1], _[2][2], _[2][3])
             drawPointer(48, 32, compass, 5)
+
+            c(_[1][1], _[1][2], _[1][3], 250)
+            tx = "X:"..string.format("%.1fk", x/1000)
+            ty = "Y:"..string.format("%.1fk", y/1000)
+            drawRoundedRect(54, 46, #tx*5+5, 16)
+            drawRoundedRect(14, 54, 32, 8)
+            c(200, 200, 200)
+            screen.drawText(55, 49, tx)
+            screen.drawText(55, 55, ty)
+            screen.drawText(16, 56, string.format("%.2fk", zoom))
         end
 
         if app == 2 then --info, dont question the app order
@@ -124,9 +140,9 @@ function onDraw()
             screen.drawText(15, 36-scrollPixels, "OS Version")
             screen.drawText(15, 54-scrollPixels, "OS Build")
             c(150, 150, 150)
-            drawRoundedRect(15, 24-scrollPixels, carname:len()*5 + 2, 8)
-            drawRoundedRect(15, 42-scrollPixels, SENCAR_RELEASE:len()*5 + 2, 8)
-            drawRoundedRect(15, 61-scrollPixels, SENCAR_VERSION_BUILD:len()*5 + 2, 8)
+            drawRoundedRect(15, 24-scrollPixels, #carname*5 + 2, 8)
+            drawRoundedRect(15, 42-scrollPixels, #SENCAR_RELEASE*5 + 2, 8)
+            drawRoundedRect(15, 61-scrollPixels, #SENCAR_VERSION_BUILD*5 + 2, 8)
             drawRoundedRect(15, 77-scrollPixels, 40, 8)
             drawToggle(45, 80-scrollPixels, debug)
             c(50, 50, 50)
@@ -136,8 +152,9 @@ function onDraw()
             screen.drawText(17, 79-scrollPixels, "debug")
         end
 
+----------[[* CONTROLS OVERLAY *]]--
         c(_[1][1], _[1][2], _[1][3], 250)
-        screen.drawRectF(0, 0, 13, 64)
+        screen.drawRectF(0, 15, 13, 64)
 
         if app == 1 then
             --zoom icons
