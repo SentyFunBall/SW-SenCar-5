@@ -94,17 +94,6 @@ function onTick()
     exist = input.getBool(3)
     usingSenconnect = input.getBool(2) --disables map rendering, in favor of SenConnect's map
 
-    --DO NOT REMOVE THIS, CAUSES #1
-    for i = 0, 1 do
-        i = i
-    end
-    for i = 0, 1 do
-        i = i
-    end
-    for i = 0, 1 do
-        i = i
-    end
-
     --kill me
     info.speed = input.getNumber(1)
     info.gear = input.getNumber(2) -- p, r, n, (1, 2, 3, 4, 5)
