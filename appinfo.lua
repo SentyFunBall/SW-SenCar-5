@@ -54,7 +54,7 @@ require("LifeBoatAPI")
 
 SENCAR_VERSION = "5.0.dev"
 SENCAR_VERSION_BUILD = "10292319b"
-APP_VERSIONS = {MAP = "10291958f", INFO = "10292319f", WEATHER = "", CAR = "", SETTINGS = ""}
+APP_VERSIONS = {MAP = "10291958f", INFO = "10292319f", WEATHER = "n/a", CAR = "n/a", SETTINGS = "n/a"}
 
 _colors = {
     {{47,51,78}, {86,67,143}, {128,95,164}}, --sencar 5 in the micro
