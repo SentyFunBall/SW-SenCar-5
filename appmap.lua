@@ -33,7 +33,7 @@ do
 
         -- touchscreen defaults
         local screenConnection = simulator:getTouchScreen(1)
-        simulator:setInputBool(2, screenConnection.isTouched)
+        simulator:setInputBool(3, screenConnection.isTouched)
         simulator:setInputNumber(1, screenConnection.touchX)
         simulator:setInputNumber(2, screenConnection.touchY)
 
@@ -52,9 +52,6 @@ end
 -- the "LifeBoatAPI" is included by default in /_build/libs/ - you can use require("LifeBoatAPI") to get this, and use all the LifeBoatAPI.<functions>!
 require("LifeBoatAPI")
 
-SENCAR_VERSION = "5.0.dev"
-SENCAR_VERSION_BUILD = "10082314b"
-
 _colors = {
     {{47,51,78}, {86,67,143}, {128,95,164}}, --sencar 5 in the micro
     {{17, 15, 107}, {22, 121, 196}, {48, 208, 217}}, --blue
@@ -62,10 +59,8 @@ _colors = {
 }
 
 zoom = 3
-scrollPixels = 0
 mx, my = 0,0
 wx, wy = 0,0
-debug = false
 
 function onTick()
     acc = input.getBool(1)
@@ -81,8 +76,6 @@ function onTick()
     y = input.getNumber(5)
     compass = input.getNumber(6)*(math.pi*2)
 
-    carname = property.getText("Car name")
-
     if app == 1 then --maps
         if press > 0 and isPointInRectangle(touchX, touchY, 0, 18, 12, 12) then zoom = clamp(zoom - 0.01 - press/800, 0.3, 25) end
         if press > 0 and isPointInRectangle(touchX, touchY, 0, 30, 12, 12) then zoom = clamp(zoom + 0.01 + press/800, 0.3, 25) end
@@ -90,21 +83,6 @@ function onTick()
         if press == 2 and isPointInRectangle(touchX, touchY, 0, 52, 12, 12) then if wx == 0 then wx,wy = ax,ay else wx,wy = 0,0 end end
         output.setNumber(1, wx)
     end
-
-    if app == 2 then --info
-        if press > 0 and isPointInRectangle(touchX, touchY, 0, 18, 12, 19) then --up
-            scrollPixels = clamp(scrollPixels-1, 0, 10000) --honestly, the max value is arbitrary
-        end
-        if press > 0 and isPointInRectangle(touchX, touchY, 0, 39, 12, 19) then --down
-            if 90 - scrollPixels > 64 then
-                scrollPixels = scrollPixels + 1
-            end
-        end
-        if press == 2 and isPointInRectangle(touchX, touchY, 14, 76 - scrollPixels, 42, 10) then debug = not debug end
-    end
-
-    output.setNumber(1, scrollPixels)
-    output.setBool(1, debug)
 end
 
 function onDraw()
@@ -162,26 +140,6 @@ function onDraw()
             screen.drawText(16, 56, string.format("%.2fkm", zoom))
         end
 
-        if app == 2 then --info, dont question the app order
-            c(70, 70, 70)
-            screen.drawRectF(0, 15, 96, 64)
-            c(200, 200, 200)
-            screen.drawText(15, 18-scrollPixels, "Car Model")
-            screen.drawText(15, 36-scrollPixels, "OS Version")
-            screen.drawText(15, 54-scrollPixels, "OS Build")
-            c(150, 150, 150)
-            drawRoundedRect(15, 24-scrollPixels, #carname*5 + 2, 8)
-            drawRoundedRect(15, 42-scrollPixels, #SENCAR_VERSION*5 + 2, 8)
-            drawRoundedRect(15, 61-scrollPixels, #SENCAR_VERSION_BUILD*5 + 2, 8)
-            drawRoundedRect(15, 77-scrollPixels, 40, 8)
-            drawToggle(45, 80-scrollPixels, debug)
-            c(50, 50, 50)
-            screen.drawText(17, 26-scrollPixels, carname)
-            screen.drawText(17, 44-scrollPixels, SENCAR_VERSION)
-            screen.drawText(17, 63-scrollPixels, SENCAR_VERSION_BUILD)
-            screen.drawText(17, 79-scrollPixels, "debug")
-        end
-
 ----------[[* CONTROLS OVERLAY *]]--
         c(_[1][1], _[1][2], _[1][3], 250)
         screen.drawRectF(0, 15, 13, 64)
@@ -198,14 +156,6 @@ function onDraw()
             screen.drawLine(4, 21, 9, 21)
             screen.drawLine(6, 19, 6, 24)
             if wx == 0 then screen.drawText(5, 55, "W") else screen.drawText(5, 55, "C") end
-        end
-
-        if app == 2 then
-            c(200, 200, 200)
-            screen.drawRect(1, 19, 10, 18)
-            screen.drawRect(1, 40, 10, 18)
-            screen.drawTriangleF(3, 29, 6, 25, 10, 29)
-            screen.drawTriangleF(2, 48, 6, 53, 11, 48)
         end
     end
 end
