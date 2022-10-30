@@ -65,17 +65,13 @@ app = 0
 tick = 0
 function onTick()
     acc = input.getBool(1)
-    exist = input.getBool(3)
+    exist = input.getBool(2)
     theme = property.getNumber("Theme")
 
     press = input.getBool(3)
 
     touchX = input.getNumber(1)
     touchY = input.getNumber(2)
-
-    x = input.getNumber(4)
-    y = input.getNumber(5)
-    compass = input.getNumber(6)*(math.pi*2)
 
     clock = input.getNumber(3)
     if property.getBool("Units") then --

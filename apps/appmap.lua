@@ -1,4 +1,4 @@
---apps
+--appmap
 -- Author: SentyFunBall
 -- GitHub: https://github.com/SentyFunBall
 -- Workshop: 
@@ -74,7 +74,7 @@ function onTick()
     touchX = input.getNumber(1)
     touchY = input.getNumber(2)
 
-    press = input.getBool(2) and press + 1 or 0
+    press = input.getBool(3) and press + 1 or 0
     app = input.getNumber(3)
 
     x = input.getNumber(4)
