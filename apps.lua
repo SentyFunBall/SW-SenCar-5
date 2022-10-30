@@ -52,11 +52,7 @@ end
 -- the "LifeBoatAPI" is included by default in /_build/libs/ - you can use require("LifeBoatAPI") to get this, and use all the LifeBoatAPI.<functions>!
 require("LifeBoatAPI")
 
-SENCAR_VERSION_MAJOR = "5"
-SENCAR_VERSION_MINOR = "0"
-SENCAR_VERSION_PATCH = "dev"
-SENCAR_VERSION = SENCAR_VERSION_MAJOR.."."..SENCAR_VERSION_MINOR
-SENCAR_RELEASE = SENCAR_VERSION.."."..SENCAR_VERSION_PATCH
+SENCAR_VERSION = "5.0.dev"
 SENCAR_VERSION_BUILD = "10082314b"
 
 _colors = {
@@ -67,6 +63,8 @@ _colors = {
 
 zoom = 3
 scrollPixels = 0
+mx, my = 0,0
+wx, wy = 0,0
 debug = false
 
 function onTick()
@@ -88,7 +86,9 @@ function onTick()
     if app == 1 then --maps
         if press > 0 and isPointInRectangle(touchX, touchY, 0, 18, 12, 12) then zoom = clamp(zoom - 0.01 - press/800, 0.3, 25) end
         if press > 0 and isPointInRectangle(touchX, touchY, 0, 30, 12, 12) then zoom = clamp(zoom + 0.01 + press/800, 0.3, 25) end
-        if press > 0 and isPointInRectangle(touchX, touchY, 0, 42, 12, 12) then zoom = 3 end
+        if press > 0 and isPointInRectangle(touchX, touchY, 0, 42, 12, 12) then zoom = 3 mx,my = 0,0 end
+        if press == 2 and isPointInRectangle(touchX, touchY, 0, 52, 12, 12) then if wx == 0 then wx,wy = ax,ay else wx,wy = 0,0 end end
+        output.setNumber(1, wx)
     end
 
     if app == 2 then --info
@@ -103,10 +103,6 @@ function onTick()
         if press == 2 and isPointInRectangle(touchX, touchY, 14, 76 - scrollPixels, 42, 10) then debug = not debug end
     end
 
-    if app == 3 then --weather
-
-    end
-
     output.setNumber(1, scrollPixels)
     output.setBool(1, debug)
 end
@@ -117,19 +113,53 @@ function onDraw()
 
 ----------[[* MAIN OVERLAY *]]--
         if app == 1 then --map
-            screen.drawMap(x, y, zoom)
+            if mx == 0 then ax = x else ax = mx end --actual X
+            if my == 0 then ay = y else ay = my end --actual Y
+            if press == 2 and isPointInRectangle(touchX, touchY, 15, 13, 96, 64) then mx, my = map.screenToMap(ax, ay, zoom, 96, 64, touchX, touchY) end --masterX, masterY
+
+            screen.drawMap(ax, ay, zoom)
+
             c(_[2][1], _[2][2], _[2][3])
-            drawPointer(48, 32, compass, 5)
+            screen.drawCircle(48, 32, 1)
+            dx, dy = map.mapToScreen(ax, ay, zoom, 96, 64, x, y) --drawX, drawY 
+            drawPointer(dx, dy, compass, 5)
+
+            if wx ~= 0 then --if waypoint is active
+                -- find waypoint coords and draw the line from player to it
+                dx2,dy2 = map.mapToScreen(ax,ay, zoom, 96, 64, wx, wy)
+                screen.drawLine(dx2, dy2, dx, dy)
+
+                --draw the waypoint
+                c(_[3][1], _[3][2], _[3][3])
+                screen.drawCircle(dx2,dy2,1)
+
+                --find midpoint of line and draw distance in box
+                c(200,200,200)
+                sx, sy = (dx+dx2)/2, (dy+dy2)/2 --averageX, averageY
+                tempx, tempy = map.screenToMap(ax, ay, zoom, 96, 64, dx, dy)
+                tempx2, tempy2 = map.screenToMap(ax, ay, zoom, 96, 64, dx2, dy2)
+                dist = math.sqrt((tempx2 - tempx)*(tempx2 - tempx) + (tempy2 - tempy)*(tempy2 - tempy)) --should give us world distance
+                dist = dist/1000
+                if zoom < dist * 4 then 
+                    text = ("%.1fk"):format(dist)
+                    drawRoundedRect(math.floor(sx-10), math.floor(sy-10), #text*5+5, 8) 
+                    c(_[2][1], _[2][2], _[2][3])
+                    screen.drawText(sx-8, sy-8, text)
+                end
+            end
 
             c(_[1][1], _[1][2], _[1][3], 250)
-            tx = "X:"..string.format("%.1fk", x/1000)
-            ty = "Y:"..string.format("%.1fk", y/1000)
-            drawRoundedRect(54, 46, #tx*5+5, 16)
-            drawRoundedRect(14, 54, 32, 8)
+            tx = "X:"..("%.1fk"):format(ax/1000)
+            ty = "Y:"..("%.1fk"):format(ay/1000)
+            drawRoundedRect(54, 46, #ty*5+5, 16)
+            drawRoundedRect(14, 53, 37, 9)
             c(200, 200, 200)
             screen.drawText(55, 49, tx)
             screen.drawText(55, 55, ty)
-            screen.drawText(16, 56, string.format("%.2fk", zoom))
+            screen.drawLine(17,54,48,54)
+            screen.drawLine(17,53,17,54)
+            screen.drawLine(47,53,47,54)
+            screen.drawText(16, 56, string.format("%.2fkm", zoom))
         end
 
         if app == 2 then --info, dont question the app order
@@ -141,13 +171,13 @@ function onDraw()
             screen.drawText(15, 54-scrollPixels, "OS Build")
             c(150, 150, 150)
             drawRoundedRect(15, 24-scrollPixels, #carname*5 + 2, 8)
-            drawRoundedRect(15, 42-scrollPixels, #SENCAR_RELEASE*5 + 2, 8)
+            drawRoundedRect(15, 42-scrollPixels, #SENCAR_VERSION*5 + 2, 8)
             drawRoundedRect(15, 61-scrollPixels, #SENCAR_VERSION_BUILD*5 + 2, 8)
             drawRoundedRect(15, 77-scrollPixels, 40, 8)
             drawToggle(45, 80-scrollPixels, debug)
             c(50, 50, 50)
             screen.drawText(17, 26-scrollPixels, carname)
-            screen.drawText(17, 44-scrollPixels, SENCAR_RELEASE)
+            screen.drawText(17, 44-scrollPixels, SENCAR_VERSION)
             screen.drawText(17, 63-scrollPixels, SENCAR_VERSION_BUILD)
             screen.drawText(17, 79-scrollPixels, "debug")
         end
@@ -159,13 +189,15 @@ function onDraw()
         if app == 1 then
             --zoom icons
             c(170, 170, 170)
-            screen.drawRect(1, 19, 10, 10)
-            screen.drawRect(1, 31, 10, 10)
-            screen.drawRect(1, 43, 10, 10)
-            screen.drawText(5, 46, "R")
-            screen.drawLine(4, 36, 9, 36)
-            screen.drawLine(4, 24, 9, 24)
-            screen.drawLine(6, 22, 6, 27)
+            screen.drawRect(1, 16, 10, 10)
+            screen.drawRect(1, 28, 10, 10)
+            screen.drawRect(1, 40, 10, 10)
+            screen.drawRect(1, 52, 10, 10)
+            screen.drawText(5, 43, "R")
+            screen.drawLine(4, 33, 9, 33)
+            screen.drawLine(4, 21, 9, 21)
+            screen.drawLine(6, 19, 6, 24)
+            if wx == 0 then screen.drawText(5, 55, "W") else screen.drawText(5, 55, "C") end
         end
 
         if app == 2 then
