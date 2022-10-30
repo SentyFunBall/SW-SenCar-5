@@ -64,6 +64,7 @@ _colors = {
 
 scrollPixels = 0
 showInfo = false
+maxScroll = 0
 
 function onTick()
     acc = input.getBool(1)
@@ -84,14 +85,23 @@ function onTick()
     dist = input.getNumber(8)
 
     if app == 2 then --info
+        if showInfo then
+            maxScroll = 260
+        else
+            maxScroll = 140
+            if scrollPixels > maxScroll - 64 then
+                scrollPixels = maxScroll - 64
+            end
+        end
         if press > 0 and isPointInRectangle(touchX, touchY, 0, 18, 12, 19) then --up
             scrollPixels = clamp(scrollPixels-2, 0, 10000) --honestly, the max value is arbitrary
         end
         if press > 0 and isPointInRectangle(touchX, touchY, 0, 39, 12, 19) then --down
-            if 260 - scrollPixels > 64 then
+            if maxScroll - scrollPixels > 64 then
                 scrollPixels = scrollPixels + 2
             end
         end
+        output.setNumber(1, scrollPixels)
         if press == 2 and isPointInRectangle(touchX, touchY, 14, 128 - scrollPixels, 80, 10) then showInfo = not showInfo end
     end
 end
