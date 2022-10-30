@@ -54,12 +54,13 @@ require("LifeBoatAPI")
 _colors = {
     {{47,51,78}, {86,67,143}, {128,95,164}}, --sencar 5 in the micro
     {{17, 15, 107}, {22, 121, 196}, {48, 208, 217}}, --blue
-    {{74, 27, 99}, {124, 42, 161}, {182, 29, 224}} --purple
+    {{74, 27, 99}, {124, 42, 161}, {182, 29, 224}}, --purple
+    {{74, 27, 99}, {124, 42, 161}, {182, 29, 224}}, --temp
+    {{74, 27, 99}, {124, 42, 161}, {182, 29, 224}}, -- temp
+    {{74, 27, 99}, {124, 42, 161}, {182, 29, 224}}, --temp
+    {{74, 27, 99}, {124, 42, 161}, {182, 29, 224}} --temp
 }
 
-home = false
-pulse = false
-press = false
 app = 0
 
 tick = 0
@@ -75,15 +76,17 @@ function onTick()
 
     clock = input.getNumber(3)
     if property.getBool("Units") then --
-        clock = string.format("%02d",math.floor(clock*24)%12)..":"..string.format("%02d",math.floor((clock*1440)%60))
+        clock = ("%02d"):format(math.floor(clock*24)%12)..":"..("%02d"):format(math.floor((clock*1440)%60))
         if string.sub(clock, 1, 2) == "00" then
             clock = "12"..string.sub(clock, 3,-1)
         end
     else
-        clock = string.format("%02d",math.floor(clock*24))..":"..string.format("%02d",math.floor((clock*1440)%60))
+        clock = ("%02d"):format(math.floor(clock*24))..":"..("%02d"):format(math.floor((clock*1440)%60))
     end
 
-    home =  isPointInRectangle(touchX, touchY, 0, 7, 15, 7)
+    if isPointInRectangle(touchX, touchY, 0, 7, 15, 7) then
+        app = 0
+    end
 
     if isPointInRectangle(touchX, touchY, 36, 0, 13, 14) then
         app = 1 --map
@@ -91,8 +94,16 @@ function onTick()
     if isPointInRectangle(touchX, touchY, 51, 0, 13, 14) then
         app = 2 --info
     end
+    if isPointInRectangle(touchX, touchY, 22, 0, 13, 14) then
+        app = 3 --weather
+    end
+    if isPointInRectangle(touchX, touchY, 66, 0, 13, 14) then
+        app = 4 --car
+    end
+    if isPointInRectangle(touchX, touchY, 84,0,13,14) then
+        app = 5 --settings
+    end
 
-    if home then app = 0 end
 
     output.setNumber(3, app)
 
@@ -290,12 +301,6 @@ end
 
 function lerp(v0,v1,t)
     return v1*t+v0*(1-t)
-end
-
-function drawPointer(x,y,c,s)
-    local d = 5
-    local sin, pi, cos = math.sin, math.pi, math.cos
-    screen.drawTriangleF(sin(c - pi) * s + x + 1, cos(c - pi) * s + y +1, sin(c - pi/d) * s + x +1, cos(c - pi/d) * s + y +1, sin(c + pi/d) * s + x +1, cos(c + pi/d) * s + y +1)
 end
 
 function interpolate(x,y,alpha) --simple linear interpolation
