@@ -24,7 +24,6 @@ do
     simulator:setProperty("Units", true)
     simulator:setProperty("FONT1", "00019209B400AAAA793CA54A555690015244449415500BA0004903800009254956D4592EC54EC51C53A4F31C5354E52455545594104110490A201C7008A04504")
     simulator:setProperty("FONT2", "FFFE57DAD75C7246D6DCF34EF3487256B7DAE92E64D4975A924EBEDAF6DAF6DED74856B2D75A711CE924B6D4B6A4B6FAB55AB524E54ED24C911264965400000E")
-    simulator:setProperty("Car name", "Solstice")
 
     -- Runs every tick just before onTick; allows you to simulate the inputs changing
     ---@param simulator Simulator Use simulator:<function>() to set inputs etc.
@@ -65,6 +64,7 @@ wx, wy = 0,0
 function onTick()
     acc = input.getBool(1)
     theme = property.getNumber("Theme")
+    units = property.getBool("Units")
 
     touchX = input.getNumber(1)
     touchY = input.getNumber(2)
@@ -119,7 +119,12 @@ function onDraw()
                 dist = math.sqrt((tempx2 - tempx)*(tempx2 - tempx) + (tempy2 - tempy)*(tempy2 - tempy)) --should give us world distance
                 dist = dist/1000
                 if zoom < dist * 4 then 
-                    text = ("%.1fk"):format(dist)
+                    if units then --imperial
+                        text = ("%.1fmi"):format(dist/1.6)
+                    else-- metric
+                        text = ("%.1fk"):format(dist)
+                    end
+
                     drawRoundedRect(math.floor(sx-10), math.floor(sy-10), #text*5+5, 8) 
                     c(_[2][1], _[2][2], _[2][3])
                     screen.drawText(sx-8, sy-8, text)
@@ -127,8 +132,13 @@ function onDraw()
             end
 
             c(_[1][1], _[1][2], _[1][3], 250)
-            tx = "X:"..("%.1fk"):format(ax/1000)
-            ty = "Y:"..("%.1fk"):format(ay/1000)
+            if units then --imperial
+                tx = "X:"..("%.1fmi"):format(ax/1609)
+                ty = "Y:"..("%.1fmi"):format(ay/1609)
+            else --metric
+                tx = "X:"..("%.1fk"):format(ax/1000)
+                ty = "Y:"..("%.1fk"):format(ay/1000)
+            end
             drawRoundedRect(54, 46, #ty*5+5, 16)
             drawRoundedRect(14, 53, 37, 9)
             c(200, 200, 200)
@@ -137,7 +147,11 @@ function onDraw()
             screen.drawLine(17,54,48,54)
             screen.drawLine(17,53,17,54)
             screen.drawLine(47,53,47,54)
-            screen.drawText(16, 56, string.format("%.2fkm", zoom))
+            if units then
+                screen.drawText(16, 56, string.format("%.2fmi", zoom/1.6))
+            else
+                screen.drawText(16, 56, string.format("%.2fkm", zoom))
+            end
         end
 
 ----------[[* CONTROLS OVERLAY *]]--
