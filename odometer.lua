@@ -78,16 +78,15 @@ function onTick()
     end
 
     --if fuelStart ~= 0 then --when the engine is ON, calculate the fuel used, average speed and fuel economy
-    fuelUsed = math.abs(fuelStart - fuelEnd)
+    fuelUsed = math.abs(fuelStart - fuel)
     for i = 1, #speeds do
         avgSpeed = (avgSpeed + speeds[i]) or 0
     end
-    output.setNumber(5, avgSpeed)
 
     if Unit then --mpg
         fuelEcon = (fuelUsed / 3.785) / (distance / 1609.34) --miles / gallon
     else --l/100km
-        fuelEcon = fuelUsed / (distance * 1000 * 100) --idk blame nameous
+        fuelEcon = (fuelUsed*100)/distance/1000 --idk blame nameous
     end
 
     avgSpeed = (avgSpeed / #speeds) or 0
@@ -99,9 +98,13 @@ function onTick()
         output.setNumber(1, odometer / 1609)
         output.setNumber(2, fuelEcon)
         output.setNumber(3, avgSpeed * 2.23)
+        output.setNumber(4, fuelUsed/3.78)
+        output.setNumber(5, distance / 1609)
     else --km
         output.setNumber(1, odometer / 1000)
         output.setNumber(2, fuelEcon)
         output.setNumber(3, avgSpeed * 3.6)
+        output.setNumber(4, fuelUsed)
+        output.setNumber(5, distance / 1000)
     end
 end
