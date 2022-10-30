@@ -40,7 +40,7 @@ do
         simulator:setInputBool(1, true)
         simulator:setInputNumber(4, 0)
 
-        simulator:setInputNumber(3, math.floor(simulator:getSlider(1)*4))
+        simulator:setInputNumber(3, 2)
     end;
 end
 ---@endsection
@@ -86,14 +86,12 @@ function onTick()
             scrollPixels = clamp(scrollPixels-2, 0, 10000) --honestly, the max value is arbitrary
         end
         if press > 0 and isPointInRectangle(touchX, touchY, 0, 39, 12, 19) then --down
-            if 190 - scrollPixels > 64 then
+            if 224 - scrollPixels > 64 then
                 scrollPixels = scrollPixels + 2
             end
         end
-        if press == 2 and isPointInRectangle(touchX, touchY, 14, 76 - scrollPixels, 42, 10) then showInfo = not showInfo end
+        if press == 2 and isPointInRectangle(touchX, touchY, 14, 92 - scrollPixels, 80, 10) then showInfo = not showInfo end
     end
-
-    output.setBool(1, showInfo)
 end
 
 function onDraw()
@@ -106,17 +104,30 @@ function onDraw()
             c(70, 70, 70)
             screen.drawRectF(0, 0, 96, 64)
 
-            hcolor = {200, 200, 200}
-            rcolor = {150, 150, 150}
-            tcolor = {50, 50, 50}
+            hcolor = {_[2][1]+25, _[2][2]+25, _[2][3]+25}
+            rcolor = {_[3][1], _[3][2], _[3][3]}
+            tcolor = {_[1][1], _[1][2], _[1][3]}
             drawInfo(15, 16-scrollPixels, "Car name", carname, hcolor, rcolor, tcolor)
             if units then
                 drawInfo(15, 34-scrollPixels, "Distance Driven", ("%.1fmi"):format(odometer), hcolor, rcolor, tcolor)
                 drawInfo(15, 52-scrollPixels, "Fuel Economy", ("%.1fmpg"):format(econ), hcolor, rcolor, tcolor)
                 drawInfo(15, 70-scrollPixels, "Average Speed", ("%.1fmph"):format(avsp), hcolor, rcolor, tcolor)
+            else
+                drawInfo(15, 34-scrollPixels, "Distance Driven", ("%.1fkm"):format(odometer), hcolor, rcolor, tcolor)
+                drawInfo(15, 52-scrollPixels, "Fuel Economy", ("%.1fL/100km"):format(econ), hcolor, rcolor, tcolor)
+                drawInfo(15, 70-scrollPixels, "Average Speed", ("%.1fkmh"):format(avsp), hcolor, rcolor, tcolor)
             end
+            c(100, 100, 100)
+            screen.drawLine(15, 88-scrollPixels, 80, 88-scrollPixels)
+            drawFullToggle(15, 92-scrollPixels, showInfo, "Show OS info", rcolor, tcolor)
             if showInfo then
-                
+                drawInfo(15, 105-scrollPixels, "OS version", SENCAR_VERSION, hcolor, rcolor, tcolor)
+                drawInfo(15, 122-scrollPixels, "os build number", SENCAR_VERSION_BUILD, hcolor, rcolor, tcolor)
+                drawInfo(15, 139-scrollPixels, "map app build", APP_VERSIONS.MAP, hcolor, rcolor, tcolor)
+                drawInfo(15, 156-scrollPixels, "info app build", APP_VERSIONS.INFO, hcolor, rcolor, tcolor)
+                drawInfo(15, 173-scrollPixels, "wther app build", APP_VERSIONS.WEATHER, hcolor, rcolor, tcolor)
+                drawInfo(15, 190-scrollPixels, "car app build", APP_VERSIONS.CAR, hcolor, rcolor, tcolor)
+                drawInfo(15, 207-scrollPixels, "stting app build", APP_VERSIONS.SETTINGS, hcolor, rcolor, tcolor)
             end
         end
 
