@@ -81,17 +81,18 @@ function onTick()
     econ= input.getNumber(5)
     avsp = input.getNumber(6)
     fuelUsed = input.getNumber(7)
+    dist = input.getNumber(8)
 
     if app == 2 then --info
         if press > 0 and isPointInRectangle(touchX, touchY, 0, 18, 12, 19) then --up
             scrollPixels = clamp(scrollPixels-2, 0, 10000) --honestly, the max value is arbitrary
         end
         if press > 0 and isPointInRectangle(touchX, touchY, 0, 39, 12, 19) then --down
-            if 242 - scrollPixels > 64 then
+            if 260 - scrollPixels > 64 then
                 scrollPixels = scrollPixels + 2
             end
         end
-        if press == 2 and isPointInRectangle(touchX, touchY, 14, 110 - scrollPixels, 80, 10) then showInfo = not showInfo end
+        if press == 2 and isPointInRectangle(touchX, touchY, 14, 128 - scrollPixels, 80, 10) then showInfo = not showInfo end
     end
 end
 
@@ -111,26 +112,28 @@ function onDraw()
             drawInfo(15, 16-scrollPixels, "Car name", carname, hcolor, rcolor, tcolor)
             if units then
                 drawInfo(15, 34-scrollPixels, "Distance Driven", ("%.1fmi"):format(odometer), hcolor, rcolor, tcolor)
-                drawInfo(15, 52-scrollPixels, "Fuel Economy", ("%.1fmpg"):format(econ), hcolor, rcolor, tcolor)
-                drawInfo(15, 70-scrollPixels, "Average Speed", ("%.1fmph"):format(avsp), hcolor, rcolor, tcolor)
+                drawInfo(15, 52-scrollPixels, "Dist this trip", ("%.1fmi"):format(dist), hcolor, rcolor, tcolor)
+                drawInfo(15, 70-scrollPixels, "Fuel Economy", ("%.1fmpg"):format(econ), hcolor, rcolor, tcolor)
                 drawInfo(15, 88-scrollPixels, "Fuel used", ("%.1fgal"):format(fuelUsed), hcolor, rcolor, tcolor)
+                drawInfo(15, 106-scrollPixels, "Average Speed", ("%.1fmph"):format(avsp), hcolor, rcolor, tcolor)
             else
                 drawInfo(15, 34-scrollPixels, "Distance Driven", ("%.1fkm"):format(odometer), hcolor, rcolor, tcolor)
-                drawInfo(15, 52-scrollPixels, "Fuel Economy", ("%.1fL/100km"):format(econ), hcolor, rcolor, tcolor)
-                drawInfo(15, 70-scrollPixels, "Average Speed", ("%.1fkmh"):format(avsp), hcolor, rcolor, tcolor)
+                drawInfo(15, 52-scrollPixels, "Dist this trip", ("%.1fkm"):format(dist), hcolor, rcolor, tcolor)
+                drawInfo(15, 70-scrollPixels, "Fuel Economy", ("%.1fL/100km"):format(econ), hcolor, rcolor, tcolor)
                 drawInfo(15, 88-scrollPixels, "Fuel used", ("%.1fL"):format(fuelUsed), hcolor, rcolor, tcolor)
+                drawInfo(15, 106-scrollPixels, "Average Speed", ("%.1fkmh"):format(avsp), hcolor, rcolor, tcolor)
             end
             c(100, 100, 100)
-            screen.drawLine(15, 106-scrollPixels, 80, 106-scrollPixels)
-            drawFullToggle(15, 110-scrollPixels, showInfo, "Show OS info", rcolor, tcolor)
+            screen.drawLine(15, 124-scrollPixels, 80, 124-scrollPixels)
+            drawFullToggle(15, 128-scrollPixels, showInfo, "Show OS info", rcolor, tcolor)
             if showInfo then
-                drawInfo(15, 123-scrollPixels, "OS version", SENCAR_VERSION, hcolor, rcolor, tcolor)
-                drawInfo(15, 140-scrollPixels, "os build number", SENCAR_VERSION_BUILD, hcolor, rcolor, tcolor)
-                drawInfo(15, 157-scrollPixels, "map app build", APP_VERSIONS.MAP, hcolor, rcolor, tcolor)
-                drawInfo(15, 174-scrollPixels, "info app build", APP_VERSIONS.INFO, hcolor, rcolor, tcolor)
-                drawInfo(15, 191-scrollPixels, "wther app build", APP_VERSIONS.WEATHER, hcolor, rcolor, tcolor)
-                drawInfo(15, 208-scrollPixels, "car app build", APP_VERSIONS.CAR, hcolor, rcolor, tcolor)
-                drawInfo(15, 225-scrollPixels, "stting app build", APP_VERSIONS.SETTINGS, hcolor, rcolor, tcolor)
+                drawInfo(15, 140-scrollPixels, "OS version", SENCAR_VERSION, hcolor, rcolor, tcolor)
+                drawInfo(15, 157-scrollPixels, "os build number", SENCAR_VERSION_BUILD, hcolor, rcolor, tcolor)
+                drawInfo(15, 174-scrollPixels, "map app build", APP_VERSIONS.MAP, hcolor, rcolor, tcolor)
+                drawInfo(15, 191-scrollPixels, "info app build", APP_VERSIONS.INFO, hcolor, rcolor, tcolor)
+                drawInfo(15, 208-scrollPixels, "wther app build", APP_VERSIONS.WEATHER, hcolor, rcolor, tcolor)
+                drawInfo(15, 225-scrollPixels, "car app build", APP_VERSIONS.CAR, hcolor, rcolor, tcolor)
+                drawInfo(15, 243-scrollPixels, "stting app build", APP_VERSIONS.SETTINGS, hcolor, rcolor, tcolor)
             end
         end
 
