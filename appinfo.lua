@@ -53,7 +53,8 @@ end
 require("LifeBoatAPI")
 
 SENCAR_VERSION = "5.0.dev"
-SENCAR_VERSION_BUILD = "10082314b"
+SENCAR_VERSION_BUILD = "10082314e"
+APP_VERSIONS = {MAP = "10291958f", INFO = "10291027e", WEATHER = "", CAR = "", SETTINGS = ""}
 
 _colors = {
     {{47,51,78}, {86,67,143}, {128,95,164}}, --sencar 5 in the micro
@@ -62,11 +63,12 @@ _colors = {
 }
 
 scrollPixels = 0
-debug = false
+showInfo = false
 
 function onTick()
     acc = input.getBool(1)
     theme = property.getNumber("Theme")
+    units = property.getBool("Units")
 
     touchX = input.getNumber(1)
     touchY = input.getNumber(2)
@@ -75,20 +77,23 @@ function onTick()
     app = input.getNumber(3)
 
     carname = property.getText("Car name")
+    odometer = input.getNumber(4)
+    econ= input.getNumber(5)
+    avsp = input.getNumber(6)
 
     if app == 2 then --info
         if press > 0 and isPointInRectangle(touchX, touchY, 0, 18, 12, 19) then --up
-            scrollPixels = clamp(scrollPixels-1, 0, 10000) --honestly, the max value is arbitrary
+            scrollPixels = clamp(scrollPixels-2, 0, 10000) --honestly, the max value is arbitrary
         end
         if press > 0 and isPointInRectangle(touchX, touchY, 0, 39, 12, 19) then --down
-            if 90 - scrollPixels > 64 then
-                scrollPixels = scrollPixels + 1
+            if 190 - scrollPixels > 64 then
+                scrollPixels = scrollPixels + 2
             end
         end
-        if press == 2 and isPointInRectangle(touchX, touchY, 14, 76 - scrollPixels, 42, 10) then debug = not debug end
+        if press == 2 and isPointInRectangle(touchX, touchY, 14, 76 - scrollPixels, 42, 10) then showInfo = not showInfo end
     end
 
-    output.setBool(1, debug)
+    output.setBool(1, showInfo)
 end
 
 function onDraw()
@@ -100,21 +105,19 @@ function onDraw()
         if app == 2 then --info, dont question the app order
             c(70, 70, 70)
             screen.drawRectF(0, 0, 96, 64)
-            c(200, 200, 200)
-            screen.drawText(15, 18-scrollPixels, "Car Model")
-            screen.drawText(15, 36-scrollPixels, "OS Version")
-            screen.drawText(15, 54-scrollPixels, "OS Build")
-            c(150, 150, 150)
-            drawRoundedRect(15, 24-scrollPixels, #carname*5 + 2, 8)
-            drawRoundedRect(15, 42-scrollPixels, #SENCAR_VERSION*5 + 2, 8)
-            drawRoundedRect(15, 61-scrollPixels, #SENCAR_VERSION_BUILD*5 + 2, 8)
-            drawRoundedRect(15, 77-scrollPixels, 40, 8)
-            drawToggle(45, 80-scrollPixels, debug)
-            c(50, 50, 50)
-            screen.drawText(17, 26-scrollPixels, carname)
-            screen.drawText(17, 44-scrollPixels, SENCAR_VERSION)
-            screen.drawText(17, 63-scrollPixels, SENCAR_VERSION_BUILD)
-            screen.drawText(17, 79-scrollPixels, "debug")
+
+            hcolor = {200, 200, 200}
+            rcolor = {150, 150, 150}
+            tcolor = {50, 50, 50}
+            drawInfo(15, 16-scrollPixels, "Car name", carname, hcolor, rcolor, tcolor)
+            if units then
+                drawInfo(15, 34-scrollPixels, "Distance Driven", ("%.1fmi"):format(odometer), hcolor, rcolor, tcolor)
+                drawInfo(15, 52-scrollPixels, "Fuel Economy", ("%.1fmpg"):format(econ), hcolor, rcolor, tcolor)
+                drawInfo(15, 70-scrollPixels, "Average Speed", ("%.1fmph"):format(avsp), hcolor, rcolor, tcolor)
+            end
+            if showInfo then
+                
+            end
         end
 
 ----------[[* CONTROLS OVERLAY *]]--
@@ -142,10 +145,13 @@ function isPointInRectangle(x, y, rectX, rectY, rectW, rectH)
 	return x > rectX and y > rectY and x < rectX+rectW and y < rectY+rectH
 end
 
-function drawPointer(x,y,c,s)
-    local d = 5
-    local sin, pi, cos = math.sin, math.pi, math.cos
-    screen.drawTriangleF(sin(c - pi) * s + x + 1, cos(c - pi) * s + y +1, sin(c - pi/d) * s + x +1, cos(c - pi/d) * s + y +1, sin(c + pi/d) * s + x +1, cos(c + pi/d) * s + y +1)
+function drawInfo(x, y, header, text, hcolor, rcolor, tcolor) --function to draw some info with a header and a rounded rect
+    c(table.unpack(hcolor))
+    screen.drawText(x, y, header)
+    c(table.unpack(rcolor))
+    drawRoundedRect(x, y+6, #text*5+2, 8)
+    c(table.unpack(tcolor))
+    screen.drawText(x+2, y+8, text)
 end
 
 function drawRoundedRect(x, y, w, h)
@@ -155,6 +161,7 @@ function drawRoundedRect(x, y, w, h)
     screen.drawLine(x+w, y+2, x+w, y+h-1) --right
     screen.drawLine(x+2, y+h, x+w-1, y+h) --bottom
 end
+
 
 function drawToggle(x,y,state)
     if state then
@@ -174,6 +181,15 @@ function drawToggle(x,y,state)
         screen.drawLine(x+1, y, x+1, y+3)
         screen.drawLine(x, y+1, x+3, y+1)
     end
+
+end
+
+function drawFullToggle(x, y, state, text, bgcolor, tcolor)
+    c(table.unpack(bgcolor))
+    drawRoundedRect(x, y, #text*5+15, 8)
+    drawToggle(x+#text*5+5, y+3, state)
+    c(table.unpack(tcolor))
+    screen.drawText(x+2, y+2, text)
 end
 
 function clamp(value, lower, upper)
@@ -182,7 +198,7 @@ end
 
 --dst(x,y,text,size=1,rotation=1,is_monospace=false)
 --rotation can be between 1 and 4
-f=screen.drawRectF
+--[[f=screen.drawRectF
 g=property.getText
 --magic willy font
 h=g("FONT1")..g("FONT2")
@@ -208,4 +224,4 @@ end
 if o%2==1 then l=l+s else m=m+s end
 end
 end
-end
+end]]
