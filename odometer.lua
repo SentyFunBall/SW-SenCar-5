@@ -89,6 +89,8 @@ function onTick()
         fuelEcon = (fuelUsed*100)/distance/1000 --idk blame nameous
     end
 
+    if fuelEcon ~= fuelEcon then fuelEcon = 0 end
+
     avgSpeed = (avgSpeed / #speeds) or 0
     --end
 
