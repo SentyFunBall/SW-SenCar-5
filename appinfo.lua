@@ -101,7 +101,6 @@ function onTick()
                 scrollPixels = scrollPixels + 2
             end
         end
-        output.setNumber(1, scrollPixels)
         if press == 2 and isPointInRectangle(touchX, touchY, 14, 128 - scrollPixels, 80, 10) then showInfo = not showInfo end
     end
 end
