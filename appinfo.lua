@@ -95,11 +95,17 @@ function onTick()
         end
         if press > 0 and isPointInRectangle(touchX, touchY, 0, 18, 12, 19) then --up
             scrollPixels = clamp(scrollPixels-2, 0, 10000) --honestly, the max value is arbitrary
+            zoomin = true
+        else
+            zoomin = true
         end
         if press > 0 and isPointInRectangle(touchX, touchY, 0, 39, 12, 19) then --down
             if maxScroll - scrollPixels > 64 then
                 scrollPixels = scrollPixels + 2
             end
+            zoomout = true
+        else
+            zoomout =  false
         end
         if press == 2 and isPointInRectangle(touchX, touchY, 14, 128 - scrollPixels, 80, 10) then showInfo = not showInfo end
     end
@@ -151,9 +157,11 @@ function onDraw()
         screen.drawRectF(0, 15, 13, 64)
 
         if app == 2 then
-            c(200, 200, 200)
-            screen.drawRect(1, 19, 10, 18)
-            screen.drawRect(1, 40, 10, 18)
+            if zoomin then c(150,150,150) else c(170, 170, 170)end
+            drawRoundedRect(1, 19, 10, 18)
+            if zoomout then c(150,150,150) else c(170, 170, 170)end
+            drawRoundedRect(1, 40, 10, 18)
+            c(100,100,100)
             screen.drawTriangleF(3, 29, 6, 25, 10, 29)
             screen.drawTriangleF(2, 48, 6, 53, 11, 48)
         end

@@ -77,10 +77,11 @@ function onTick()
     compass = input.getNumber(6)*(math.pi*2)
 
     if app == 1 then --maps
-        if press > 0 and isPointInRectangle(touchX, touchY, 0, 18, 12, 12) then zoom = clamp(zoom - 0.01 - press/800, 0.3, 25) end
-        if press > 0 and isPointInRectangle(touchX, touchY, 0, 30, 12, 12) then zoom = clamp(zoom + 0.01 + press/800, 0.3, 25) end
-        if press > 0 and isPointInRectangle(touchX, touchY, 0, 42, 12, 12) then zoom = 3 mx,my = 0,0 end
-        if press == 2 and isPointInRectangle(touchX, touchY, 0, 52, 12, 12) then if wx == 0 then wx,wy = ax,ay else wx,wy = 0,0 end end
+        if press > 0 and isPointInRectangle(touchX, touchY, 0, 18, 12, 12) then zoom = clamp(zoom - 0.01 - press/800, 0.3, 25) zoomin = true else zoomin = false end --zoomin
+        if press > 0 and isPointInRectangle(touchX, touchY, 0, 30, 12, 12) then zoom = clamp(zoom + 0.01 + press/800, 0.3, 25) zoomout = true else zoomout = false end --zoomout
+        if press > 0 and isPointInRectangle(touchX, touchY, 0, 42, 12, 12) then zoom = 3 mx,my = 0,0 resetbtn = true else resetbtn = false end --reset
+        if press == 2 and isPointInRectangle(touchX, touchY, 0, 52, 12, 12) then if wx == 0 then wx,wy = ax,ay else wx,wy = 0,0 end wbtn = true else wbtn = false end --waypoint
+        if press > 0 and isPointInRectangle(touchX, touchY, 12, 14, 96, 64) then mapt = true else mapt = false end --map touch
         output.setNumber(1, wx)
     end
 end
@@ -147,10 +148,18 @@ function onDraw()
             screen.drawLine(17,54,48,54)
             screen.drawLine(17,53,17,54)
             screen.drawLine(47,53,47,54)
+
+            --draw the cur zoom according to the unit
             if units then
                 screen.drawText(16, 56, string.format("%.2fmi", zoom/1.6))
             else
                 screen.drawText(16, 56, string.format("%.2fkm", zoom))
+            end
+
+            --if the map is touched, put a light black box over it
+            if mapt then
+                c(0,0,0,100)
+                screen.drawRectF(12,14,96,64)
             end
         end
 
@@ -160,11 +169,15 @@ function onDraw()
 
         if app == 1 then
             --zoom icons
-            c(170, 170, 170)
-            screen.drawRect(1, 16, 10, 10)
-            screen.drawRect(1, 28, 10, 10)
-            screen.drawRect(1, 40, 10, 10)
-            screen.drawRect(1, 52, 10, 10)
+            if zoomin then c(150,150,150) else c(170, 170, 170)end
+            drawRoundedRect(1, 16, 10, 10)
+            if zoomout then c(150,150,150) else c(170, 170, 170)end
+            drawRoundedRect(1,28,10,10)
+            if resetbtn then c(150,150,150) else c(170, 170, 170)end
+            drawRoundedRect(1,40,10,10)
+            if wbtn then c(150,150,150) else c(170, 170, 170)end
+            drawRoundedRect(1,52,10,10)
+            c(100,100,100)
             screen.drawText(5, 43, "R")
             screen.drawLine(4, 33, 9, 33)
             screen.drawLine(4, 21, 9, 21)

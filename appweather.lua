@@ -40,7 +40,7 @@ do
         simulator:setInputBool(1, true)
         simulator:setInputNumber(4, 0)
 
-        simulator:setInputNumber(3, 2)
+        simulator:setInputNumber(3, 3)
     end;
 end
 ---@endsection
@@ -75,21 +75,20 @@ function onTick()
     press = input.getBool(3) and press + 1 or 0
     app = input.getNumber(3)
 
-    carname = property.getText("Car name")
-    odometer = input.getNumber(4)
-    econ= input.getNumber(5)
-    avsp = input.getNumber(6)
-    fuelUsed = input.getNumber(7)
-    dist = input.getNumber(8)
-
-    if app == 3 then --info
+    if app == 3 then --eather
         if press > 0 and isPointInRectangle(touchX, touchY, 0, 18, 12, 19) then --up
             scrollPixels = clamp(scrollPixels-2, 0, 10000) --honestly, the max value is arbitrary
+            zoomin = true
+        else
+            zoomin = false
         end
         if press > 0 and isPointInRectangle(touchX, touchY, 0, 39, 12, 19) then --down
             if 240 - scrollPixels > 64 then
                 scrollPixels = scrollPixels + 2
             end
+            zoomout = true
+        else
+            zoomout = false
         end
         if press == 2 and isPointInRectangle(touchX, touchY, 14, 128 - scrollPixels, 80, 10) then showInfo = not showInfo end
     end
@@ -102,14 +101,16 @@ function onDraw()
 ----------[[* MAIN OVERLAY *]]--
 
         if app == 3 then --info, dont question the app order
-            c(70, 70, 70)
+            c(135,206,235)
             screen.drawRectF(0, 0, 96, 64)
 
-            hcolor = {_[2][1]+25, _[2][2]+25, _[2][3]+25}
-            rcolor = {_[3][1], _[3][2], _[3][3]}
-            tcolor = {_[1][1], _[1][2], _[1][3]}
+            hcolor = {200, 200, 200}
+            rcolor = {100, 100, 100}
+            tcolor = {50, 50, 50}
             c(table.unpack(hcolor))
             screen.drawText(15, 16-scrollPixels, "Current weather")
+            c(100,100,100)
+            screen.drawLine(15,23-scrollPixels,80,23-scrollPixels)
         end
 
 ----------[[* CONTROLS OVERLAY *]]--
@@ -117,9 +118,11 @@ function onDraw()
         screen.drawRectF(0, 15, 13, 64)
 
         if app == 3 then
-            c(200, 200, 200)
-            screen.drawRect(1, 19, 10, 18)
-            screen.drawRect(1, 40, 10, 18)
+            if zoomin then c(150,150,150) else c(170, 170, 170)end
+            drawRoundedRect(1, 19, 10, 18)
+            if zoomout then c(150,150,150) else c(170, 170, 170)end
+            drawRoundedRect(1, 40, 10, 18)
+            c(100,100,100)
             screen.drawTriangleF(3, 29, 6, 25, 10, 29)
             screen.drawTriangleF(2, 48, 6, 53, 11, 48)
         end
