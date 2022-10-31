@@ -97,7 +97,7 @@ function onTick()
             scrollPixels = clamp(scrollPixels-2, 0, 10000) --honestly, the max value is arbitrary
             zoomin = true
         else
-            zoomin = true
+            zoomin = false
         end
         if press > 0 and isPointInRectangle(touchX, touchY, 0, 39, 12, 19) then --down
             if maxScroll - scrollPixels > 64 then
