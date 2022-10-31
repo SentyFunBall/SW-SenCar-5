@@ -22,6 +22,7 @@ do
     simulator:setScreen(1, "3x2")
     simulator:setProperty("Theme", 1)
     simulator:setProperty("Units", true)
+    simulator:setProperty("Car name", "Echolodia TE")
     simulator:setProperty("FONT1", "00019209B400AAAA793CA54A555690015244449415500BA0004903800009254956D4592EC54EC51C53A4F31C5354E52455545594104110490A201C7008A04504")
     simulator:setProperty("FONT2", "FFFE57DAD75C7246D6DCF34EF3487256B7DAE92E64D4975A924EBEDAF6DAF6DED74856B2D75A711CE924B6D4B6A4B6FAB55AB524E54ED24C911264965400000E")
 
@@ -77,6 +78,9 @@ function onTick()
     touchY = input.getNumber(2)
 
     clock = input.getNumber(3)
+
+    carName = property.getText("Car name")
+
     if property.getBool("Units") then --
         clock = ("%02d"):format(math.floor(clock*24)%12)..("%02d"):format(math.floor((clock*1440)%60))
         if string.sub(clock, 1, 2) == "00" then
@@ -141,6 +145,8 @@ function onDraw()
                 end
             end
             drawLogo()
+            c(200,200,200)
+            screen.drawTextBox(0, 55, 96, 6, carName, 0, 0)
         end
         
 
@@ -341,7 +347,7 @@ function drawToggle(x,y,state)
 end
 
 function drawLogo(tick, text)
-    tick = tick or 0
+    tick = tick or 255
     text = text or ""
     screen.setColor(15,2,30,tick)
     screen.drawRectF(27,11,41,41)
