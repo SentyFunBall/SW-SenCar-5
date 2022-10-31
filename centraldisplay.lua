@@ -36,8 +36,8 @@ do
         simulator:setInputNumber(1, screenConnection.touchX)
         simulator:setInputNumber(2, screenConnection.touchY)
 
-        simulator:setInputBool(1, true)
-        simulator:setInputBool(2, true)
+        simulator:setInputBool(1, simulator:getIsToggled(1))
+        simulator:setInputBool(2, simulator:getIsToggled(2))
         simulator:setInputNumber(3, simulator:getSlider(1))
         simulator:setInputNumber(4, 0)
     end;
@@ -62,8 +62,10 @@ _colors = {
 }
 
 app = 0
-
+oldapp = 0
 tick = 0
+tick2 = 255
+appNames = {"Home", "Map", "Info", "Weather", "Car", "Settings"}
 function onTick()
     acc = input.getBool(1)
     exist = input.getBool(2)
@@ -76,18 +78,17 @@ function onTick()
 
     clock = input.getNumber(3)
     if property.getBool("Units") then --
-        clock = ("%02d"):format(math.floor(clock*24)%12)..":"..("%02d"):format(math.floor((clock*1440)%60))
+        clock = ("%02d"):format(math.floor(clock*24)%12)..("%02d"):format(math.floor((clock*1440)%60))
         if string.sub(clock, 1, 2) == "00" then
             clock = "12"..string.sub(clock, 3,-1)
         end
     else
-        clock = ("%02d"):format(math.floor(clock*24))..":"..("%02d"):format(math.floor((clock*1440)%60))
+        clock = ("%02d"):format(math.floor(clock*24))..("%02d"):format(math.floor((clock*1440)%60))
     end
 
-    if isPointInRectangle(touchX, touchY, 0, 7, 15, 7) then
+    if isPointInRectangle(touchX, touchY, 10, 0, 12, 14) then
         app = 0
     end
-
     if isPointInRectangle(touchX, touchY, 36, 0, 13, 14) then
         app = 1 --map
     end
@@ -104,15 +105,25 @@ function onTick()
         app = 5 --settings
     end
 
-
-    output.setNumber(3, app)
-
+    if app ~= oldapp then
+        tick = -1
+        tick2 = 555
+    end
+    
     if exist and tick < 1 then
         tick = tick + 0.05
     end
+    if exist and tick2 > 0 then
+        tick2 = tick2 - 16
+    end
     if not exist and tick > 0 then
         tick = tick - 0.05
+        tick2 = tick2 + 12.75
     end
+
+    output.setNumber(3, app)
+    output.setNumber(1, tick)
+    oldapp = app
 end
 
 function onDraw()
@@ -126,37 +137,19 @@ function onDraw()
                         getBilinearValue(_[1][2], _[2][2], _[1][2], _[3][2], x/32, y/21),
                         getBilinearValue(_[1][3], _[2][3], _[1][3], _[3][3], x/32, y/21)
                     )
-                    screen.drawRectF(x*3-3, y*3-0, 3,3)
+                    screen.drawRectF(x*3-3, y*3, 3,3)
                 end
             end
-
-            --background
-            screen.setColor(15,2,30)
-            screen.drawRectF(27,11,41,41)
-            screen.drawRectF(28,10,39,1)
-            screen.drawRectF(26,12,1,39)
-            screen.drawRectF(28,52,39,1)
-            screen.drawRectF(68,12,1,39)
-            c(0,162,232)
-            screen.drawLine(44,22,52,22)
-            screen.drawLine(52,23,57,23)
-            screen.drawLine(57,24,60,24)
-            screen.drawLine(39,23,44,23)
-            screen.drawLine(36,24,39,24)
-
-            screen.drawLine(46,27,49,24)
-            screen.drawLine(46,27,46,31)
-            screen.drawLine(46,31,50,36)
-            screen.drawLine(50,36,50,41)
-            screen.drawLine(48,42,50,40)
+            drawLogo()
         end
+        
 
+        --draw dock
         c(_[1][1], _[1][2], _[1][3], 250)
         screen.drawRectF(0, 0, 96, 15)
 
-        --draw dock
         c(200, 200, 200)
-        dst(1, 1, clock, 1)
+        screen.drawTextBox(1, 1, 12, 30, clock, -1, -1)
 
         --apps
         -- weather app
@@ -264,14 +257,25 @@ function onDraw()
         drawToggle(85, 3, false)
         drawToggle(85, 8, true)
 
-
         --home button
-        drawRoundedRect(1, 7, 16, 6)
+        drawRoundedRect(11, 1, 8, 12)
         c(100, 100, 100)
-        dst(2, 8, "Home", 1)
+        screen.drawTriangleF(12,7.5,18,7.5,15,4.5)
+        screen.drawRectF(13,8.5,5,4)
+        c(200,200,200)
+        screen.drawRectF(15,10.5,1,2)
 
+        --cover
         c(0,0,0,lerp(255, 1, tick))
         screen.drawRectF(0,0,96,64)
+    end
+    if acc and tick2 >= 0 then
+        if not exist then
+            name = ""
+        else
+            name = appNames[app+1]
+        end
+        drawLogo(clamp(tick2, 0, 255), name)
     end
 end
 
@@ -287,7 +291,11 @@ function isPointInRectangle(x, y, rectX, rectY, rectW, rectH)
 end
 
 function lerp(v0,v1,t)
-    return v1*t+v0*(1-t)
+    return v1*t+v0*(1-clamp(t, 0, 1))
+end
+
+function clamp(x, min, max)
+    return math.max(math.min(x, max), min)
 end
 
 function interpolate(x,y,alpha) --simple linear interpolation
@@ -332,32 +340,27 @@ function drawToggle(x,y,state)
     end
 end
 
---dst(x,y,text,size=1,rotation=1,is_monospace=false)
---rotation can be between 1 and 4
-f=screen.drawRectF
-g=property.getText
---magic willy font
-h=g("FONT1")..g("FONT2")
-i={}j=0
-for k in h:gmatch("....")do i[j+1]=tonumber(k,16)j=j+1 end
-function dst(l,m,n,b,o,p)b=b or 1
-o=o or 1
-if o>2 then n=n:reverse()end
-n=n:upper()for q in n:gmatch(".")do
-r=q:byte()-31 if 0<r and r<=j then
-for s=1,15 do
-if o>2 then t=2^s else t=2^(16-s)end
-if i[r]&t==t then
-u,v=((s-1)%3)*b,((s-1)//3)*b
-if o%2==1 then f(l+u,m+v,b,b)else f(l+5-v,m+u,b,b)end
-end
-end
-if i[r]&1==1 and not p then
-s=2*b
-else
-s=4*b
-end
-if o%2==1 then l=l+s else m=m+s end
-end
-end
+function drawLogo(tick, text)
+    tick = tick or 0
+    text = text or ""
+    screen.setColor(15,2,30,tick)
+    screen.drawRectF(27,11,41,41)
+    screen.drawRectF(28,10,39,1)
+    screen.drawRectF(26,12,1,39)
+    screen.drawRectF(28,52,39,1)
+    screen.drawRectF(68,12,1,39)
+    c(0,162,232,tick)
+    screen.drawLine(44,22,52,22)
+    screen.drawLine(52,23,57,23)
+    screen.drawLine(57,24,60,24)
+    screen.drawLine(39,23,44,23)
+    screen.drawLine(36,24,39,24)
+
+    screen.drawLine(46,27,49,24)
+    screen.drawLine(46,27,46,31)
+    screen.drawLine(46,31,50,36)
+    screen.drawLine(50,36,50,41)
+    screen.drawLine(48,42,50,40)
+    c(200,200,200,tick)
+    screen.drawTextBox(0,44,96,8,text, 0)
 end
