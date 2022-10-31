@@ -266,7 +266,7 @@ function onDraw()
         screen.drawRectF(15,10.5,1,2)
 
         --cover
-        c(0,0,0,lerp(255, 1, tick))
+        c(0,0,0,lerp(255, 1, clamp(tick, 0, 1)))
         screen.drawRectF(0,0,96,64)
     end
     if acc and tick2 >= 0 then
@@ -362,5 +362,5 @@ function drawLogo(tick, text)
     screen.drawLine(50,36,50,41)
     screen.drawLine(48,42,50,40)
     c(200,200,200,tick)
-    screen.drawTextBox(0,44,96,8,text, 0)
+    screen.drawTextBox(0,44,96,8,text, 0, 0)
 end
