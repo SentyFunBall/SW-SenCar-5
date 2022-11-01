@@ -105,12 +105,17 @@ function onDraw()
             screen.drawRectF(0, 0, 96, 64)
 
             hcolor = {200, 200, 200}
-            rcolor = {100, 100, 100}
+            rcolor = {150, 150, 150}
             tcolor = {50, 50, 50}
             c(table.unpack(hcolor))
             screen.drawText(15, 16-scrollPixels, "Current weather")
             c(100,100,100)
             screen.drawLine(15,23-scrollPixels,80,23-scrollPixels)
+            drawInfo(15, 26-scrollPixels, "Conditions", "sunny", hcolor, rcolor, tcolor)
+            drawInfo(15 ,43-scrollPixels, "Temperature", "25*f", hcolor, rcolor, tcolor)
+            drawInfo(15, 60-scrollPixels, "Wind", "NE @ 14mph", hcolor, rcolor, tcolor)
+            drawInfo(15, 77-scrollPixels, "visibility", "1.4mi", hcolor, rcolor, tcolor)
+            drawInfo(15, 94-scrollPixels, "Rain", "Moderate", hcolor, rcolor, tcolor)
         end
 
 ----------[[* CONTROLS OVERLAY *]]--
