@@ -24,7 +24,6 @@ do
     simulator:setProperty("Units", true)
     simulator:setProperty("FONT1", "00019209B400AAAA793CA54A555690015244449415500BA0004903800009254956D4592EC54EC51C53A4F31C5354E52455545594104110490A201C7008A04504")
     simulator:setProperty("FONT2", "FFFE57DAD75C7246D6DCF34EF3487256B7DAE92E64D4975A924EBEDAF6DAF6DED74856B2D75A711CE924B6D4B6A4B6FAB55AB524E54ED24C911264965400000E")
-    simulator:setProperty("Car name", "Solstice")
 
     -- Runs every tick just before onTick; allows you to simulate the inputs changing
     ---@param simulator Simulator Use simulator:<function>() to set inputs etc.
@@ -38,7 +37,8 @@ do
         simulator:setInputNumber(2, screenConnection.touchY)
 
         simulator:setInputBool(1, true)
-        simulator:setInputNumber(4, 0)
+        simulator:setInputNumber(4, simulator:getSlider(1))
+        simulator:setInputNumber(9, simulator:getSlider(2)*100)
 
         simulator:setInputNumber(3, 3)
     end;
@@ -63,6 +63,7 @@ _colors = {
 }
 
 scrollPixels = 0
+conditions = "Sunny"
 
 function onTick()
     acc = input.getBool(1)
@@ -74,6 +75,23 @@ function onTick()
 
     press = input.getBool(3) and press + 1 or 0
     app = input.getNumber(3)
+
+    rain = input.getNumber(4)
+    windSpeed = input.getNumber(6)
+    fog = input.getNumber(7)*100
+    clock = input.getNumber(8)
+    temp = input.getNumber(9)
+    --windDir = (((1-(-input.getNumber(5)+0.249734))%1)*(math.pi*2))*(180/math.pi)+90
+    --compass = (-input.getNumber(10)*360+360)%360
+
+    compass = (-input.getNumber(10)+0.25)
+    windDir = (-input.getNumber(5)+0.25)
+
+    if -compass-windDir < 0 then trueDir = 1 - compass-windDir else trueDir = compass-windDir end
+    trueDir = (trueDir+0.5)%1
+    trueDirDeg = trueDir*360
+
+    diff = ("%.0f"):format(trueDirDeg)
 
     if app == 3 then --eather
         if press > 0 and isPointInRectangle(touchX, touchY, 0, 18, 12, 19) then --up
@@ -91,6 +109,28 @@ function onTick()
             zoomout = false
         end
         if press == 2 and isPointInRectangle(touchX, touchY, 14, 128 - scrollPixels, 80, 10) then showInfo = not showInfo end
+
+        if rain < 0.05 then 
+            rain = "None" 
+        elseif rain < 0.3 then 
+            if temp < 5 then 
+                rain = "Flurries"
+            else
+                rain = "Light"
+            end
+        elseif rain < 0.7 then 
+            if temp < 5 then
+                rain = "Heavy snow"
+            else
+                rain = "Moderate" 
+            end
+        else 
+            if temp < 5 then
+                rain = 'Blizzard'
+            else
+                rain = "Heavy" 
+            end
+        end
     end
 end
 
@@ -111,11 +151,11 @@ function onDraw()
             screen.drawText(15, 16-scrollPixels, "Current weather")
             c(100,100,100)
             screen.drawLine(15,23-scrollPixels,80,23-scrollPixels)
-            drawInfo(15, 26-scrollPixels, "Conditions", "sunny", hcolor, rcolor, tcolor)
+            drawInfo(15, 26-scrollPixels, "Conditions", conditions, hcolor, rcolor, tcolor)
             drawInfo(15 ,43-scrollPixels, "Temperature", "25*f", hcolor, rcolor, tcolor)
-            drawInfo(15, 60-scrollPixels, "Wind", "NE @ 14mph", hcolor, rcolor, tcolor)
+            drawInfo(15, 60-scrollPixels, "Wind", diff, hcolor, rcolor, tcolor)
             drawInfo(15, 77-scrollPixels, "visibility", "1.4mi", hcolor, rcolor, tcolor)
-            drawInfo(15, 94-scrollPixels, "Rain", "Moderate", hcolor, rcolor, tcolor)
+            drawInfo(15, 94-scrollPixels, "Rain", rain, hcolor, rcolor, tcolor)
         end
 
 ----------[[* CONTROLS OVERLAY *]]--
