@@ -1,4 +1,4 @@
---appmap
+--appcar
 -- Author: SentyFunBall
 -- GitHub: https://github.com/SentyFunBall
 -- Workshop: 
@@ -40,7 +40,7 @@ do
         simulator:setInputBool(1, true)
         simulator:setInputNumber(4, 0)
 
-        simulator:setInputNumber(3, 2)
+        simulator:setInputNumber(3, 4)
     end;
 end
 ---@endsection
@@ -52,10 +52,6 @@ end
 -- the "LifeBoatAPI" is included by default in /_build/libs/ - you can use require("LifeBoatAPI") to get this, and use all the LifeBoatAPI.<functions>!
 require("LifeBoatAPI")
 
-SENCAR_VERSION = "5.0.dev"
-SENCAR_VERSION_BUILD = "112222312f"
-APP_VERSIONS = {MAP = "10291958f", INFO = "10292319f", WEATHER = "1102222312f", CAR = "n/a", SETTINGS = "n/a"}
-
 _colors = {
     {{47,51,78}, {86,67,143}, {128,95,164}}, --sencar 5 in the micro
     {{17, 15, 107}, {22, 121, 196}, {48, 208, 217}}, --blue
@@ -63,8 +59,9 @@ _colors = {
 }
 
 scrollPixels = 0
-showInfo = false
-maxScroll = 0
+options = {
+    
+}
 
 function onTick()
     acc = input.getBool(1)
@@ -77,22 +74,7 @@ function onTick()
     press = input.getBool(3) and press + 1 or 0
     app = input.getNumber(3)
 
-    carname = property.getText("Car name")
-    odometer = input.getNumber(4)
-    econ= input.getNumber(5)
-    avsp = input.getNumber(6)
-    fuelUsed = input.getNumber(7)
-    dist = input.getNumber(8)
-
-    if app == 2 then --info
-        if showInfo then
-            maxScroll = 260
-        else
-            maxScroll = 140
-            if scrollPixels > maxScroll - 64 then
-                scrollPixels = maxScroll - 64
-            end
-        end
+    if app == 4 then --car
         if press > 0 and isPointInRectangle(touchX, touchY, 0, 18, 12, 19) then --up
             scrollPixels = clamp(scrollPixels-2, 0, 10000) --honestly, the max value is arbitrary
             zoomin = true
@@ -100,14 +82,13 @@ function onTick()
             zoomin = false
         end
         if press > 0 and isPointInRectangle(touchX, touchY, 0, 39, 12, 19) then --down
-            if maxScroll - scrollPixels > 64 then
+            if 190 - scrollPixels > 64 then
                 scrollPixels = scrollPixels + 2
             end
             zoomout = true
         else
             zoomout =  false
         end
-        if press == 2 and isPointInRectangle(touchX, touchY, 14, 128 - scrollPixels, 80, 10) then showInfo = not showInfo end
     end
 end
 
@@ -117,46 +98,24 @@ function onDraw()
 
 ----------[[* MAIN OVERLAY *]]--
 
-        if app == 2 then --info, dont question the app order
+        if app == 4 then --info, dont question the app order
             c(70, 70, 70)
             screen.drawRectF(0, 0, 96, 64)
 
             hcolor = {_[2][1]+25, _[2][2]+25, _[2][3]+25}
             rcolor = {_[3][1], _[3][2], _[3][3]}
             tcolor = {_[1][1], _[1][2], _[1][3]}
-            drawInfo(15, 16-scrollPixels, "Car name", carname, hcolor, rcolor, tcolor)
-            if units then
-                drawInfo(15, 34-scrollPixels, "Distance Driven", ("%.1fmi"):format(odometer), hcolor, rcolor, tcolor)
-                drawInfo(15, 52-scrollPixels, "Dist this trip", ("%.1fmi"):format(dist), hcolor, rcolor, tcolor)
-                drawInfo(15, 70-scrollPixels, "Fuel Economy", ("%.1fmpg"):format(econ), hcolor, rcolor, tcolor)
-                drawInfo(15, 88-scrollPixels, "Fuel used", ("%.1fgal"):format(fuelUsed), hcolor, rcolor, tcolor)
-                drawInfo(15, 106-scrollPixels, "Average Speed", ("%.1fmph"):format(avsp), hcolor, rcolor, tcolor)
-            else
-                drawInfo(15, 34-scrollPixels, "Distance Driven", ("%.1fkm"):format(odometer), hcolor, rcolor, tcolor)
-                drawInfo(15, 52-scrollPixels, "Dist this trip", ("%.1fkm"):format(dist), hcolor, rcolor, tcolor)
-                drawInfo(15, 70-scrollPixels, "Fuel Economy", ("%.1fL/100km"):format(econ), hcolor, rcolor, tcolor)
-                drawInfo(15, 88-scrollPixels, "Fuel used", ("%.1fL"):format(fuelUsed), hcolor, rcolor, tcolor)
-                drawInfo(15, 106-scrollPixels, "Average Speed", ("%.1fkmh"):format(avsp), hcolor, rcolor, tcolor)
-            end
-            c(100, 100, 100)
-            screen.drawLine(15, 124-scrollPixels, 80, 124-scrollPixels)
-            drawFullToggle(15, 128-scrollPixels, showInfo, "Show OS info", rcolor, tcolor)
-            if showInfo then
-                drawInfo(15, 140-scrollPixels, "OS version", SENCAR_VERSION, hcolor, rcolor, tcolor)
-                drawInfo(15, 157-scrollPixels, "os build number", SENCAR_VERSION_BUILD, hcolor, rcolor, tcolor)
-                drawInfo(15, 174-scrollPixels, "map app build", APP_VERSIONS.MAP, hcolor, rcolor, tcolor)
-                drawInfo(15, 191-scrollPixels, "info app build", APP_VERSIONS.INFO, hcolor, rcolor, tcolor)
-                drawInfo(15, 208-scrollPixels, "wther app build", APP_VERSIONS.WEATHER, hcolor, rcolor, tcolor)
-                drawInfo(15, 225-scrollPixels, "car app build", APP_VERSIONS.CAR, hcolor, rcolor, tcolor)
-                drawInfo(15, 243-scrollPixels, "stting app build", APP_VERSIONS.SETTINGS, hcolor, rcolor, tcolor)
-            end
+            c(table.unpack(hcolor))
+            screen.drawText(15,16-scrollPixels, "Car options")
+            c(100,100,100)
+            screen.drawLine(15,23-scrollPixels,80,23-scrollPixels)
         end
 
 ----------[[* CONTROLS OVERLAY *]]--
         c(_[1][1], _[1][2], _[1][3], 250)
         screen.drawRectF(0, 15, 13, 64)
 
-        if app == 2 then
+        if app == 4 then
             if zoomin then c(150,150,150) else c(170, 170, 170)end
             drawRoundedRect(1, 19, 10, 18)
             if zoomout then c(150,150,150) else c(170, 170, 170)end
