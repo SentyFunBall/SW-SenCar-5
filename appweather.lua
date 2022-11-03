@@ -37,8 +37,8 @@ do
         simulator:setInputNumber(2, screenConnection.touchY)
 
         simulator:setInputBool(1, true)
-        simulator:setInputNumber(4, simulator:getSlider(1))
-        simulator:setInputNumber(9, simulator:getSlider(2)*100)
+        simulator:setInputNumber(5, simulator:getSlider(1) - 0.5)
+        simulator:setInputNumber(10, simulator:getSlider(2)-0.5)
 
         simulator:setInputNumber(3, 3)
     end;
@@ -77,21 +77,9 @@ function onTick()
     app = input.getNumber(3)
 
     rain = input.getNumber(4)
-    windSpeed = math.abs(input.getNumber(6)) - input.getNumber(11) --subtract from speed for MAXIMUM ACCURACY
     fog = input.getNumber(7)
     clock = input.getNumber(8)
     temp = input.getNumber(9)
-    --windDir = (((1-(-input.getNumber(5)+0.249734))%1)*(math.pi*2))*(180/math.pi)+90
-    --compass = (-input.getNumber(10)*360+360)%360
-
-    compass = (-input.getNumber(10)+0.25)
-    windDir = (-input.getNumber(5)+0.25)
-
-    if -compass-windDir < 0 then trueDir = 1 - compass-windDir else trueDir = compass-windDir end
-    trueDir = (trueDir+0.5)%1
-    trueDirDeg = trueDir*360
-
-    diff = ("%.0f"):format(trueDirDeg)
 
     if app == 3 then --eather
         if press > 0 and isPointInRectangle(touchX, touchY, 0, 18, 12, 19) then --up
@@ -101,7 +89,7 @@ function onTick()
             zoomin = false
         end
         if press > 0 and isPointInRectangle(touchX, touchY, 0, 39, 12, 19) then --down
-            if 110 - scrollPixels > 64 then
+            if 94 - scrollPixels > 64 then
                 scrollPixels = scrollPixels + 2
             end
             zoomout = true
@@ -133,16 +121,11 @@ function onTick()
         end
 
         --conditions
-        if (rain == "Heavy" or rain == "Snow storm") and windSpeed > 10 then
+        if (rain == "Heavy" or rain == "Snow storm") then
             if temp < 5 then
                 conditions = "Blizzard"
             else
                 conditions = "Stormy"
-            end
-        elseif windSpeed > 15 then
-            conditions = "Windy"
-            if windSpeed > 25 then
-                conditions = "Extremely windy"
             end
         elseif rain == "Light" or rain == "Noderate" or rain == "Heavy" or rain == "Snow storm" then
             if temp < 5 then
@@ -173,10 +156,8 @@ function onTick()
         end
 
         if units then
-            windSpeed = string.format("%.0fmph", windSpeed*2.23)
             temp = string.format("%.0f*f", (temp) * (9/5) + 32)
         else
-            windSpeed = string.format("%.0fkmh", windSpeed*3.6)
             temp = string.format("%.0f*c", temp)
         end
     end
@@ -201,9 +182,8 @@ function onDraw()
             screen.drawLine(15,23-scrollPixels,80,23-scrollPixels)
             drawInfo(15, 26-scrollPixels, "Conditions", conditions, hcolor, rcolor, tcolor)
             drawInfo(15 ,43-scrollPixels, "Temperature", temp, hcolor, rcolor, tcolor)
-            drawInfo(15, 60-scrollPixels, "Wind", diff.."* at "..windSpeed, hcolor, rcolor, tcolor)
-            drawInfo(15, 77-scrollPixels, "Rain", rain, hcolor, rcolor, tcolor)
-            drawInfo(15, 94-scrollPixels, "fog", string.format("%.0f%%", fog*100), hcolor, rcolor, tcolor)
+            drawInfo(15, 60-scrollPixels, "Rain", rain, hcolor, rcolor, tcolor)
+            drawInfo(15, 77-scrollPixels, "fog", string.format("%.0f%%", fog*100), hcolor, rcolor, tcolor)
         end
 
 ----------[[* CONTROLS OVERLAY *]]--
