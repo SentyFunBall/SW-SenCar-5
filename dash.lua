@@ -104,7 +104,7 @@ function onTick()
     info.gpsY = input.getNumber(7)
     info.compass = input.getNumber(8)*(math.pi*2)
     info.drivemode = input.getNumber(9)
-    info.properties.upshift = input.getNumber(10)
+    info.properties.upshift = property.getNumber("Upshift RPS")
 
     if not fuelCollected then
         ticks = ticks + 1
