@@ -77,7 +77,7 @@ function onTick()
     app = input.getNumber(3)
 
     rain = input.getNumber(4)
-    windSpeed = input.getNumber(6)
+    windSpeed = math.abs(input.getNumber(6)) - input.getNumber(11) --subtract from speed for MAXIMUM ACCURACY
     fog = input.getNumber(7)*100
     clock = input.getNumber(8)
     temp = input.getNumber(9)
@@ -101,7 +101,7 @@ function onTick()
             zoomin = false
         end
         if press > 0 and isPointInRectangle(touchX, touchY, 0, 39, 12, 19) then --down
-            if 240 - scrollPixels > 64 then
+            if 110 - scrollPixels > 64 then
                 scrollPixels = scrollPixels + 2
             end
             zoomout = true
@@ -126,10 +126,18 @@ function onTick()
             end
         else 
             if temp < 5 then
-                rain = 'Blizzard'
+                rain = "Blizzard"
             else
                 rain = "Heavy" 
             end
+        end
+
+        if units then
+            windSpeed = string.format("%.0fmph", windSpeed*2.23)
+            temp = string.format("%.0f*f", (temp) * (9/5) + 32)
+        else
+            windSpeed = string.format("%.0fkmh", windSpeed*3.6)
+            temp = string.format("%.0f*c", temp)
         end
     end
 end
@@ -152,10 +160,10 @@ function onDraw()
             c(100,100,100)
             screen.drawLine(15,23-scrollPixels,80,23-scrollPixels)
             drawInfo(15, 26-scrollPixels, "Conditions", conditions, hcolor, rcolor, tcolor)
-            drawInfo(15 ,43-scrollPixels, "Temperature", "25*f", hcolor, rcolor, tcolor)
-            drawInfo(15, 60-scrollPixels, "Wind", diff, hcolor, rcolor, tcolor)
-            drawInfo(15, 77-scrollPixels, "visibility", "1.4mi", hcolor, rcolor, tcolor)
-            drawInfo(15, 94-scrollPixels, "Rain", rain, hcolor, rcolor, tcolor)
+            drawInfo(15 ,43-scrollPixels, "Temperature", temp, hcolor, rcolor, tcolor)
+            drawInfo(15, 60-scrollPixels, "Wind", diff.."* at "..windSpeed, hcolor, rcolor, tcolor)
+            drawInfo(15, 77-scrollPixels, "Rain", rain, hcolor, rcolor, tcolor)
+            drawInfo(15, 94-scrollPixels, "fog", string.format("%.0f%%", fog), hcolor, rcolor, tcolor)
         end
 
 ----------[[* CONTROLS OVERLAY *]]--
