@@ -64,6 +64,7 @@ _colors = {
 
 scrollPixels = 0
 conditions = "Sunny"
+showInfo = false
 
 function onTick()
     acc = input.getBool(1)
@@ -89,14 +90,14 @@ function onTick()
             zoomin = false
         end
         if press > 0 and isPointInRectangle(touchX, touchY, 0, 39, 12, 19) then --down
-            if 94 - scrollPixels > 64 then
+            if 108 - scrollPixels > 64 then
                 scrollPixels = scrollPixels + 2
             end
             zoomout = true
         else
             zoomout = false
         end
-        if press == 2 and isPointInRectangle(touchX, touchY, 14, 128 - scrollPixels, 80, 10) then showInfo = not showInfo end
+        if press == 2 and isPointInRectangle(touchX, touchY, 14, 97 - scrollPixels, 80, 10) then showInfo = not showInfo end
 
         if rain < 0.05 then 
             rain = "None" 
@@ -176,14 +177,22 @@ function onDraw()
             hcolor = {200, 200, 200}
             rcolor = {150, 150, 150}
             tcolor = {50, 50, 50}
-            c(table.unpack(hcolor))
-            screen.drawText(15, 16-scrollPixels, "Current weather")
+            if not showInfo then
+                c(table.unpack(hcolor))
+                screen.drawText(15, 16-scrollPixels, "Current weather")
+                c(100,100,100)
+                screen.drawLine(15,23-scrollPixels,80,23-scrollPixels)
+                drawInfo(15, 26-scrollPixels, "Conditions", conditions, hcolor, rcolor, tcolor)
+                drawInfo(15 ,43-scrollPixels, "Temperature", temp, hcolor, rcolor, tcolor)
+                drawInfo(15, 60-scrollPixels, "Rain", rain, hcolor, rcolor, tcolor)
+                drawInfo(15, 77-scrollPixels, "fog", string.format("%.0f%%", fog*100), hcolor, rcolor, tcolor)
+            else
+                c(50,50,50)
+                screen.drawTextBox(15, 16-scrollPixels, 80, 1000, "Wind data not presented due to vehicle speeds preventing accurate data measurements. We do not want to use third-party addons, so instead we try to provide you with the best weather app.", -1, -1)
+            end
             c(100,100,100)
-            screen.drawLine(15,23-scrollPixels,80,23-scrollPixels)
-            drawInfo(15, 26-scrollPixels, "Conditions", conditions, hcolor, rcolor, tcolor)
-            drawInfo(15 ,43-scrollPixels, "Temperature", temp, hcolor, rcolor, tcolor)
-            drawInfo(15, 60-scrollPixels, "Rain", rain, hcolor, rcolor, tcolor)
-            drawInfo(15, 77-scrollPixels, "fog", string.format("%.0f%%", fog*100), hcolor, rcolor, tcolor)
+            screen.drawLine(15,94-scrollPixels,80,94-scrollPixels)
+            drawFullToggle(15, 97-scrollPixels, showInfo, "Disclaimer", rcolor, tcolor)
         end
 
 ----------[[* CONTROLS OVERLAY *]]--
