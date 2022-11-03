@@ -122,37 +122,48 @@ function onTick()
         end
 
         --conditions
-        if (rain == "Heavy" or rain == "Snow storm") then
+        if (rain == "Heavy" or rain == "Snow storm") and fog > 0.5 then
             if temp < 5 then
                 conditions = "Blizzard"
+                color = {207, 207, 207}
             else
                 conditions = "Stormy"
+                color = {86, 88, 89}
             end
-        elseif rain == "Light" or rain == "Noderate" or rain == "Heavy" or rain == "Snow storm" then
+        elseif rain ~= "None" then
             if temp < 5 then
                 conditions = "Snowy"
+                color = {204, 206, 207}
             else
                 conditions = "Rainy"
+                color = {141, 151, 158}
             end
         elseif fog > 0.3 then
             if fog > 0.7 then
                 conditions = "Very foggy"
+                color = {90, 110, 120}
                 if temp < 5 then
                     conditions = "Freezing dense fog"
+                    color = {106, 119, 125}
                 end
             else
                 conditions = "Foggy"
+                color = {90, 110, 120}
                 if temp < 5 then
                    conditions = "Freezing fog" 
+                   olor = {106, 119, 125}
                 end
             end
         elseif temp < 5 then
             conditions = "Freezing"
+            color = {165, 242, 243}
         else
             if clock > 0.3 and clock < 0.7 then --day
                 conditions = "Sunny"
+                color = {133, 197, 230}
             else --night
                 conditions = "Clear"
+                color = {2, 0, 28}
             end
         end
 
@@ -171,7 +182,7 @@ function onDraw()
 ----------[[* MAIN OVERLAY *]]--
 
         if app == 3 then --info, dont question the app order
-            c(135,206,235)
+            c(table.unpack(color))
             screen.drawRectF(0, 0, 96, 64)
 
             hcolor = {200, 200, 200}
