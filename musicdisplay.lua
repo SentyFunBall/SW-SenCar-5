@@ -104,7 +104,7 @@ function onDraw()
 
         if connected then
             --background
-            --if not isPlayingMusic then
+            if not isPlayingMusic then
                 c(_[1][1], _[1][2], _[1][3],250) --i love tables
                 screen.drawRectF(3,3,26,26)
                 screen.drawLine(4,2,28,2)
@@ -112,7 +112,7 @@ function onDraw()
                 screen.drawLine(4,29,28,29)
                 screen.drawLine(2,4,2,28)
                 ticks = 0
-            --[[else
+            else
                 c(_[1][1], _[1][2], lerp(_[1][3], _[1][3]+25, ticks/300), 250)
                 screen.drawRectF(3,3,26,26)
                 screen.drawLine(4,2,28,2)
@@ -129,8 +129,8 @@ function onDraw()
                     ticks = ticks + 1
                 else
                     ticks = ticks - 1
-                end]]
-            --end
+                end
+            end
 
             --- stupid button outlines
             c(_[1][1]+55, _[1][2]+55, _[1][3]+55, 250)
