@@ -78,7 +78,7 @@ function onTick()
 
     rain = input.getNumber(4)
     windSpeed = math.abs(input.getNumber(6)) - input.getNumber(11) --subtract from speed for MAXIMUM ACCURACY
-    fog = input.getNumber(7)*100
+    fog = input.getNumber(7)
     clock = input.getNumber(8)
     temp = input.getNumber(9)
     --windDir = (((1-(-input.getNumber(5)+0.249734))%1)*(math.pi*2))*(180/math.pi)+90
@@ -126,9 +126,49 @@ function onTick()
             end
         else 
             if temp < 5 then
-                rain = "Blizzard"
+                rain = "Snow storm"
             else
                 rain = "Heavy" 
+            end
+        end
+
+        --conditions
+        if (rain == "Heavy" or rain == "Snow storm") and windSpeed > 10 then
+            if temp < 5 then
+                conditions = "Blizzard"
+            else
+                conditions = "Stormy"
+            end
+        elseif windSpeed > 15 then
+            conditions = "Windy"
+            if windSpeed > 25 then
+                conditions = "Extremely windy"
+            end
+        elseif rain == "Light" or rain == "Noderate" or rain == "Heavy" or rain == "Snow storm" then
+            if temp < 5 then
+                conditions = "Snowy"
+            else
+                conditions = "Rainy"
+            end
+        elseif fog > 0.3 then
+            if fog > 0.7 then
+                conditions = "Very foggy"
+                if temp < 5 then
+                    conditions = "Freezing dense fog"
+                end
+            else
+                conditions = "Foggy"
+                if temp < 5 then
+                   conditions = "Freezing fog" 
+                end
+            end
+        elseif temp < 5 then
+            conditions = "Freezing"
+        else
+            if clock > 0.3 and clock < 0.7 then --day
+                conditions = "Sunny"
+            else --night
+                conditions = "Clear"
             end
         end
 
@@ -163,7 +203,7 @@ function onDraw()
             drawInfo(15 ,43-scrollPixels, "Temperature", temp, hcolor, rcolor, tcolor)
             drawInfo(15, 60-scrollPixels, "Wind", diff.."* at "..windSpeed, hcolor, rcolor, tcolor)
             drawInfo(15, 77-scrollPixels, "Rain", rain, hcolor, rcolor, tcolor)
-            drawInfo(15, 94-scrollPixels, "fog", string.format("%.0f%%", fog), hcolor, rcolor, tcolor)
+            drawInfo(15, 94-scrollPixels, "fog", string.format("%.0f%%", fog*100), hcolor, rcolor, tcolor)
         end
 
 ----------[[* CONTROLS OVERLAY *]]--
