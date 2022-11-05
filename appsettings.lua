@@ -81,6 +81,7 @@ actions.Metric = not units
 actions.Manual = not def
 open = false
 maxscroll = 0
+cur = 1
 
 function onTick()
     acc = input.getBool(1)
@@ -121,13 +122,20 @@ function onTick()
             if press == 2 and isPointInRectangle(touchX, touchY, 15, 15-scrollPixels+i*11, 80, 8) then
                 actions[i][2] = not actions[i][2]
             end
-            output.setBool(i+3, actions[i][2])
+            output.setBool(i, actions[i][2])
         end
 
         --dropdown
         if press == 2 and isPointInRectangle(touchX, touchY, 15, 26-scrollPixels+#actions*11, 80, 8) then
             open = not open
         end
+        for i = 1, #themes do
+            if press == 2 and isPointInRectangle(touchX, touchY, 15, 26-scrollPixels+#actions*11+#themes*i+2, 80, 13) and open then
+                cur = i
+                open = not open
+            end
+        end
+        output.setNumber(1, cur)
     end
 end
 
