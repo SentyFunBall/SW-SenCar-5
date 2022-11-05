@@ -59,8 +59,13 @@ _colors = {
 }
 
 scrollPixels = 0
-options = {
-    
+actions = {
+    {"Hatch", false}, --cabin wall on echolodia5,2
+    {"Back light", false}, --not sure what this is on other cars other than echolodia
+    {"Transponder", false},
+    {"Heat", false},
+    {"Doors", false},
+    {"Disable chime", false}, --sucks for non pro cars i guess
 }
 
 function onTick()
@@ -82,12 +87,20 @@ function onTick()
             zoomin = false
         end
         if press > 0 and isPointInRectangle(touchX, touchY, 0, 39, 12, 19) then --down
-            if 190 - scrollPixels > 64 then
+            if #actions*11+25 - scrollPixels > 64 then
                 scrollPixels = scrollPixels + 2
             end
             zoomout = true
         else
             zoomout =  false
+        end
+
+        --PROCESSING
+        for i = 1, #actions do
+            if press == 2 and isPointInRectangle(touchX, touchY, 15, 15-scrollPixels+i*11, 80, 8) then
+                actions[i][2] = not actions[i][2]
+            end
+            output.setBool(i, actions[i][2])
         end
     end
 end
@@ -109,6 +122,11 @@ function onDraw()
             screen.drawText(15,16-scrollPixels, "Car options")
             c(100,100,100)
             screen.drawLine(15,23-scrollPixels,80,23-scrollPixels)
+
+            --draw the boxes procedually
+            for i=1, #actions do
+                drawFullToggle(15, 15-scrollPixels+i*11, actions[i][2], actions[i][1], rcolor, tcolor)
+            end
         end
 
 ----------[[* CONTROLS OVERLAY *]]--
@@ -187,6 +205,12 @@ end
 
 function clamp(value, lower, upper)
     return math.min(math.max(value, lower), upper)
+end
+
+function tablelength(T)
+    local count = 0
+    for _ in pairs(T) do count = count + 1 end
+    return count
 end
 
 --dst(x,y,text,size=1,rotation=1,is_monospace=false)
