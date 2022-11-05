@@ -100,7 +100,7 @@ function onTick()
             if press == 2 and isPointInRectangle(touchX, touchY, 15, 15-scrollPixels+i*11, 80, 8) then
                 actions[i][2] = not actions[i][2]
             end
-            output.setBool(i, actions[i][2])
+            output.setBool(i+3, actions[i][2])
         end
     end
 end
