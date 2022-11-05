@@ -93,6 +93,9 @@ function onTick()
     usingSenconnect = input.getBool(2) --disables map rendering, in favor of SenConnect's map
     info.properties.unit = input.getBool(32)
     info.properties.theme = input.getNumber(32)
+    if info.properties.theme  == 0 then
+        info.properties.theme = property.getNumber("Theme")
+    end
 
     --kill me
     info.speed = input.getNumber(1)

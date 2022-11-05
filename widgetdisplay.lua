@@ -74,6 +74,9 @@ function onTick()
     acc = input.getBool(1)
     exist = input.getBool(2)
     theme = input.getNumber(32)
+if theme == 0 then
+theme = property.getNumber("Theme")
+end
 
     battery = string.format("%.1f", input.getNumber(1)*100)
     battDelta = string.format("%.3f", input.getNumber(2)*-1000)

@@ -64,6 +64,9 @@ wx, wy = 0,0
 function onTick()
     acc = input.getBool(1)
     theme = input.getNumber(32)
+if theme == 0 then
+theme = property.getNumber("Theme")
+end
     units = input.getBool(32)
 
     touchX = input.getNumber(1)

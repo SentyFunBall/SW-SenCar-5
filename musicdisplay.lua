@@ -64,6 +64,9 @@ function onTick()
     acc = input.getBool(1)
     exist = input.getBool(2)
     theme = input.getNumber(32)
+if theme == 0 then
+theme = property.getNumber("Theme")
+end
 
     channel = math.ceil(input.getNumber(1))
     signalStrength = input.getNumber(2)

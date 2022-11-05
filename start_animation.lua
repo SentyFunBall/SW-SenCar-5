@@ -53,6 +53,9 @@ done = false
 function onTick()
     acc = input.getBool(1)
     theme = input.getNumber(32)
+if theme == 0 then
+theme = property.getNumber("Theme")
+end
     car = property.getText("Car name")
     if acc then
         if ticks < 150 then
