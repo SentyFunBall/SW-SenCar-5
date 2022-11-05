@@ -80,6 +80,7 @@ def = property.getBool("Transmission Default")
 actions.Metric = not units
 actions.Manual = not def
 open = false
+maxscroll = 0
 
 function onTick()
     acc = input.getBool(1)
@@ -92,6 +93,14 @@ function onTick()
     app = input.getNumber(3)
 
     if app == 5 then --die
+        if open then
+            maxScroll = 124
+        else
+            maxScroll = 70
+            if scrollPixels > maxScroll - 64 then
+                scrollPixels = maxScroll - 64
+            end
+        end
         if press > 0 and isPointInRectangle(touchX, touchY, 0, 18, 12, 19) then --up
             scrollPixels = clamp(scrollPixels-2, 0, 10000) --honestly, the max value is arbitrary
             zoomin = true
@@ -99,7 +108,7 @@ function onTick()
             zoomin = false
         end
         if press > 0 and isPointInRectangle(touchX, touchY, 0, 39, 12, 19) then --down
-            if 190 - scrollPixels > 64 then
+            if maxScroll - scrollPixels > 64 then
                 scrollPixels = scrollPixels + 2
             end
             zoomout = true
