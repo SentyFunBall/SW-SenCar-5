@@ -130,7 +130,7 @@ function onTick()
             open = not open
         end
         for i = 1, #themes do
-            if press == 2 and isPointInRectangle(touchX, touchY, 15, 26-scrollPixels+#actions*11+#themes*i+2, 80, 13) and open then
+            if press == 2 and isPointInRectangle(touchX, touchY, 15, 26-scrollPixels+#actions*11+#themes*i+2, 80, 10) and open then
                 cur = i
                 open = not open
             end
@@ -164,7 +164,7 @@ function onDraw()
             for i=1, #actions do
                 drawFullToggle(15, 15-scrollPixels+i*11, actions[i][2], actions[i][1], rcolor, tcolor)
             end
-            drawDropdown(15, 26-scrollPixels+#actions*11, open, "Theme \\/", themes, rcolor, tcolor)
+            drawDropdown(15, 26-scrollPixels+#actions*11, open, "Theme \/", themes, rcolor, tcolor)
         end
 
 ----------[[* CONTROLS OVERLAY *]]--
