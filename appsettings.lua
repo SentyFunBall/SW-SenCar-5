@@ -81,7 +81,7 @@ actions.Metric = not units
 actions.Manual = not def
 open = false
 maxscroll = 0
-cur = 1
+cur = theme
 
 function onTick()
     acc = input.getBool(1)
@@ -135,12 +135,15 @@ function onTick()
                 open = not open
             end
         end
-        output.setNumber(1, cur)
     end
+    for i = 1, #actions do
+        output.setBool(i, not actions[i][2])
+    end
+    output.setNumber(1, cur)
 end
 
 function onDraw()
-    local _ = _colors[theme]
+    local _ = _colors[cur]
     if acc then
 
 ----------[[* MAIN OVERLAY *]]--

@@ -70,7 +70,7 @@ appNames = {"Home", "Weather", "Map", "Info", "Car", "Settings"}
 function onTick()
     acc = input.getBool(1)
     exist = input.getBool(2)
-    theme = property.getNumber("Theme")
+    theme = input.getNumber(32)
 
     press = input.getBool(3)
 
@@ -81,7 +81,7 @@ function onTick()
 
     carName = property.getText("Car name")
 
-    if property.getBool("Units") then --
+    if input.getBool(32) then --
         clock = ("%02d"):format(math.floor(clock*24)%12)..("%02d"):format(math.floor((clock*1440)%60))
         if string.sub(clock, 1, 2) == "00" then
             clock = "12"..string.sub(clock, 3,-1)

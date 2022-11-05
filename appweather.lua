@@ -68,8 +68,8 @@ showInfo = false
 
 function onTick()
     acc = input.getBool(1)
-    theme = property.getNumber("Theme")
-    units = property.getBool("Units")
+    theme = input.getNumber(32)
+    units = input.getBool(32)
 
     touchX = input.getNumber(1)
     touchY = input.getNumber(2)

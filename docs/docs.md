@@ -43,6 +43,7 @@ _colors = {
 
 function onTick() --runs 60 times/second
     theme = property.getNumber("Theme") --gets the current theme. number 1-7
+    -- ignore that theme is a number in the actual OS, this is for simplicity
 end
 
 function onDraw() --runs 60 times/second for every screen connected

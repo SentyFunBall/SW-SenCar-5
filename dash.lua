@@ -82,9 +82,7 @@ info.properties.fuelwarn = property.getNumber("Fuel Warn %")/100
 info.properties.tempwarn = property.getNumber("Temp Warn")
 --info.properties.upshift = property.getNumber("Upshift RPS")
 info.properties.downshift = property.getNumber("Downshift RPS")
-info.properties.theme = property.getNumber("Theme")
 info.properties.trans = property.getBool("Transmission Default") --peculiar name
-info.properties.unit = property.getBool("Units")
 info.properties.useDriveModes = property.getBool("Use Drive Modes")
 info.properties.maxfuel = 180
 info.properties.topspeed = property.getNumber("Top Speed (m/s)")/100
@@ -93,6 +91,8 @@ function onTick()
     acc = input.getBool(1)
     exist = input.getBool(3)
     usingSenconnect = input.getBool(2) --disables map rendering, in favor of SenConnect's map
+    info.properties.unit = input.getBool(32)
+    info.properties.theme = input.getNumber(32)
 
     --kill me
     info.speed = input.getNumber(1)

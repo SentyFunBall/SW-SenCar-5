@@ -58,7 +58,7 @@ fuelCollected = false
 maxfuel = 180
 
 function onTick()
-    theme = property.getNumber("Theme")
+    theme = input.getNumber(32)
     fuelwarn = property.getNumber("Fuel Warn %")/100
     batwarn = property.getNumber("Bat Warn %")/100
     tempwarn = property.getNumber("Temp Warn")

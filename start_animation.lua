@@ -52,7 +52,7 @@ tick = 0 --tick is lerp
 done = false
 function onTick()
     acc = input.getBool(1)
-    theme = property.getNumber("Theme")
+    theme = input.getNumber(32)
     car = property.getText("Car name")
     if acc then
         if ticks < 150 then

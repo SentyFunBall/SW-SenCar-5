@@ -57,7 +57,7 @@ function onTick()
     pulse2 = input.getBool(2)
     speed = input.getNumber(1)
     fuel = input.getNumber(2)
-    Unit = property.getBool("Units")
+    Unit = input.getBool(32)
     if pulse then --get the starting fuel when the engine turns on
         fuelStart = fuel
         distance = 0

@@ -63,7 +63,7 @@ chdown = false
 function onTick()
     acc = input.getBool(1)
     exist = input.getBool(2)
-    theme = property.getNumber("Theme")
+    theme = input.getNumber(32)
 
     channel = math.ceil(input.getNumber(1))
     signalStrength = input.getNumber(2)
