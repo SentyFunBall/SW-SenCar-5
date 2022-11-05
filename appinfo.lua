@@ -40,7 +40,7 @@ do
         simulator:setInputBool(1, true)
         simulator:setInputNumber(4, 0)
 
-        simulator:setInputNumber(3, 2)
+        simulator:setInputNumber(3, 3)
     end;
 end
 ---@endsection
@@ -84,7 +84,7 @@ function onTick()
     fuelUsed = input.getNumber(7)
     dist = input.getNumber(8)
 
-    if app == 2 then --info
+    if app == 3 then --info
         if showInfo then
             maxScroll = 260
         else
@@ -117,7 +117,7 @@ function onDraw()
 
 ----------[[* MAIN OVERLAY *]]--
 
-        if app == 2 then --info, dont question the app order
+        if app == 3 then --info, dont question the app order
             c(70, 70, 70)
             screen.drawRectF(0, 0, 96, 64)
 
@@ -156,7 +156,7 @@ function onDraw()
         c(_[1][1], _[1][2], _[1][3], 250)
         screen.drawRectF(0, 15, 13, 64)
 
-        if app == 2 then
+        if app == 3 then
             if zoomin then c(150,150,150) else c(170, 170, 170)end
             drawRoundedRect(1, 19, 10, 18)
             if zoomout then c(150,150,150) else c(170, 170, 170)end

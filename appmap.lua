@@ -39,7 +39,7 @@ do
         simulator:setInputBool(1, true)
         simulator:setInputNumber(4, 0)
 
-        simulator:setInputNumber(3, math.floor(simulator:getSlider(1)*4))
+        simulator:setInputNumber(3, 2)
     end;
 end
 ---@endsection
@@ -76,7 +76,7 @@ function onTick()
     y = input.getNumber(5)
     compass = input.getNumber(6)*(math.pi*2)
 
-    if app == 1 then --maps
+    if app == 2 then --maps
         if press > 0 and isPointInRectangle(touchX, touchY, 0, 18, 12, 12) then zoom = clamp(zoom - 0.01 - press/800, 0.3, 25) zoomin = true else zoomin = false end --zoomin
         if press > 0 and isPointInRectangle(touchX, touchY, 0, 30, 12, 12) then zoom = clamp(zoom + 0.01 + press/800, 0.3, 25) zoomout = true else zoomout = false end --zoomout
         if press > 0 and isPointInRectangle(touchX, touchY, 0, 42, 12, 12) then zoom = 3 mx,my = 0,0 resetbtn = true else resetbtn = false end --reset
@@ -91,7 +91,7 @@ function onDraw()
     if acc then
 
 ----------[[* MAIN OVERLAY *]]--
-        if app == 1 then --map
+        if app == 2 then --map
             if mx == 0 then ax = x else ax = mx end --actual X
             if my == 0 then ay = y else ay = my end --actual Y
             if press == 2 and isPointInRectangle(touchX, touchY, 15, 13, 96, 64) then mx, my = map.screenToMap(ax, ay, zoom, 96, 64, touchX, touchY) end --masterX, masterY
@@ -167,7 +167,7 @@ function onDraw()
         c(_[1][1], _[1][2], _[1][3], 250)
         screen.drawRectF(0, 15, 13, 64)
 
-        if app == 1 then
+        if app == 2 then
             --zoom icons
             if zoomin then c(150,150,150) else c(170, 170, 170)end
             drawRoundedRect(1, 16, 10, 10)

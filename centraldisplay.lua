@@ -66,7 +66,7 @@ app = 0
 oldapp = 0
 tick = 0
 tick2 = 255
-appNames = {"Home", "Map", "Info", "Weather", "Car", "Settings"}
+appNames = {"Home", "Weather", "Map", "Info", "Car", "Settings"}
 function onTick()
     acc = input.getBool(1)
     exist = input.getBool(2)
@@ -94,13 +94,13 @@ function onTick()
         app = 0
     end
     if isPointInRectangle(touchX, touchY, 36, 0, 13, 14) then
-        app = 1 --map
+        app = 2 --map
     end
     if isPointInRectangle(touchX, touchY, 51, 0, 13, 14) then
-        app = 2 --info
+        app = 3 --info
     end
     if isPointInRectangle(touchX, touchY, 22, 0, 13, 14) then
-        app = 3 --weather
+        app = 1 --weather
     end
     if isPointInRectangle(touchX, touchY, 66, 0, 13, 14) then
         app = 4 --car
@@ -128,6 +128,7 @@ function onTick()
     output.setNumber(3, app)
     output.setNumber(1, tick)
     oldapp = app
+    output.setNumber(2, 16+app*6)
 end
 
 function onDraw()
@@ -270,10 +271,21 @@ function onDraw()
         screen.drawRectF(13,8.5,5,4)
         c(200,200,200)
         screen.drawRectF(15,10.5,1,2)
+        
+        --current app dot thing
+        if app ~= 0 then
+            c(250,250,250)
+            if app == 5 then
+                screen.drawLine(88, 14, 91, 14)
+            else
+                screen.drawLine(10+app*15, 14, 15+app*15, 14)
+            end
+        end
 
         --cover
         c(0,0,0,lerp(255, 1, clamp(tick, 0, 1)))
         screen.drawRectF(0,0,96,64)
+
     end
     if acc and tick2 >= 0 then
         if not exist then

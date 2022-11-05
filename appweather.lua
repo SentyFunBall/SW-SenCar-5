@@ -40,7 +40,7 @@ do
         simulator:setInputNumber(5, simulator:getSlider(1) - 0.5)
         simulator:setInputNumber(10, simulator:getSlider(2)-0.5)
 
-        simulator:setInputNumber(3, 3)
+        simulator:setInputNumber(3, 1)
     end;
 end
 ---@endsection
@@ -82,7 +82,7 @@ function onTick()
     clock = input.getNumber(8)
     temp = input.getNumber(9)
 
-    if app == 3 then --eather
+    if app == 1 then --eather
         if press > 0 and isPointInRectangle(touchX, touchY, 0, 18, 12, 19) then --up
             scrollPixels = clamp(scrollPixels-2, 0, 10000) --honestly, the max value is arbitrary
             zoomin = true
@@ -181,7 +181,7 @@ function onDraw()
 
 ----------[[* MAIN OVERLAY *]]--
 
-        if app == 3 then --info, dont question the app order
+        if app == 1 then
             c(table.unpack(color))
             screen.drawRectF(0, 0, 96, 64)
 
@@ -210,7 +210,7 @@ function onDraw()
         c(_[1][1], _[1][2], _[1][3], 250)
         screen.drawRectF(0, 15, 13, 64)
 
-        if app == 3 then
+        if app == 1 then
             if zoomin then c(150,150,150) else c(170, 170, 170)end
             drawRoundedRect(1, 19, 10, 18)
             if zoomout then c(150,150,150) else c(170, 170, 170)end
