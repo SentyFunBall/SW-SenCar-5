@@ -40,7 +40,7 @@ do
         simulator:setInputBool(1, true)
         simulator:setInputNumber(4, 0)
 
-        simulator:setInputNumber(3, 4)
+        simulator:setInputNumber(3, 5)
     end;
 end
 ---@endsection
@@ -60,18 +60,30 @@ _colors = {
 
 scrollPixels = 0
 actions = {
-    {"Hatch", false}, --cabin wall on echolodia5,2
-    {"Back light", false}, --not sure what this is on other cars other than echolodia
-    {"Transponder", false},
-    {"Heat", false},
-    {"Doors", false},
-    {"Disable chime", false}, --sucks for non pro cars i guess
+    {"Metric", false},
+    {"Manual", false},
+    {"SenConnect", true},
 }
+themes = {
+    "Default",
+    "blue",
+    "purple",
+    "green",
+    "TE red",
+    "Grey",
+    "Orange"
+}
+
+theme = property.getNumber("Theme")
+units = property.getBool("Units")
+def = property.getBool("Transmission Default")
+actions.Metric = not units
+actions.Manual = not def
+open = false
 
 function onTick()
     acc = input.getBool(1)
-    theme = property.getNumber("Theme")
-    units = property.getBool("Units")
+
 
     touchX = input.getNumber(1)
     touchY = input.getNumber(2)
@@ -79,7 +91,7 @@ function onTick()
     press = input.getBool(3) and press + 1 or 0
     app = input.getNumber(3)
 
-    if app == 4 then --car
+    if app == 5 then --die
         if press > 0 and isPointInRectangle(touchX, touchY, 0, 18, 12, 19) then --up
             scrollPixels = clamp(scrollPixels-2, 0, 10000) --honestly, the max value is arbitrary
             zoomin = true
@@ -87,7 +99,7 @@ function onTick()
             zoomin = false
         end
         if press > 0 and isPointInRectangle(touchX, touchY, 0, 39, 12, 19) then --down
-            if #actions*11+25 - scrollPixels > 64 then
+            if 190 - scrollPixels > 64 then
                 scrollPixels = scrollPixels + 2
             end
             zoomout = true
@@ -102,6 +114,11 @@ function onTick()
             end
             output.setBool(i+3, actions[i][2])
         end
+
+        --dropdown
+        if press == 2 and isPointInRectangle(touchX, touchY, 15, 26-scrollPixels+#actions*11, 80, 8) then
+            open = not open
+        end
     end
 end
 
@@ -111,7 +128,7 @@ function onDraw()
 
 ----------[[* MAIN OVERLAY *]]--
 
-        if app == 4 then --I KNOW WHAT FILE IM IN INTELLISENSE
+        if app == 5 then
             c(70, 70, 70)
             screen.drawRectF(0, 0, 96, 64)
 
@@ -119,7 +136,7 @@ function onDraw()
             rcolor = {_[3][1], _[3][2], _[3][3]}
             tcolor = {_[1][1], _[1][2], _[1][3]}
             c(table.unpack(hcolor))
-            screen.drawText(15,16-scrollPixels, "Car options")
+            screen.drawText(15,16-scrollPixels, "OS options")
             c(100,100,100)
             screen.drawLine(15,23-scrollPixels,80,23-scrollPixels)
 
@@ -127,13 +144,14 @@ function onDraw()
             for i=1, #actions do
                 drawFullToggle(15, 15-scrollPixels+i*11, actions[i][2], actions[i][1], rcolor, tcolor)
             end
+            drawDropdown(15, 26-scrollPixels+#actions*11, open, "Theme \\/", themes, rcolor, tcolor)
         end
 
 ----------[[* CONTROLS OVERLAY *]]--
         c(_[1][1], _[1][2], _[1][3], 250)
         screen.drawRectF(0, 15, 13, 64)
 
-        if app == 4 then
+        if app == 5 then
             if zoomin then c(150,150,150) else c(170, 170, 170)end
             drawRoundedRect(1, 19, 10, 18)
             if zoomout then c(150,150,150) else c(170, 170, 170)end
@@ -201,6 +219,23 @@ function drawFullToggle(x, y, state, text, bgcolor, tcolor)
     drawToggle(x+#text*5+5, y+3, state)
     c(table.unpack(tcolor))
     screen.drawText(x+2, y+2, text)
+end
+
+function drawDropdown(x, y, open, title, content, bgcolro, tcolor)
+    c(table.unpack(bgcolro))
+    if not open then
+        drawRoundedRect(x, y, #title*5+15, 8)
+        c(table.unpack(tcolor))
+        screen.drawText(x+2, y+2, title)
+    else
+        drawRoundedRect(x, y, #title*5+15, #content*9)
+        c(table.unpack(tcolor))
+        screen.drawLine(x, y+8, x+#title*5+16, y+8)
+        screen.drawText(x+2, y+2, title)
+        for i = 1, #content do
+            screen.drawText(x+2, y+2+i*8, content[i])
+        end
+    end
 end
 
 function clamp(value, lower, upper)
