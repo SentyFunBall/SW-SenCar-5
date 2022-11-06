@@ -134,7 +134,7 @@ function onTick()
             open = not open
         end
         for i = 1, #themes do
-            if press == 2 and isPointInRectangle(touchX, touchY, 15, 26-scrollPixels+#actions*11+#themes*i+2, 80, 10) and open then
+            if press == 2 and isPointInRectangle(touchX, touchY, 15, 26-scrollPixels+#actions*11+#themes*i+i, 80, 8) and open then
                 cur = i
                 open = not open
             end
