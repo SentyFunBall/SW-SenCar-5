@@ -55,7 +55,11 @@ require("LifeBoatAPI")
 _colors = {
     {{47,51,78}, {86,67,143}, {128,95,164}}, --sencar 5 in the micro
     {{17, 15, 107}, {22, 121, 196}, {48, 208, 217}}, --blue
-    {{74, 27, 99}, {124, 42, 161}, {182, 29, 224}} --purple
+    {{74, 27, 99}, {124, 42, 161}, {182, 29, 224}}, --purple
+            {{35, 54, 41}, {29, 87, 36}, {12, 133, 26}}, --green
+{{69, 1, 10}, {122, 0, 0}, {160, 9, 9}}, --TE red
+{{38, 38, 38}, {92, 92, 92}, {140, 140, 140}}, --grey
+{{92, 50, 1}, {158, 92, 16}, {201, 119, 24}} --orange
 }
 
 scrollPixels = 0
@@ -76,7 +80,7 @@ themes = {
 
 theme = property.getNumber("Theme")
 units = property.getBool("Units")
-def = property.getBool("Transmission Default")
+def = property.getBool("Transmission")
 actions[1][2] = not units
 actions[2][2] = not def
 open = false
@@ -164,7 +168,7 @@ function onDraw()
             for i=1, #actions do
                 drawFullToggle(15, 15-scrollPixels+i*11, actions[i][2], actions[i][1], rcolor, tcolor)
             end
-            drawDropdown(15, 26-scrollPixels+#actions*11, open, "Theme \\/", themes, cur, rcolor, tcolor)
+            drawDropdown(15, 26-scrollPixels+#actions*11, open, "Theme \/", themes, cur, rcolor, tcolor)
         end
 
 ----------[[* CONTROLS OVERLAY *]]--

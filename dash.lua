@@ -70,7 +70,11 @@ require("LifeBoatAPI")
 _colors = {
     {{47,51,78}, {86,67,143}, {128,95,164}}, --sencar 5 in the micro
     {{17, 15, 107}, {22, 121, 196}, {48, 208, 217}}, --blue
-    {{74, 27, 99}, {124, 42, 161}, {182, 29, 224}} --purple
+    {{74, 27, 99}, {124, 42, 161}, {182, 29, 224}}, --purple
+    {{35, 54, 41}, {29, 87, 36}, {12, 133, 26}}, --green
+    {{69, 1, 10}, {122, 0, 0}, {160, 9, 9}}, --TE red
+    {{38, 38, 38}, {92, 92, 92}, {140, 140, 140}}, --grey
+    {{92, 50, 1}, {158, 92, 16}, {201, 119, 24}} --orange
 }
 
 info = {properties = {}}
@@ -83,7 +87,6 @@ info.properties.tempwarn = property.getNumber("Temp Warn")
 --info.properties.upshift = property.getNumber("Upshift RPS")
 info.properties.downshift = property.getNumber("Downshift RPS")
 info.properties.useDriveModes = property.getBool("Use Drive Modes")
-info.properties.maxfuel = 180
 info.properties.topspeed = property.getNumber("Top Speed (m/s)")/100
 
 function onTick()
@@ -95,14 +98,14 @@ function onTick()
     info.properties.trans = input.getBool(31) --peculiar property name
     if info.properties.theme  == 0 then
         info.properties.theme = property.getNumber("Theme")
-        info.properties.trans = property.getBool("Transmission Default")
+        info.properties.trans = property.getBool("Transmission")
         info.properties.unit = property.getBool("Units")
     end
 
     --kill me
     info.speed = input.getNumber(1)
     info.gear = input.getNumber(2) -- p, r, n, (1, 2, 3, 4, 5)
-    info.rps = clamp(input.getNumber(3), 0, 25)
+    info.rps = input.getNumber(3)
     info.fuel = input.getNumber(4)
     info.temp = input.getNumber(5)
     info.gpsX = input.getNumber(6)
@@ -129,7 +132,7 @@ function onDraw()
             --screenX, screenY = map.screenToMap(info.gpsX, info.gpsY, 2, 96, 32, 58, 25)
             screen.drawMap(info.gpsX, info.gpsY, 2)
             --map icon
-            c(9,113,244)
+            c(_[3][1], _[3][2], _[3][3])
             drawPointer(48,16,info.compass, 5)
         end
 
@@ -207,7 +210,7 @@ function onDraw()
 
         -- dial that fills up
         c(_[2][1], _[2][2], _[2][3])
-        drawCircle(16, 16, 10, 8, 60, -remdeg/2*math.pi/180, math.min((info.speed/100)/info.properties.topspeed, 1)*(360-remdeg)*math.pi/180) --speed
+        drawCircle(16, 16, 10, 8, 60, -remdeg/2*math.pi/180, math.min(info.speed/100/info.properties.topspeed, 1)*(360-remdeg)*math.pi/180) --speed
         if info.rps>info.properties.upshift then c(180, 53, 35) else c(_[2][1], _[2][2], _[2][3]) end
         drawCircle(80, 16, 10, 8, 60, -remdeg/2*math.pi/180, math.min(info.rps/(info.properties.upshift+5), 1)*(360-remdeg)*math.pi/180) --rps
 
@@ -219,7 +222,7 @@ function onDraw()
         -- speed
         c(200,200,200)
         if info.properties.unit then
-            mph = math.floor(info.speed * 2.237)
+            mph = math.floor(info.speed * 2.23)
             if mph < 10 then
                 screen.drawText(14, 12, string.format("%.0f", mph))
                 --dst(13,9,string.format("%.0f", mph),2)
@@ -231,7 +234,7 @@ function onDraw()
                 --dst(8,9,string.format("%.0f", mph),1.6)
             end
             c(150,150,150)
-            dst(11, 20, "mph", 1)
+            dst(11, 20, "mph")
         else
             c(200,200,200)
             kph = math.floor(info.speed * 3.6)
@@ -246,7 +249,7 @@ function onDraw()
                 --dst(8,9,string.format("%.0f", mph),1.6)
             end
             c(150,150,150)
-            dst(11, 20, "kph", 1)
+            dst(11, 20, "kph")
         end
         c(200,200,200)
         
@@ -260,7 +263,7 @@ function onDraw()
         elseif info.gear >= 3 then
             if info.properties.trans then --auto
                 dst(77,9,"D",2)
-                dst(84,13,string.format("%.0f", info.gear-2),1)
+                dst(84,13,string.format("%.0f", info.gear-2))
             else
                 dst(78,9,string.format("%.0f", info.gear-2),2)
             end
@@ -269,9 +272,9 @@ function onDraw()
         -- units
         c(150,150,150)
         if info.properties.trans then
-            dst(73,20,"auto",1)
+            dst(73,20,"auto")
         else
-            dst(75,20,"man",1)
+            dst(75,20,"man")
         end
         --dst(76, 1, "rps", 0.8)
     end
@@ -347,8 +350,4 @@ end
 
 function lerp(v0,v1,t)
     return v1*t+v0*(1-t)
-end
-
-function clamp(value,min,max) 
-    return math.min(math.max(value,min),max) 
 end
