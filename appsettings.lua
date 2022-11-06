@@ -77,8 +77,8 @@ themes = {
 theme = property.getNumber("Theme")
 units = property.getBool("Units")
 def = property.getBool("Transmission Default")
-actions.Metric = not units
-actions.Manual = not def
+actions[1][2] = not units
+actions[2][2] = not def
 open = false
 maxscroll = 0
 cur = theme
@@ -164,7 +164,7 @@ function onDraw()
             for i=1, #actions do
                 drawFullToggle(15, 15-scrollPixels+i*11, actions[i][2], actions[i][1], rcolor, tcolor)
             end
-            drawDropdown(15, 26-scrollPixels+#actions*11, open, "Theme \/", themes, rcolor, tcolor)
+            drawDropdown(15, 26-scrollPixels+#actions*11, open, "Theme \\/", themes, cur, rcolor, tcolor)
         end
 
 ----------[[* CONTROLS OVERLAY *]]--
@@ -241,7 +241,7 @@ function drawFullToggle(x, y, state, text, bgcolor, tcolor)
     screen.drawText(x+2, y+2, text)
 end
 
-function drawDropdown(x, y, open, title, content, bgcolro, tcolor)
+function drawDropdown(x, y, open, title, content, current, bgcolro, tcolor)
     c(table.unpack(bgcolro))
     if not open then
         drawRoundedRect(x, y, #title*5+15, 8)
@@ -253,7 +253,12 @@ function drawDropdown(x, y, open, title, content, bgcolro, tcolor)
         screen.drawLine(x, y+8, x+#title*5+16, y+8)
         screen.drawText(x+2, y+2, title)
         for i = 1, #content do
+            c(table.unpack(tcolor))
             screen.drawText(x+2, y+2+i*8, content[i])
+            if current == i then
+                c(50,50,50,200)
+                screen.drawRectF(x, y+1+i*8, #title*5+16, 7)
+            end
         end
     end
 end
