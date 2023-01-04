@@ -1,5 +1,6 @@
 # SenCar 5
 [Developer Documentation](docs/docs.md)
+[Change logs](docs/logs.md)
 
 ## Personal. Powerful. Expandable.
 ![SenCar 5](https://user-images.githubusercontent.com/57205125/192074194-ca7c8675-0fe5-4a62-be54-35632bcf5f21.jpg)
