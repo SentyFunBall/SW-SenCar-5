@@ -25,3 +25,6 @@ The public release of SenCar 5. Starts at 5.0 because it's still technically a v
 - Feature - Added transmission modifiers to `drivemodes.lua`
 - Fix - Widget Display now obeys the laws of the Unit. (Widget Display can now use Metric.)
 - Fix - Changed app build versions to release because I forgor
+
+**Micro:**
+- Fix - Removed the tooltips
