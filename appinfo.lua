@@ -52,9 +52,9 @@ end
 -- the "LifeBoatAPI" is included by default in /_build/libs/ - you can use require("LifeBoatAPI") to get this, and use all the LifeBoatAPI.<functions>!
 require("LifeBoatAPI")
 
-SENCAR_VERSION = "5.0.dev"
-SENCAR_VERSION_BUILD = "1105221246f"
-APP_VERSIONS = {MAP = "1029221958f", INFO = "1029222319f", WEATHER = "1102222312f", CAR = "1104222327f", SETTINGS = "1105221246f"}
+SENCAR_VERSION = "5.0.1"
+SENCAR_VERSION_BUILD = "0103230306r"
+APP_VERSIONS = {MAP = "1029221958r", INFO = "1029222319r", WEATHER = "1102222312r", CAR = "1104222327r", SETTINGS = "1105221246r"}
 
 _colors = {
     {{47,51,78}, {86,67,143}, {128,95,164}}, --sencar 5 in the micro

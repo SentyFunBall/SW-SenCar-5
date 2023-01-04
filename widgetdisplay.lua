@@ -82,10 +82,16 @@ if theme == 0 then
 theme = property.getNumber("Theme")
 end
 
+    units = input.getBool(32)
     battery = string.format("%.1f", input.getNumber(1)*100)
     battDelta = string.format("%.3f", input.getNumber(2)*-1000)
-    wind = string.format("%.0fmph", input.getNumber(3)*2.237)
     rain = input.getNumber(4)
+
+    if units then
+        wind = string.format("%.0fmph", input.getNumber(3)*2.237)
+    else
+        wind = string.format("%.0fkph", input.getNumber(3)*3.6)
+    end
     if rain < 0.05 then rain = "None" elseif rain < 0.3 then rain = "Light" elseif rain < 0.7 then rain = "Medium" else rain = "Heavy" end
     fog = string.format("%.1f%%",input.getNumber(5)*100)
     if batteryWidget.drawn then

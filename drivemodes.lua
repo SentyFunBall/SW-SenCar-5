@@ -54,13 +54,23 @@ end
 function onTick()
     if input.getBool(1) then --eco
         output.setNumber(1, 1)
+        output.setNumber(2, -3) --upshift rps
+        output.setNumber(3, -3) --downshift rps
     elseif input.getBool(2) then --sport
         output.setNumber(1, 2)
+        output.setNumber(2, 2) --upshift rps
+        output.setNumber(3, 2) --downshift rps
     elseif input.getBool(3) then --tow
         output.setNumber(1, 3)
+        output.setNumber(2, 4) --upshift rps
+        output.setNumber(3, 2) --downshift rps
     elseif input.getBool(4) then --dac
         output.setNumber(1, 4)
+        output.setNumber(2, 4) --upshift rps
+        output.setNumber(3, 0) --downshift rps
     else
         output.setNumber(1, 0)
+        output.setNumber(2, 0) --upshift rps
+        output.setNumber(3, 0) --downshift rps
     end
 end
