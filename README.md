@@ -19,7 +19,7 @@ SenCar 5 is the successor to the powerful car operating system, SenTOS Car 4. Se
     4. [Radio Display](#radio-display)
     5. [Central Display](#central-display)
 2. [Everything New](#everything-new)
-3. [List of SenCar 5 vehciles](#list-of-cars)
+3. [List of SenCar 5 Vehicles](#list-of-cars)
 4. [For Developers](#for-developers)
     1. [Included APIs](#included-apis)
     2. [Libs and APIs used](#libraries-and-apis-used)
