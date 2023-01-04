@@ -19,7 +19,8 @@ SenCar 5 is the successor to the powerful car operating system, SenTOS Car 4. Se
     4. [Radio Display](#radio-display)
     5. [Central Display](#central-display)
 2. [Everything New](#everything-new)
-3. [For Developers](#for-developers)
+3. [List of SenCar 5 vehciles](#list-of-cars)
+4. [For Developers](#for-developers)
     1. [Included APIs](#included-apis)
     2. [Libs and APIs used](#libraries-and-apis-used)
     3. [Credits](#credits)
@@ -72,6 +73,10 @@ Tow mode, and the complimentary Towed mode, allows you to control something, or 
 - Open source
 - More settings
 - More "on-the-fly" settings
+
+## List of Cars
+Here is a list of every released car with SenCar 5
+ - [Solstice 2022 RT](https://steamcommunity.com/sharedfiles/filedetails/?id=2905895118)
 
 ## For Developers
 We have included a full documentation of the entire system [here](/docs/docs.md). Enjoy!
