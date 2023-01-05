@@ -15,12 +15,13 @@ SenCar 5 has undergone a lot of changes. These are all of the updates to SenCar 
   
 
 ## v5.0
-
+DEC 23, 2022
 The public release of SenCar 5. Starts at 5.0 because it's still technically a version of the old SenTOS Car system, just heavily updated.
 
   
 
 ### v5.0.1
+JAN 4, 2023
 **Lua:**
 - Feature - Added transmission modifiers to `drivemodes.lua`
 - Fix - Widget Display now obeys the laws of the Unit. (Widget Display can now use Metric.)
