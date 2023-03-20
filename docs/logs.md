@@ -12,6 +12,8 @@ SenCar 5 has undergone a lot of changes. These are all of the updates to SenCar 
 
 1. [v5.0.1](#v5.0.1)
 
+2. [v5.0.2](#v5.0.2)
+
   
 
 ## v5.0
@@ -29,3 +31,8 @@ JAN 4, 2023
 
 **Micro:**
 - Fix - Removed the tooltips
+
+### v5.0.2
+MAR 20, 2023
+**Lua:**
+- Fix - Doors open display wouldn't update theme when manually changed
